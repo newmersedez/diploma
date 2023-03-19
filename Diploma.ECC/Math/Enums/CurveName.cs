@@ -1,4 +1,4 @@
-namespace Diploma.ECC.Enums
+namespace Diploma.ECC.Math.Enums
 {
     /// <summary>
     /// Виды эллиптической кривой

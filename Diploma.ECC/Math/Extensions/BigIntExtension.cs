@@ -2,12 +2,12 @@ using System;
 using System.Numerics;
 using System.Security.Cryptography;
 
-namespace Diploma.ECC.Extensions
+namespace Diploma.ECC.Math.Extensions
 {
     /// <summary>
     /// Класс для работы с типами BigInteger
     /// </summary>
-    public static class Numeric
+    public static class BigIntExtension
     {
         /// <summary>
         /// Получить модуль числа

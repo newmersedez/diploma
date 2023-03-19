@@ -1,25 +1,23 @@
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
-using Diploma.ECC.Extensions;
 using Diploma.ECC.Math;
+using Diploma.ECC.Math.Entities;
+using Diploma.ECC.Math.Extensions;
 
-namespace Diploma.ECC.Algorithm
+namespace Diploma.ECC.Encryption.Key
 {
-    public static class Cryptography
+    /// <summary>
+    /// Генератор ключей шифрования
+    /// </summary>
+    public class KeysGenerator : IKeyGenerator
     {
-        public struct KeyPair
-        {
-            public BigInteger PrivateKey;
-            public Point PublicKey;
-        }
-
         /// <summary>
-        /// Generates a pair of keys.
+        /// Ключ шифрования
         /// </summary>
-        /// <param name="curve">Curve to generate a pair of keys on.</param>
-        /// <returns></returns>
-        public static KeyPair GetKeyPair(Curve curve)
+        public KeyPair Keys { get; set; }
+
+        public KeyPair GetKeyPair(Curve curve)
         {
             KeyPair result = new KeyPair();
             uint keyBytes = curve.Parameters.Length / 8;
@@ -45,11 +43,11 @@ namespace Diploma.ECC.Algorithm
         }
 
         /// <summary>
-        /// Derives shared secret of two entities.
+        /// Получить общий ключ
         /// </summary>
-        /// <param name="privateKey">Own private key.</param>
-        /// <param name="publicKey">Foreign public key.</param>
+        /// <param name="privateKey">Приватный ключ</param>
+        /// <param name="publicKey">Публичный ключ</param>
         /// <returns></returns>
-        public static Point GetSharedSecret(BigInteger privateKey, Point publicKey) => publicKey.Multiply(privateKey);
+        public Point GetSharedSecret(BigInteger privateKey, Point publicKey) => publicKey.Multiply(privateKey);
     }
 }

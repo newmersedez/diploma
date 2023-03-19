@@ -1,8 +1,7 @@
-using System;
 using System.Numerics;
-using Diploma.ECC.Math;
+using Diploma.ECC.Math.Entities;
 
-namespace Diploma.ECC.Extensions
+namespace Diploma.ECC.Math.Extensions
 {
     /// <summary>
     /// Операции с эллиптической кривой

@@ -1,7 +1,7 @@
 using System.Numerics;
-using Diploma.ECC.Enums;
+using Diploma.ECC.Math.Enums;
 
-namespace Diploma.ECC.Math
+namespace Diploma.ECC.Math.Entities
 {
     /// <summary>
     /// Параметры эллиптической кривой

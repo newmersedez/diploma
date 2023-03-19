@@ -1,8 +1,8 @@
 using System;
 using System.Numerics;
-using Diploma.ECC.Math;
+using Diploma.ECC.Math.Entities;
 
-namespace Diploma.ECC.Extensions
+namespace Diploma.ECC.Math.Extensions
 {
     /// <summary>
     /// Операции с точкой эллиптической кривой
@@ -116,7 +116,7 @@ namespace Diploma.ECC.Extensions
                 temporary = (3 * BigInteger.Pow(first.X, 2) + commonCurve.Parameters.A) * temp.ModuleInverse(commonCurve.Parameters.P);
             }
             else
-                temporary = (first.Y - second.Y) * Numeric.ModuleInverse(first.X - second.X, commonCurve.Parameters.P);
+                temporary = (first.Y - second.Y) * BigIntExtension.ModuleInverse(first.X - second.X, commonCurve.Parameters.P);
 
             BigInteger newX = BigInteger.Pow(temporary, 2) - first.X - second.X;
             BigInteger newY = first.Y + temporary * (newX - first.X);

@@ -1,9 +1,11 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using Diploma.ECC.Algorithm;
-using Diploma.ECC.Enums;
+using Diploma.ECC.Encryption;
+using Diploma.ECC.Encryption.Key;
 using Diploma.ECC.Math;
+using Diploma.ECC.Math.Entities;
+using Diploma.ECC.Math.Enums;
 
 namespace Diploma.ECC
 {
@@ -15,12 +17,14 @@ namespace Diploma.ECC
             var messageBytes = Encoding.UTF8.GetBytes(message);
 			
             var curve = new Curve(CurveName.secp256r1);
+
+            var keyGen = new KeysGenerator();
+            
+            var sender = keyGen.GetKeyPair(curve);
+            var receiver  = keyGen.GetKeyPair(curve);
 			
-            Cryptography.KeyPair sender = Cryptography.GetKeyPair(curve);
-            Cryptography.KeyPair receiver  = Cryptography.GetKeyPair(curve);
-			
-            Point aliceSharedSecret = Cryptography.GetSharedSecret(sender.PrivateKey, receiver.PublicKey);
-            Point bobSharedSecret = Cryptography.GetSharedSecret(receiver.PrivateKey, sender.PublicKey);
+            Point aliceSharedSecret = keyGen.GetSharedSecret(sender.PrivateKey, receiver.PublicKey);
+            Point bobSharedSecret = keyGen.GetSharedSecret(receiver.PrivateKey, sender.PublicKey);
 			
             // Encryption
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
