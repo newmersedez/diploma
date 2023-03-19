@@ -15,7 +15,7 @@ namespace Diploma.ECC.Extensions
         {
             switch (name)
             {
-	            case CurveName.Brainpoolp160R1:
+	            case CurveName.brainpoolp160r1:
 		            return new CurveParameters
 		            {
 			            Name = name,
@@ -30,7 +30,7 @@ namespace Diploma.ECC.Extensions
 			            H = 1,
 			            Length = 160,
 		            };
-				case CurveName.Brainpoolp192R1:
+				case CurveName.brainpoolp192r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -46,7 +46,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 192,
 					};
-				case CurveName.Brainpoolp224R1:
+				case CurveName.brainpoolp224r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -62,7 +62,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 224,
 					};
-				case CurveName.Brainpoolp256R1:
+				case CurveName.brainpoolp256r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -78,7 +78,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 256,
 					};
-				case CurveName.Brainpoolp320R1:
+				case CurveName.brainpoolp320r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -94,7 +94,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 320,
 					};
-				case CurveName.Brainpoolp384R1:
+				case CurveName.brainpoolp384r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -109,7 +109,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 384,
 					};
-				case CurveName.Brainpoolp512R1:
+				case CurveName.brainpoolp512r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -125,7 +125,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 512,
 					};
-				case CurveName.Nistp192:
+				case CurveName.nistp192:
 					return new CurveParameters
 					{
 						Name = name,
@@ -140,7 +140,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 192,
 					};
-				case CurveName.Nistp256:
+				case CurveName.nistp256:
 					return new CurveParameters
 					{
 						Name = name,
@@ -155,7 +155,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 256,
 					};
-				case CurveName.Nistp384:
+				case CurveName.nistp384:
 					return new CurveParameters
 					{
 						Name = name,
@@ -170,7 +170,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 384,
 					};
-				case CurveName.Nistp521:
+				case CurveName.nistp521:
 					return new CurveParameters
 					{
 						Name = name,
@@ -185,7 +185,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 521,
 					};
-				case CurveName.Secp160R1:
+				case CurveName.secp160r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -200,7 +200,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 160,
 					};
-				case CurveName.Secp160R2:
+				case CurveName.secp160r2:
 					return new CurveParameters
 					{
 						Name = name,
@@ -215,7 +215,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 160,
 					};
-	            case CurveName.Secp160K1:
+	            case CurveName.secp160k1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -230,7 +230,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 160,
 					};
-				case CurveName.Secp192R1:
+				case CurveName.secp192r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -246,7 +246,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 192,
 					};
-				case CurveName.Secp192K1:
+				case CurveName.secp192k1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -261,7 +261,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 192,
 					};
-				case CurveName.Secp224R1:
+				case CurveName.secp224r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -276,7 +276,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 224,
 					};
-				case CurveName.Secp224K1:
+				case CurveName.secp224k1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -291,7 +291,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 224,
 					};
-				case CurveName.Secp256R1:
+				case CurveName.secp256r1:
 					return new CurveParameters
 					{
 						Name = name,
@@ -306,7 +306,7 @@ namespace Diploma.ECC.Extensions
 						H = 1,
 						Length = 256,
 					};
-				case CurveName.Secp256K1:
+				case CurveName.secp256k1:
 					return new CurveParameters
 					{
 						Name = name,
