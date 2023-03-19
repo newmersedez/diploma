@@ -8,16 +8,10 @@ namespace Diploma.ECC.Math
     /// </summary>
     public class Curve
     {
-        # region Properties
-
         /// <summary>
         /// Параметры эллиптической кривой
         /// </summary>
         public CurveParameters Parameters { get; set; }
-
-        # endregion
-
-        # region Constructors
 
         /// <summary>
         /// Конструктор
@@ -27,8 +21,5 @@ namespace Diploma.ECC.Math
         {
             Parameters = name.GetParameters(this);
         }
-
-        # endregion
-        
     }
 }

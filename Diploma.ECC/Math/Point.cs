@@ -1,4 +1,3 @@
-using System;
 using System.Numerics;
 
 namespace Diploma.ECC.Math
@@ -8,8 +7,6 @@ namespace Diploma.ECC.Math
     /// </summary>
     public class Point
     {
-        # region Properties
-        
         /// <summary>
         /// Координата по X
         /// </summary>
@@ -25,9 +22,10 @@ namespace Diploma.ECC.Math
         /// </summary>
         public Curve Curve { get; set; }
 
-        # endregion
-        
-        # region Constructors
+        /// <summary>
+        /// Бесконечная точка
+        /// </summary>
+        public static Point InfinityPoint => null;
 
         /// <summary>
         /// Конструктор
@@ -42,18 +40,6 @@ namespace Diploma.ECC.Math
             Curve = curve;
         }
         
-        # endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Проверить принадлежность точки к кривой
-        /// </summary>
-        public void CheckPointIsOnCurve()
-        {
-            throw new NotImplementedException();
-        }
-        
         /// <summary>
         /// Получить строковое представление точки
         /// </summary>
@@ -62,7 +48,5 @@ namespace Diploma.ECC.Math
         {
             return string.Concat(X, Y);
         }
-
-        #endregion
     }
 }
