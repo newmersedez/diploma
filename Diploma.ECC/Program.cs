@@ -1,9 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using Diploma.ECC.Encryption;
 using Diploma.ECC.Encryption.Key;
-using Diploma.ECC.Math;
 using Diploma.ECC.Math.Entities;
 using Diploma.ECC.Math.Enums;
 
@@ -13,7 +11,7 @@ namespace Diploma.ECC
     {
         static void Main(string[] args)
         {
-            var message = "ТЕстовое сообщение";
+            var message = "Тестовое сообщение";
             var messageBytes = Encoding.UTF8.GetBytes(message);
 			
             var curve = new Curve(CurveName.secp256r1);

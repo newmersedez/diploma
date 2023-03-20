@@ -41,9 +41,9 @@ namespace Diploma.ECC.Math.Extensions
 
             while (b != 0)
             {
-                BigInteger quotient = oldB / b;
+                var quotient = oldB / b;
 
-                BigInteger prov = b;
+                var prov = b;
                 b = oldB - quotient * prov;
                 oldB = prov;
 
@@ -52,8 +52,8 @@ namespace Diploma.ECC.Math.Extensions
                 oldA = prov;
             }
 
-            BigInteger gcd = oldB;
-            BigInteger c = oldA;
+            var gcd = oldB;
+            var c = oldA;
 
             if (gcd != 1)
                 throw new ArgumentOutOfRangeException(nameof(gcd), $"Неверное значение gcd - {gcd}");

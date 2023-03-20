@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
-using Diploma.ECC.Math;
 using Diploma.ECC.Math.Entities;
 using Diploma.ECC.Math.Extensions;
 
@@ -19,17 +18,17 @@ namespace Diploma.ECC.Encryption.Key
 
         public KeyPair GetKeyPair(Curve curve)
         {
-            KeyPair result = new KeyPair();
-            uint keyBytes = curve.Parameters.Length / 8;
+            var result = new KeyPair();
+            var keyBytes = curve.Parameters.Length / 8;
 
-            byte[] unsignedBytes = new byte[] { 0x00 };
-            byte[] randomBytes = new byte[keyBytes];
+            var unsignedBytes = new byte[] { 0x00 };
+            var randomBytes = new byte[keyBytes];
 
             var randomGenerator = RandomNumberGenerator.Create();
             randomGenerator.GetBytes(randomBytes);
 
-            byte[] positiveRandomBytes = randomBytes.Concat(unsignedBytes).ToArray();
-            BigInteger randomValue = new BigInteger(positiveRandomBytes);
+            var positiveRandomBytes = randomBytes.Concat(unsignedBytes).ToArray();
+            var randomValue = new BigInteger(positiveRandomBytes);
 
             do
             {

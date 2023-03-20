@@ -99,7 +99,7 @@ namespace Diploma.ECC.Math.Extensions
                 return first;
             }
 
-            Curve commonCurve = first.Curve;
+            var commonCurve = first.Curve;
             if (!commonCurve.CheckPointIsOnCurve(first) || !commonCurve.CheckPointIsOnCurve(second))
             {
                 throw new ArgumentOutOfRangeException(nameof(first), "Точка не принадлежит эллиптической кривой");
@@ -118,11 +118,10 @@ namespace Diploma.ECC.Math.Extensions
             else
                 temporary = (first.Y - second.Y) * BigIntExtension.ModuleInverse(first.X - second.X, commonCurve.Parameters.P);
 
-            BigInteger newX = BigInteger.Pow(temporary, 2) - first.X - second.X;
-            BigInteger newY = first.Y + temporary * (newX - first.X);
-            Point result = new Point(newX.Module(commonCurve.Parameters.P), -newY.Module(commonCurve.Parameters.P), commonCurve);
-
-            return result;
+            var newX = BigInteger.Pow(temporary, 2) - first.X - second.X;
+            var newY = first.Y + temporary * (newX - first.X);
+            
+            return new Point(newX.Module(commonCurve.Parameters.P), -newY.Module(commonCurve.Parameters.P), commonCurve);
         }
 
         /// <summary>
