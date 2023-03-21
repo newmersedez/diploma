@@ -1,10 +1,14 @@
+using System.Text;
 using Diploma.Persistence;
+using Diploma.Server.Services.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Diploma.Server
@@ -25,13 +29,40 @@ namespace Diploma.Server
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(defaultScheme: "Bearer")
+                .AddJwtBearer(options => 
+                { 
+                    options.TokenValidationParameters = new TokenValidationParameters 
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration.GetValue<string>("JwtSettings:Issuer"),
+                        ValidAudience = Configuration.GetValue<string>("JwtSettings:Audience"),
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration.GetValue<string>("JwtSettings:Secret"))) 
+                    };
+                });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Diploma.Api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
             });
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IAuthService, AuthService>();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,8 +74,9 @@ namespace Diploma.Server
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diploma.Api v1"));
             }
 
-            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
