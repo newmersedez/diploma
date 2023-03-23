@@ -63,19 +63,5 @@ namespace Diploma.ECC.Math.Extensions
 
             return Module(c, modulo);
         }
-        
-        /// <summary>
-        /// Получить случайное число
-        /// </summary>
-        /// <param name="length">Длина числа</param>
-        /// <returns></returns>
-        public static BigInteger GetNumber(uint length)
-        {
-            var randomGenerator = RandomNumberGenerator.Create();
-            var randomNumber = new byte[length];
-            randomGenerator.GetBytes(randomNumber);
-            
-            return new BigInteger(randomNumber);
-        }
     }
 }

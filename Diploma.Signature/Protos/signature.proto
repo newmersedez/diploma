@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option csharp_namespace = "Diploma.Signature";
+
+package signature;
+
+// Сервис электронной подписи
+service Signature {
+  rpc SignFileAsync(SignFileRequest) returns (SignFileResponse);
+  rpc VerifySignatureAsync(VerifySignatureRequest) returns (VerifySignatureResponse);
+}
+
+message SignFileRequest {
+  string private_key = 1;
+  bytes content = 2;
+}
+
+message SignFileResponse {
+  bytes s = 1;
+  bytes r = 2;
+}
+
+message VerifySignatureRequest {
+  bytes x = 1;
+  bytes y = 2;
+  bytes r = 3;
+  bytes s = 4;
+  bytes content = 5;
+}
+
+message VerifySignatureResponse {
+  bool is_verified = 1;
+}
