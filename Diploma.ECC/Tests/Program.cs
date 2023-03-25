@@ -1,7 +1,10 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
+using System.IO;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Diploma.ECC.Encryption.Key;
 using Diploma.ECC.Math.Entities;
 using Diploma.ECC.Math.Enums;
@@ -12,83 +15,88 @@ namespace Diploma.ECC.Tests
 {
 	class Program
 	{
-		[SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
 		static void Main(string[] args)
 		{
-			// var message = "Тестовое сообщение";
-			// var messageBytes = Encoding.UTF8.GetBytes(message);
-			//
-			// var curve = new Curve(CurveName.secp256r1);
-			//
-			// var keyGen = new KeysGenerator();
-			//
-			// var sender = keyGen.GetKeyPair(curve);
-			// var receiver  = keyGen.GetKeyPair(curve);
-			//
-			// Point aliceSharedSecret = keyGen.GetSharedSecret(sender.PrivateKey, receiver.PublicKey);
-			// Point bobSharedSecret = keyGen.GetSharedSecret(receiver.PrivateKey, sender.PublicKey);
-			//
-			// // Encryption
-			// AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-			//
-			// Rfc2898DeriveBytes aliceCryptoKey = new Rfc2898DeriveBytes(aliceSharedSecret.ToString(), new byte[] {0, 0, 0, 0, 0, 0, 0, 0}, 1000, HashAlgorithmName.SHA256);
-			//
-			// aes.Key = aliceCryptoKey.GetBytes(32);
-			// aes.Mode = CipherMode.ECB; 
-			//
-			// var encryptor = aes.CreateEncryptor(aes.Key, null);
-			// var encryptedMessage = encryptor.TransformFinalBlock(messageBytes, 0, messageBytes.Length);
-			//
-			// Console.WriteLine(Convert.ToBase64String(encryptedMessage));
-			//
-			// // Decryption
-			// Rfc2898DeriveBytes bobCryptoKey = new Rfc2898DeriveBytes(bobSharedSecret.ToString(), new byte[] {0, 0, 0, 0, 0, 0, 0, 0}, 1000, HashAlgorithmName.SHA256);
-			//
-			// aes.Key = bobCryptoKey.GetBytes(32);
-			// aes.Mode = CipherMode.ECB; 
-			//
-			// var decryptor = aes.CreateDecryptor(aes.Key, null);
-			// var decryptedMessage = decryptor.TransformFinalBlock(encryptedMessage, 0, encryptedMessage.Length);
-			//
-			// Console.WriteLine(Encoding.UTF8.GetString(decryptedMessage));
-
-
-			var str = "lalka";
-			var message = new BigInteger(Encoding.UTF8.GetBytes(str));
-
-			var curve = new Curve(CurveName.nistp192);
+			var curve = new Curve(CurveName.brainpoolp192r1);
 			var keys = new KeyPair
 			{
 				PrivateKey = 123456789012345,
 				PublicKey = curve.Parameters.G.Multiply(123456789012345)
 			};
+			
+			var filename = "test.png";
+			var hash = new BigInteger(Encoding.UTF8.GetBytes(ComputeFileHash(filename)));
+			
+			SignFile(filename, hash, curve, keys.PrivateKey);
+			Console.WriteLine(VerifySignature(filename, hash, curve, keys.PublicKey));
+		}
 
-			Console.WriteLine("Get signature");
+		private static void SignFile(string path, BigInteger hash, Curve curve, BigInteger privateKey)
+		{
+			// Sign file
 			var k = BigIntGenerator.GenerateRandom(curve.Parameters.N);
+			var rPoint = curve.Parameters.G.Multiply(k);
+			var r = rPoint.X % curve.Parameters.N;
+			var kInverse = k.ModuleInverse(curve.Parameters.N);
+			var s = kInverse * (hash + r * privateKey) % curve.Parameters.N;
+			
+			// Save signature to file
+			var signatureFilePath = $"{Path.GetFileName(path)}.sig";
+			SaveSignature(signatureFilePath, r, s);
+		}
 
-			var r_point = curve.Parameters.G.Multiply(k);
-			
-			var r = r_point.X % curve.Parameters.N;
-			
-			var k_inverse = k.ModuleInverse(curve.Parameters.N);
-			
-			var s = k_inverse * (message + r * keys.PrivateKey) % curve.Parameters.N;
-			Console.WriteLine($"R = {r}\nS = {s}");
-			
-			Console.WriteLine("\n\n\n=================================");
-			Console.WriteLine("Verify");
-			var s_inverse = s.ModuleInverse(curve.Parameters.N);
-			
-			var u = message * s_inverse % curve.Parameters.N;
-			
-			var v = r * s_inverse % curve.Parameters.N;
-			
-			var c_point = curve.Parameters.G.Multiply(u).Add(keys.PublicKey.Multiply(v));
+		private static bool VerifySignature(string path, BigInteger hash, Curve curve, Point publicKey)
+		{
+			// Read signature
+			var signatureFilePath = $"{Path.GetFileName(path)}.sig";
+			if (!File.Exists(signatureFilePath))
+			{
+				Console.WriteLine("Подпись не обнаружена");
+				return false;
+			}
 
-			Console.WriteLine(r);
-			var valid = c_point.X == r;
-			Console.WriteLine($"{c_point.X} ?= {r}");
-			Console.WriteLine($"Is Valid = {valid}");
+			using var streamReader = new StreamReader(signatureFilePath, Encoding.Default);
+			var rString = streamReader.ReadLine() ?? throw new ArgumentException("rString");
+			var sString = streamReader.ReadLine() ?? throw new ArgumentException("sString");
+
+			var rBytes = Convert.FromBase64String(rString);
+			var sBytes = Convert.FromBase64String(sString);
+			
+			var r = new BigInteger(rBytes);
+			var s = new BigInteger(sBytes);
+			
+
+			// Verify
+			var sInverse = s.ModuleInverse(curve.Parameters.N);
+			var u = hash * sInverse % curve.Parameters.N;
+			var v = r * sInverse % curve.Parameters.N;
+			var cPoint = curve.Parameters.G.Multiply(u).Add(publicKey.Multiply(v));
+			
+			return cPoint.X == r;
+		}
+			
+		private static string ComputeFileHash(string path)
+		{
+			var md5 = new MD5CryptoServiceProvider();
+			
+			using var fileStream = new FileStream(path, FileMode.Open);
+			var fileData = new byte[fileStream.Length];
+			fileStream.Read(fileData, 0, (int)fileStream.Length);
+			
+			var checkSum = md5.ComputeHash(fileData);
+			return BitConverter.ToString(checkSum).Replace("-", string.Empty);
+		}
+		
+		private static void SaveSignature(string path, BigInteger r, BigInteger s)
+		{
+			using var writer = new StreamWriter(path);
+
+			var rString = Convert.ToBase64String(r.ToByteArray());
+			var sString = Convert.ToBase64String(s.ToByteArray());
+
+			writer.WriteLine(rString);
+			writer.WriteLine(sString);
 		}
 	}
 }
+ 

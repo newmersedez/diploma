@@ -17,7 +17,7 @@ var client = new Signature.SignatureClient(channel);
 
 var curve = new Curve(CurveName.secp256r1);
 var keyGen = new KeysGenerator();
-var sender = keyGen.GetKeyPair(curve);
+var sender = keyGen.CreateKeyPair(curve);
 
 var request = new SignFileRequest { Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(word)), PrivateKey = sender.PrivateKey.ToString() };
 

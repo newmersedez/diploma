@@ -11,12 +11,7 @@ namespace Diploma.ECC.Encryption.Key
     /// </summary>
     public class KeysGenerator : IKeyGenerator
     {
-        /// <summary>
-        /// Ключ шифрования
-        /// </summary>
-        public KeyPair Keys { get; set; }
-
-        public KeyPair GetKeyPair(Curve curve)
+        public KeyPair CreateKeyPair(Curve curve)
         {
             var result = new KeyPair();
             var keyBytes = curve.Parameters.Length / 8;

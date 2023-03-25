@@ -10,16 +10,11 @@ namespace Diploma.ECC.Encryption.Key
     public interface IKeyGenerator
     {
         /// <summary>
-        /// Ключи шифрования
-        /// </summary>
-        KeyPair Keys { get; set; }
-
-        /// <summary>
         /// Создать ключи шифрования
         /// </summary>
         /// <param name="curve">Эллиптическая кривая</param>
         /// <returns></returns>
-        KeyPair GetKeyPair(Curve curve);
+        KeyPair CreateKeyPair(Curve curve);
 
         /// <summary>
         /// Получить общий ключ
