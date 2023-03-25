@@ -15,11 +15,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\signature.proto" GrpcServices="Client" />
+      <ProjectReference Include="..\Diploma.ECC\Diploma.ECC.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Diploma.ECC\Diploma.ECC.csproj" />
+        <Protobuf Include="Protos\storage.proto" GrpcServices="Client" />
     </ItemGroup>
 
 </Project>

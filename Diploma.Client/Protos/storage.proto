@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option csharp_namespace = "Diploma.Storage";
+
+package storage;
+
+// Данные о файле
+message MetaData {
+  string name = 1;
+  string type = 2;
+}
+
+// Файл
+message File {
+  bytes content = 1;
+}
+
+// Статус загрузки
+enum Status {
+  PENDING = 0;
+  IN_PROGRESS = 1;
+  SUCCESS = 2;
+  FAILED = 3;
+}
+
+// Запрос на загрузку файла
+message UploadFileRequest {
+  MetaData metadata = 1;
+  File file = 2;
+}
+
+// Ответ при загрузке файла
+message UploadFileResponse {
+  string name = 1;
+  Status status = 2;
+}
+
+// Запрос на скачивание файла
+message DownloadFileRequest {
+  string name = 1;
+}
+
+// Ответ при скачивании файла
+message DownloadFileResponse {
+  MetaData metadata = 1;
+  File file = 2;
+}
+
+// Сервис файлового хранилища
+service Storage {
+  rpc UploadFileAsync(UploadFileRequest) returns (UploadFileResponse);
+  rpc DownloadFileAsync(DownloadFileRequest) returns (DownloadFileResponse);
+}
