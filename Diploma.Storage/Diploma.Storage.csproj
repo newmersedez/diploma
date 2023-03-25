@@ -12,4 +12,9 @@
         <Protobuf Include="Protos\storage.proto" GrpcServices="Server" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="storage\1.png" />
+      <Folder Include="storage\test.txt" />
+    </ItemGroup>
+
 </Project>
