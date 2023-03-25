@@ -39,14 +39,5 @@ namespace Diploma.ECC.Math.Entities
             Y = y;
             Curve = curve;
         }
-        
-        /// <summary>
-        /// Получить строковое представление точки
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return string.Concat(X, Y);
-        }
     }
 }

@@ -20,19 +20,14 @@ namespace Diploma.ECC.Math.Extensions
         }
 
         /// <summary>
-        /// Проверить принадлежность точки к кривой
-        /// </summary>
-        public static bool IsOnCurve(this Point point) => point.Curve.CheckPointIsOnCurve(point);
-
-        /// <summary>
         /// Скалярное умножение точки
         /// </summary>
-        /// <param name="scalar">Коэффициент</param>
-        /// <param name="point">Точка для умножения</param>
+        /// <param name="times">Коэффициент</param>
+        /// <param name="point">Точка</param>
         /// <returns></returns>
-        public static Point Multiply(this Point point, BigInteger scalar)
+        public static Point Multiply(this Point point, BigInteger times)
         {
-            if (point.IsInfinityPoint() || scalar % point.Curve.Parameters.N == 0)
+            if (point.IsInfinityPoint() || times % point.Curve.Parameters.N == 0)
             {
                 return Point.InfinityPoint;
             }
@@ -42,35 +37,29 @@ namespace Diploma.ECC.Math.Extensions
                 throw new ArgumentOutOfRangeException(nameof(point), "Точка не принадлежит эллиптической кривой");
             }
 
-            if (scalar < 0)
+            if (times < 0)
             {
-                point = point.Negate();
-                scalar = -scalar;
+                return Multiply(point.Negate(), -times);
             }
-
+            
             var resultPoint = Point.InfinityPoint;
-            var end = point;
+            var addend = point;
 
-            while (scalar != 0)
+            while (times != 0)
             {
-                if ((scalar & 1) == 1)
+                if ((times & 1) == 1)
                 {
-                    if (resultPoint == null)
-                    {
-                        resultPoint = end;
-                    }
-                    
-                    resultPoint = resultPoint.Add(end);
+                    resultPoint = resultPoint.Add(addend);
                 }
 
-                end = end.Add(end);
+                addend = addend.Add(addend);
 
-                scalar >>= 1;
+                times >>= 1;
             }
 
-            if (!point.IsOnCurve())
+            if (!point.Curve.CheckPointIsOnCurve(resultPoint))
             {
-                throw new ArgumentOutOfRangeException(nameof(point), "Точка не принадлежит эллиптической кривой");
+                throw new ArgumentOutOfRangeException(nameof(resultPoint), "Точка не принадлежит эллиптической кривой");
             }
 
             return resultPoint;
@@ -84,11 +73,6 @@ namespace Diploma.ECC.Math.Extensions
         /// <returns></returns>
         public static Point Add(this Point first, Point second)
         {
-            if (first.Curve != second.Curve)
-            {
-                throw new ArgumentException("Эллиптические кривые различаются");
-            }
-
             if (first.IsInfinityPoint())
             {
                 return second;
@@ -99,10 +83,20 @@ namespace Diploma.ECC.Math.Extensions
                 return first;
             }
 
-            var commonCurve = first.Curve;
-            if (!commonCurve.CheckPointIsOnCurve(first) || !commonCurve.CheckPointIsOnCurve(second))
+            if (first.Curve != second.Curve)
             {
-                throw new ArgumentOutOfRangeException(nameof(first), "Точка не принадлежит эллиптической кривой");
+                throw new ArgumentException("Эллиптические кривые различаются");
+            }
+            
+            var curve = first.Curve;
+            if (!curve.CheckPointIsOnCurve(first))
+            {
+                throw new ArgumentOutOfRangeException(nameof(first), "Точка 1 не принадлежит эллиптической кривой");
+            }
+            
+            if (!curve.CheckPointIsOnCurve(second))
+            {
+                throw new ArgumentOutOfRangeException(nameof(first), "Точка 2 не принадлежит эллиптической кривой");
             }
 
             BigInteger temporary;
@@ -110,18 +104,19 @@ namespace Diploma.ECC.Math.Extensions
             if (first.X == second.X)
             {
                 if (first.Y != second.Y)
+                {
                     return Point.InfinityPoint;
+                }
 
-                var temp = 2 * first.Y;
-                temporary = (3 * BigInteger.Pow(first.X, 2) + commonCurve.Parameters.A) * temp.ModuleInverse(commonCurve.Parameters.P);
+                temporary = (3 * BigInteger.Pow(first.X, 2) + curve.Parameters.A) * (2 * first.Y).ModuleInverse(curve.Parameters.P);
             }
             else
-                temporary = (first.Y - second.Y) * BigIntExtension.ModuleInverse(first.X - second.X, commonCurve.Parameters.P);
+                temporary = (first.Y - second.Y) * (first.X - second.X).ModuleInverse(curve.Parameters.P);
 
-            var newX = BigInteger.Pow(temporary, 2) - first.X - second.X;
-            var newY = first.Y + temporary * (newX - first.X);
+            var newPointX = BigInteger.Pow(temporary, 2) - first.X - second.X;
+            var newPointY = first.Y + temporary * (newPointX - first.X);
             
-            return new Point(newX.Module(commonCurve.Parameters.P), -newY.Module(commonCurve.Parameters.P), commonCurve);
+            return new Point(newPointX.Module(curve.Parameters.P), (-newPointY).Module(curve.Parameters.P), curve);
         }
 
         /// <summary>
@@ -141,7 +136,7 @@ namespace Diploma.ECC.Math.Extensions
                 return point;
             }
 
-            var result = new Point(point.X, -point.Y.Module(point.Curve.Parameters.P), point.Curve);
+            var result = new Point(point.X, (-point.Y).Module(point.Curve.Parameters.P), point.Curve);
 
             if (!result.IsOnCurve())
             {
@@ -150,5 +145,10 @@ namespace Diploma.ECC.Math.Extensions
 
             return result;
         }
+        
+        /// <summary>
+        /// Проверить принадлежность точки к кривой
+        /// </summary>
+        private static bool IsOnCurve(this Point point) => point.Curve.CheckPointIsOnCurve(point);
     }
 }

@@ -9,7 +9,7 @@ namespace Diploma.ECC.Math.Extensions
     public static class CurveExtension
     {
         /// <summary>
-        /// Проверить принадлежность точки к кривой
+        /// Проверить принадлежность точки к эллиптической кривой
         /// </summary>
         /// <param name="curve">Эллиптическая кривая</param>
         /// <param name="point">Точка</param>
@@ -20,7 +20,8 @@ namespace Diploma.ECC.Math.Extensions
                    || (BigInteger.Pow(point.Y, 2) 
                        - BigInteger.Pow(point.X, 3) 
                        - curve.Parameters.A * point.X 
-                       - curve.Parameters.B) % curve.Parameters.P == 0;
+                       - curve.Parameters.B) 
+                   % curve.Parameters.P == 0;
         }
     }
 }
