@@ -46,21 +46,10 @@ var client = new Storage.StorageClient(channel);
 var fileName = "1.png";
 var fileContent = System.IO.File.ReadAllBytes(fileName);
 
-var file = new File
-{
-    Content = ByteString.CopyFrom(fileContent)
-};
-
-var metadata = new MetaData
-{
-    Name = fileName,
-    Type = "image"
-};
-
 var request = new UploadFileRequest
 {
-    Metadata = metadata,
-    File = file
+    Name = fileName,
+    Content = ByteString.CopyFrom(fileContent)
 };
 
 var response = client.UploadFileAsync(request);
