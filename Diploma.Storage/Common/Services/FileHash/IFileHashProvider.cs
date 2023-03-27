@@ -1,4 +1,4 @@
-namespace Diploma.Storage.Common.FileHash
+namespace Diploma.Storage.Common.Services.FileHash
 {
     /// <summary>
     /// Провайдер хэш-суммы файла

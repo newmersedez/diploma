@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Diploma.Storage.Common.PathBuilder
+namespace Diploma.Storage.Common.Services.PathBuilder
 {
     /// <summary>
     /// Сервис построения системного пути

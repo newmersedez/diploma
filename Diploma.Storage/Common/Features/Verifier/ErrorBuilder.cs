@@ -1,21 +1,20 @@
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Diploma.Storage.Common.Verifier
+namespace Diploma.Storage.Common.Features.Verifier
 {
     /// <summary>
     /// Строитель ошибок запроса
     /// </summary>
     public class ErrorBuilder
     {
-        private Dictionary<string, IEnumerable<string>> _errors;
+        private Dictionary<string, List<string>> _errors;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public ErrorBuilder()
         {
-            _errors = new Dictionary<string, IEnumerable<string>>();
+            _errors = new Dictionary<string, List<string>>();
         }
 
         /// <summary>
@@ -31,14 +30,21 @@ namespace Diploma.Storage.Common.Verifier
         /// <param name="message">Сообщение</param>
         public void Add(string key, string message)
         {
-            if (_errors.ContainsKey(key))
+            if (!_errors.ContainsKey(key))
             {
-                _errors[key] = _errors[key].Append(message);
+                _errors.Add(key, new List<string> { message });
+                return;
             }
-            else
-            {
-                _errors.Add(key, new[] { message });
-            }
+            
+            _errors[key].Add(message);
+        }
+
+        /// <summary>
+        /// Получить ошибки верификации
+        /// </summary>
+        public Dictionary<string, List<string>> Build()
+        {
+            return _errors;
         }
     }
 }

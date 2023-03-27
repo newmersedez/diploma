@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Diploma.Storage.Common.Verifier
+namespace Diploma.Storage.Common.Features.Verifier
 {
     /// <summary>
     /// Интерфейс верификации

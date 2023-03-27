@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Diploma.Storage.Common.FileHash;
-using Diploma.Storage.Common.PathBuilder;
-using Diploma.Storage.Common.Verifier;
+using Diploma.Storage.Common.Features.Verifier;
+using Diploma.Storage.Common.Services.FileHash;
+using Diploma.Storage.Common.Services.PathBuilder;
 using Diploma.Storage.Services.Storage.Verify.Context;
 using Google.Protobuf;
 using Grpc.Core;
@@ -19,7 +19,7 @@ namespace Diploma.Storage.Services.Storage
         private readonly string STORAGE_ROOT;
         private readonly IFileHashProvider _fileHashProvider;
         private readonly IPathBuilder _pathBuilder;
-        // private readonly Verifier<UploadFileContext> _uploadFileVerifier;
+        private readonly Verifier<UploadFileContext> _uploadFileVerifier;
 
         /// <summary>
         /// Конструктор
@@ -31,13 +31,13 @@ namespace Diploma.Storage.Services.Storage
         public StorageService(
             IConfiguration configuration,
             IPathBuilder pathBuilder, 
-            IFileHashProvider fileHashProvider)
-            // Verifier<UploadFileContext> uploadFileVerifier)
+            IFileHashProvider fileHashProvider,
+            Verifier<UploadFileContext> uploadFileVerifier)
         {
             STORAGE_ROOT = configuration.GetValue<string>("Storage:Root");
             _pathBuilder = pathBuilder ?? throw new ArgumentNullException(nameof(pathBuilder));
             _fileHashProvider = fileHashProvider ?? throw new ArgumentNullException(nameof(fileHashProvider));
-            // _uploadFileVerifier = uploadFileVerifier ?? throw new ArgumentNullException(nameof(uploadFileVerifier));
+            _uploadFileVerifier = uploadFileVerifier ?? throw new ArgumentNullException(nameof(uploadFileVerifier));
         }
 
         /// <summary>
@@ -50,7 +50,12 @@ namespace Diploma.Storage.Services.Storage
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
-            // await _uploadFileVerifier.VerifyAsync();
+            var verifyContext = new UploadFileContext
+            {
+                Request = request
+            };
+            
+            await _uploadFileVerifier.VerifyAsync(verifyContext);
 
             var fileHashSum = _fileHashProvider.CalculateHashSum(request.Content.ToByteArray());
             var saveDirectory = _pathBuilder.Append(new[]

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Diploma.Storage.Common.Verifier;
+using Diploma.Storage.Common.Features.Verifier;
 using Diploma.Storage.Services.Storage.Verify.Context;
 
 namespace Diploma.Storage.Services.Storage.Verify
