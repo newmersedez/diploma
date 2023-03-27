@@ -24,7 +24,7 @@ namespace Diploma.Storage
 
             services.AddScoped<IFileHashProvider, FileHashProvider>();
 
-            services.AddVerification<UploadFileContext>();
+            // services.AddVerification<UploadFileContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

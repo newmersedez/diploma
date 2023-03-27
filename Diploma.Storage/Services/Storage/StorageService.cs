@@ -1,10 +1,8 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Diploma.Storage.Common.Features.Verifier;
 using Diploma.Storage.Common.Services.FileHash;
 using Diploma.Storage.Common.Services.PathBuilder;
-using Diploma.Storage.Services.Storage.Verify.Context;
 using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +17,6 @@ namespace Diploma.Storage.Services.Storage
         private readonly string STORAGE_ROOT;
         private readonly IFileHashProvider _fileHashProvider;
         private readonly IPathBuilder _pathBuilder;
-        private readonly Verifier<UploadFileContext> _uploadFileVerifier;
 
         /// <summary>
         /// Конструктор
@@ -27,17 +24,14 @@ namespace Diploma.Storage.Services.Storage
         /// <param name="configuration">Конфигурация</param>
         /// <param name="pathBuilder">Строитель пути</param>
         /// <param name="fileHashProvider">Провайдер хэш-суммы</param>
-        /// <param name="uploadFileVerifier">Верификация загрузки файлов</param>
         public StorageService(
             IConfiguration configuration,
             IPathBuilder pathBuilder, 
-            IFileHashProvider fileHashProvider,
-            Verifier<UploadFileContext> uploadFileVerifier)
+            IFileHashProvider fileHashProvider)
         {
             STORAGE_ROOT = configuration.GetValue<string>("Storage:Root");
             _pathBuilder = pathBuilder ?? throw new ArgumentNullException(nameof(pathBuilder));
             _fileHashProvider = fileHashProvider ?? throw new ArgumentNullException(nameof(fileHashProvider));
-            _uploadFileVerifier = uploadFileVerifier ?? throw new ArgumentNullException(nameof(uploadFileVerifier));
         }
 
         /// <summary>
@@ -49,13 +43,6 @@ namespace Diploma.Storage.Services.Storage
         public override async Task<UploadFileResponse> UploadFileAsync(UploadFileRequest request, ServerCallContext context)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-
-            var verifyContext = new UploadFileContext
-            {
-                Request = request
-            };
-            
-            await _uploadFileVerifier.VerifyAsync(verifyContext);
 
             var fileHashSum = _fileHashProvider.CalculateHashSum(request.Content.ToByteArray());
             var saveDirectory = _pathBuilder.Append(new[]
@@ -90,8 +77,6 @@ namespace Diploma.Storage.Services.Storage
         public override async Task<DownloadFileResponse> DownloadFileAsync(DownloadFileRequest request, ServerCallContext context)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-            
-            // TODO: Верификация запроса
             
             var fileDirectory = _pathBuilder.Append(new[]
             {
