@@ -1,5 +1,6 @@
 using Diploma.Storage.Common.Services.FileHash;
 using Diploma.Storage.Services.Files;
+using Diploma.Storage.Services.Signature;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,7 @@ namespace Diploma.Storage
             });
 
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<ISignatureService, SignatureService>();
             services.AddScoped<IFileHashProvider, FileHashProvider>();
         }
 

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "Diploma.Storage";
+
+package storage;
+
+// Статус загрузки
+enum Status {
+  SUCCESS = 0;
+  FAILED = 1;
+}
+
+// Запрос на загрузку файла
+// * name - название файла
+// * content - содержимое файла
+message UploadFileRequest {
+  string name = 1;
+  bytes content = 2;
+}
+
+// Ответ при загрузке файла
+// * name - название загруженного файла
+// * storage - ID хранилища (хэш-сумма файла)
+// * status - статус загрузки
+message UploadFileResponse {
+  string name = 1;
+  string storage = 2;
+  Status status = 3;
+}
+
+// Запрос на скачивание файла
+// * name - название файла
+// * storage - ID хранилища (хэш-сумма файла)
+message DownloadFileRequest {
+  string name = 1;
+  string storage = 2;
+}
+
+// Ответ при скачивании файла
+// * name - название файла
+// * content - содержимое файла
+message DownloadFileResponse {
+  string name = 1;
+  bytes content = 2;
+}
+
+// Сервис файлового хранилища
+service Storage {
+  rpc UploadFileAsync(UploadFileRequest) returns (UploadFileResponse);
+  rpc DownloadFileAsync(DownloadFileRequest) returns (DownloadFileResponse);
+}

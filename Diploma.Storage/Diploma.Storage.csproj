@@ -12,4 +12,8 @@
       <Folder Include="Common\Providers" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Diploma.ECC\Diploma.ECC.csproj" />
+    </ItemGroup>
+
 </Project>
