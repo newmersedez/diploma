@@ -18,6 +18,8 @@ namespace Diploma.Persistence.Models
 
         public ICollection<ChatUser> ChatUsers { get; set; }
 
+        public ICollection<Message> Messages { get; set; }
+
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,6 +28,8 @@ namespace Diploma.Persistence.Models
         #region Relationships
 
         public User User { get; set; }
+
+        public ICollection<Message> Messages { get; set; }
 
         #endregion
     }

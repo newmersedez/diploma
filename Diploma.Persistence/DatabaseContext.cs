@@ -16,5 +16,6 @@ namespace Diploma.Persistence
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ChatUser> ChatUser { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }
