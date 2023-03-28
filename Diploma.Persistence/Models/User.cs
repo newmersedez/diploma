@@ -17,5 +17,13 @@ namespace Diploma.Persistence.Models
         [Required]
         [Column("password_hash")]
         public string PasswordHash { get; set; } 
+
+        #region Relationships
+
+        public UserPublicKey PublicKey { get; set; }
+        
+        public UserPrivateKey PrivateKey { get; set; }
+
+        #endregion
     }
 }
