@@ -5,16 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\storage.proto" GrpcServices="Server" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Common\Features" />
-      <Folder Include="Common\Services" />
+      <Folder Include="Common\Providers" />
     </ItemGroup>
 
 </Project>

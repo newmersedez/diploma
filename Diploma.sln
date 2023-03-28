@@ -4,9 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.ECC", "Diploma.ECC\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Signature", "Diploma.Signature\Diploma.Signature.csproj", "{D6B861CE-D0DD-4964-9502-EF1E4472EBD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Storage", "Diploma.Storage\Diploma.Storage.csproj", "{0C83F838-9898-498C-9957-A0B772BCF45A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Client", "Diploma.Client\Diploma.Client.csproj", "{7CB029E2-A0F0-4D59-A811-33305D665F50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Storage", "Diploma.Storage\Diploma.Storage.csproj", "{E44DF6E0-5F27-4A57-B8DA-F47D8C0D0EA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +24,10 @@ Global
 		{D6B861CE-D0DD-4964-9502-EF1E4472EBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6B861CE-D0DD-4964-9502-EF1E4472EBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6B861CE-D0DD-4964-9502-EF1E4472EBD3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C83F838-9898-498C-9957-A0B772BCF45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C83F838-9898-498C-9957-A0B772BCF45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C83F838-9898-498C-9957-A0B772BCF45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C83F838-9898-498C-9957-A0B772BCF45A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CB029E2-A0F0-4D59-A811-33305D665F50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CB029E2-A0F0-4D59-A811-33305D665F50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CB029E2-A0F0-4D59-A811-33305D665F50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CB029E2-A0F0-4D59-A811-33305D665F50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E44DF6E0-5F27-4A57-B8DA-F47D8C0D0EA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E44DF6E0-5F27-4A57-B8DA-F47D8C0D0EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E44DF6E0-5F27-4A57-B8DA-F47D8C0D0EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E44DF6E0-5F27-4A57-B8DA-F47D8C0D0EA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
