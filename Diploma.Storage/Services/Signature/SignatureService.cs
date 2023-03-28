@@ -43,7 +43,7 @@ namespace Diploma.Storage.Services.Signature
             
             // TODO: Верификация параметров запроса
             
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), STORAGE_ROOT, request.Folder, request.Name);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), STORAGE_ROOT, request.File.Folder, request.File.Name);
             if (!File.Exists(filePath))
             {
                 throw new RequestException(HttpStatusCode.NotFound, "Файл по указанному пути не существует");
@@ -67,8 +67,11 @@ namespace Diploma.Storage.Services.Signature
 
             return new SignFileResponse
             {
-                S = s.ToString(),
-                R = r.ToString()
+                Signature = new Common.Responses.Signature
+                {
+                    S = s.ToString(),
+                    R = r.ToString()
+                }
             };
         }
 
@@ -83,7 +86,7 @@ namespace Diploma.Storage.Services.Signature
             
             // TODO: Верификация параметров запроса
             
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), STORAGE_ROOT, request.Folder, request.Name);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), STORAGE_ROOT, request.File.Folder, request.File.Name);
             if (!File.Exists(filePath))
             {
                 throw new RequestException(HttpStatusCode.NotFound, "Файл по указанному пути не существует");
@@ -94,13 +97,13 @@ namespace Diploma.Storage.Services.Signature
             var curveEnum = (CurveName)Enum.Parse(typeof(CurveName), curveName);
             var curve = new Curve(curveEnum);
 
-            var sInverse = BigInteger.Parse(request.S);
+            var sInverse = BigInteger.Parse(request.Signature.S);
             sInverse = sInverse.ModuleInverse(curve.Parameters.N);
             var u = new BigInteger(content) * sInverse % curve.Parameters.N;
-            var v = BigInteger.Parse(request.R) * sInverse % curve.Parameters.N;
+            var v = BigInteger.Parse(request.Signature.R) * sInverse % curve.Parameters.N;
             var cPoint = curve.Parameters.G.Multiply(u).Add(
-                new Point(BigInteger.Parse(request.X), BigInteger.Parse(request.Y), curve).Multiply(v));
-            return cPoint.X == BigInteger.Parse(request.R);
+                new Point(BigInteger.Parse(request.PublicKey.X), BigInteger.Parse(request.PublicKey.Y), curve).Multiply(v));
+            return cPoint.X == BigInteger.Parse(request.Signature.R);
         }
     }
 }

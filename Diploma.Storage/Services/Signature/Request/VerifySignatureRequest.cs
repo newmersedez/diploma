@@ -1,5 +1,4 @@
-using System.Numerics;
-using Diploma.ECC.Math.Entities;
+using Diploma.Storage.Common.Responses;
 
 namespace Diploma.Storage.Services.Signature.Request
 {
@@ -11,16 +10,16 @@ namespace Diploma.Storage.Services.Signature.Request
         /// <summary>
         /// Публичный ключ
         /// </summary>
-        public string X { get; set; }
+        public PublicKey PublicKey { get; set; }
 
-        public string Y { get; set; }
+        /// <summary>
+        /// Электронная подпись
+        /// </summary>
+        public Common.Responses.Signature Signature { get; set; }
 
-        public string R { get; set; }
-
-        public string S { get; set; }
-
-        public string Folder { get; set; }
-
-        public string Name { get; set; }
-}
+        /// <summary>
+        /// Информация о файле
+        /// </summary>
+        public File File { get; set; }
+    }
 }

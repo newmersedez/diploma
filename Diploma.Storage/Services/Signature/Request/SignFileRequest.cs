@@ -1,4 +1,5 @@
 using System.Numerics;
+using Diploma.Storage.Common.Responses;
 
 namespace Diploma.Storage.Services.Signature.Request
 {
@@ -13,13 +14,8 @@ namespace Diploma.Storage.Services.Signature.Request
         public string PrivateKey { get; set; }
 
         /// <summary>
-        /// Папка
+        /// Информация о файле
         /// </summary>
-        public string Folder { get; set; }
-
-        /// <summary>
-        /// Название файла
-        /// </summary>
-        public string Name { get; set; }
+        public File File { get; set; }
     }
 }

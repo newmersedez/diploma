@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Diploma.Storage.Services.Signature.Response
 {
     /// <summary>
@@ -8,13 +6,8 @@ namespace Diploma.Storage.Services.Signature.Response
     public sealed class SignFileResponse
     {
         /// <summary>
-        /// R
+        /// Электронная подпись
         /// </summary>
-        public string R { get; set; }
-
-        /// <summary>
-        /// S
-        /// </summary>
-        public string S { get; set; }
+        public Common.Responses.Signature Signature { get; set; }
     }
 }
