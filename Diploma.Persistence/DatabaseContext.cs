@@ -14,5 +14,6 @@ namespace Diploma.Persistence
         public DbSet<UserPublicKey> UserPublicKeys { get; set; }
         public DbSet<UserPrivateKey> UserPrivateKeys { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<Chat> Chats { get; set; }
     }
 }
