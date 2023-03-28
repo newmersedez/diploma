@@ -3,7 +3,7 @@ namespace Diploma.Storage.Common.Responses
     /// <summary>
     /// Сущность электронной подписи
     /// </summary>
-    public sealed class Signature
+    public sealed class SignatureInfo
     {
         /// <summary>
         /// Параметр R

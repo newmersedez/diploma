@@ -11,7 +11,7 @@ namespace Diploma.Storage.Controllers
     /// Контроллер электронной подписи
     /// </summary>
     [ApiController]
-    [Route("signature")]
+    [Route("storage/signature")]
     public sealed class SignatureController : ControllerBase
     {
         /// <summary>

@@ -19,6 +19,9 @@ var curve = new Curve(CurveName.secp256r1);
 var keyGen = new KeysGenerator();
 var sender = keyGen.CreateKeyPair(curve);
 
+Console.WriteLine(sender.PrivateKey);
+Console.WriteLine(sender.PublicKey.X);
+Console.WriteLine(sender.PublicKey.Y);
 // var request = new SignFileRequest { Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(word)), PrivateKey = sender.PrivateKey.ToString() };
 //
 // var response = await client.SignFileAsyncAsync(request);

@@ -10,16 +10,16 @@ namespace Diploma.Storage.Services.Signature.Request
         /// <summary>
         /// Публичный ключ
         /// </summary>
-        public PublicKey PublicKey { get; set; }
+        public PublicKeyInfo PublicKey { get; set; }
 
         /// <summary>
         /// Электронная подпись
         /// </summary>
-        public Common.Responses.Signature Signature { get; set; }
+        public SignatureInfo Signature { get; set; }
 
         /// <summary>
-        /// Информация о файле
+        /// Хэш-сумма файла
         /// </summary>
-        public File File { get; set; }
+        public string FileHash { get; set; }
     }
 }

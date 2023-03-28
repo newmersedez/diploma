@@ -1,6 +1,3 @@
-using System.Numerics;
-using Diploma.Storage.Common.Responses;
-
 namespace Diploma.Storage.Services.Signature.Request
 {
     /// <summary>
@@ -14,8 +11,8 @@ namespace Diploma.Storage.Services.Signature.Request
         public string PrivateKey { get; set; }
 
         /// <summary>
-        /// Информация о файле
+        /// Хэш-сумма файла
         /// </summary>
-        public File File { get; set; }
+        public string FileHash { get; set; }
     }
 }

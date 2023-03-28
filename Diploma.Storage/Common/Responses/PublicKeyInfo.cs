@@ -3,7 +3,7 @@ namespace Diploma.Storage.Common.Responses
     /// <summary>
     /// Сущность публичного ключа
     /// </summary>
-    public sealed class PublicKey
+    public sealed class PublicKeyInfo
     {
         /// <summary>
         /// Значение по оси X

@@ -1,3 +1,5 @@
+using Diploma.Storage.Common.Responses;
+
 namespace Diploma.Storage.Services.Signature.Response
 {
     /// <summary>
@@ -8,6 +10,6 @@ namespace Diploma.Storage.Services.Signature.Response
         /// <summary>
         /// Электронная подпись
         /// </summary>
-        public Common.Responses.Signature Signature { get; set; }
+        public SignatureInfo Signature { get; set; }
     }
 }
