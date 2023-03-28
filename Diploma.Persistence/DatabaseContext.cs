@@ -7,8 +7,12 @@ namespace Diploma.Persistence
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
-        { }
+        {
+        }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserPublicKey> UserPublicKeys { get; set; }
+        public DbSet<UserPrivateKey> UserPrivateKeys { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
     }
 }

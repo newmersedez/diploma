@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,6 +25,8 @@ namespace Diploma.Persistence.Models
         public UserPublicKey PublicKey { get; set; }
         
         public UserPrivateKey PrivateKey { get; set; }
+
+        public ICollection<Attachment> Attachments { get; set; }
 
         #endregion
     }
