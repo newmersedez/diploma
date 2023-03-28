@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Diploma.Storage.Services.Files.Request
+namespace Diploma.Storage.Services.Storage.Response
 {
     /// <summary>
-    /// Запрос на получение файла
+    /// Ответ при загрузке файла
     /// </summary>
-    public sealed class DownloadFileRequest
+    public sealed class UploadFileResponse
     {
         /// <summary>
         /// Папка

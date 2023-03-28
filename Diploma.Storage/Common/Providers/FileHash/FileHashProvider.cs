@@ -1,7 +1,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Diploma.Storage.Common.Services.FileHash
+namespace Diploma.Storage.Common.Providers.FileHash
 {
     /// <summary>
     /// Провайдер хэш-суммы файла

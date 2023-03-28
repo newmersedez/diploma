@@ -3,17 +3,18 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Diploma.Storage.Common.Exceptions;
-using Diploma.Storage.Common.Services.FileHash;
-using Diploma.Storage.Services.Files.Request;
+using Diploma.Storage.Common.Providers.FileHash;
+using Diploma.Storage.Services.Storage.Request;
+using Diploma.Storage.Services.Storage.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace Diploma.Storage.Services.Files
+namespace Diploma.Storage.Services.Storage
 {
     /// <summary>
     /// Сервис управления файлами
     /// </summary>
-    public sealed class FileService : IFileService
+    public sealed class StorageService : IStorageService
     {
         private readonly string STORAGE_ROOT;
         private readonly IFileHashProvider _fileHashProvider;
@@ -23,7 +24,7 @@ namespace Diploma.Storage.Services.Files
         /// </summary>
         /// <param name="configuration">Конфигурация</param>
         /// <param name="fileHashProvider">Провайдер хэш-суммы файла</param>
-        public FileService(
+        public StorageService(
             IConfiguration configuration,
             IFileHashProvider fileHashProvider)
         {

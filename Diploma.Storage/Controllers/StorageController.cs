@@ -1,8 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Diploma.Storage.Services.Files;
-using Diploma.Storage.Services.Files.Request;
+using Diploma.Storage.Services.Storage;
+using Diploma.Storage.Services.Storage.Request;
+using Diploma.Storage.Services.Storage.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,23 +14,23 @@ namespace Diploma.Storage.Controllers
     /// </summary>
     [ApiController]
     [Route("files")]
-    public sealed class FilesController : ControllerBase
+    public sealed class StorageController : ControllerBase
     {
         /// <summary>
         /// Загрузить файл
         /// </summary>
-        /// <param name="fileService">Сервис управления файлами</param>
+        /// <param name="storageService">Сервис управления файлами</param>
         /// <param name="file">Файл</param>
         /// <returns></returns>
         [HttpPost]
         [Route("upload")]
         public async Task<UploadFileResponse> UploadFileAsync(
-            [FromServices] IFileService fileService,
+            [FromServices] IStorageService storageService,
             [Required] IFormFile file)
         {
-            if (fileService == null) throw new ArgumentNullException(nameof(fileService));
+            if (storageService == null) throw new ArgumentNullException(nameof(storageService));
 
-            var response = await fileService.UploadFileAsync(file);
+            var response = await storageService.UploadFileAsync(file);
 
             return response;
         }
@@ -37,15 +38,15 @@ namespace Diploma.Storage.Controllers
         /// <summary>
         /// Скачать файл
         /// </summary>
-        /// <param name="fileService">Сервис управления файлами</param>
+        /// <param name="storageService">Сервис управления файлами</param>
         /// <param name="request">Запрос на скачивание файла</param>
         [HttpPost]
         [Route("download")]
         public async Task<FileStreamResult> DownloadFileAsync(
-            [FromServices] IFileService fileService,
+            [FromServices] IStorageService storageService,
             DownloadFileRequest request)
         {
-            var response = await fileService.DownloadFileAsync(request);
+            var response = await storageService.DownloadFileAsync(request);
 
             return File(response.Content, request.ContentType, response.Name);
         }

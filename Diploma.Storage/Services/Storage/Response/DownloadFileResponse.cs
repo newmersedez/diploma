@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Diploma.Storage.Services.Files
+namespace Diploma.Storage.Services.Storage.Response
 {
     /// <summary>
     /// Ответ при скачивании файла

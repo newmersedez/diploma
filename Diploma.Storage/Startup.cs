@@ -1,6 +1,6 @@
-using Diploma.Storage.Common.Services.FileHash;
-using Diploma.Storage.Services.Files;
+using Diploma.Storage.Common.Providers.FileHash;
 using Diploma.Storage.Services.Signature;
+using Diploma.Storage.Services.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +28,7 @@ namespace Diploma.Storage
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Diploma.Storage", Version = "v1" });
             });
 
-            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<ISignatureService, SignatureService>();
             services.AddScoped<IFileHashProvider, FileHashProvider>();
         }
