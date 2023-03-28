@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Diploma.Persistence.Models
+namespace Diploma.Persistence.Models.Entities
 {
     [Table("messages")]
     public class Message

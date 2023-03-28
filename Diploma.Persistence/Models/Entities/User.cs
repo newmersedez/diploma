@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Diploma.Persistence.Models
+namespace Diploma.Persistence.Models.Entities
 {
     [Table("users")]
     public class User

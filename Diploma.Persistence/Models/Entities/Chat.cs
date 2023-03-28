@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Diploma.Persistence.Models.Enums;
 
-namespace Diploma.Persistence.Models
+namespace Diploma.Persistence.Models.Entities
 {
     [Table("chats")]
     public class Chat

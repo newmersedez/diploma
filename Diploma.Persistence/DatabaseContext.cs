@@ -1,4 +1,5 @@
 using Diploma.Persistence.Models;
+using Diploma.Persistence.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Persistence

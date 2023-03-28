@@ -1,4 +1,4 @@
-namespace Diploma.Persistence.Models
+namespace Diploma.Persistence.Models.Enums
 {
     /// <summary>
     /// Роль в чате
