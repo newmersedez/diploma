@@ -28,6 +28,8 @@ namespace Diploma.Persistence.Models
 
         public ICollection<Attachment> Attachments { get; set; }
 
+        public ICollection<ChatUser> ChatUsers { get; set; }
+
         #endregion
     }
 }
