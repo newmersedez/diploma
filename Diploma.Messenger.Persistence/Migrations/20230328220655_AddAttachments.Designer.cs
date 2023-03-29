@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Diploma.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230328220058_AddKeys")]
-    partial class AddKeys
+    [Migration("20230328220655_AddAttachments")]
+    partial class AddAttachments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,39 @@ namespace Diploma.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Diploma.Persistence.Models.User", b =>
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.Attachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text")
+                        .HasColumnName("content_type");
+
+                    b.Property<string>("Folder")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("folder");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("attachments");
+                });
+
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +75,7 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Diploma.Persistence.Models.UserPrivateKey", b =>
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPrivateKey", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +99,7 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("user_private_keys");
                 });
 
-            modelBuilder.Entity("Diploma.Persistence.Models.UserPublicKey", b =>
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPublicKey", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,30 +128,43 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("user_public_keys");
                 });
 
-            modelBuilder.Entity("Diploma.Persistence.Models.UserPrivateKey", b =>
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.Attachment", b =>
                 {
-                    b.HasOne("Diploma.Persistence.Models.User", "User")
+                    b.HasOne("Diploma.Messenger.Persistence.Models.User", "User")
+                        .WithMany("Attachments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPrivateKey", b =>
+                {
+                    b.HasOne("Diploma.Messenger.Persistence.Models.User", "User")
                         .WithOne("PrivateKey")
-                        .HasForeignKey("Diploma.Persistence.Models.UserPrivateKey", "UserId")
+                        .HasForeignKey("Diploma.Messenger.Persistence.Models.UserPrivateKey", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diploma.Persistence.Models.UserPublicKey", b =>
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPublicKey", b =>
                 {
-                    b.HasOne("Diploma.Persistence.Models.User", "User")
+                    b.HasOne("Diploma.Messenger.Persistence.Models.User", "User")
                         .WithOne("PublicKey")
-                        .HasForeignKey("Diploma.Persistence.Models.UserPublicKey", "UserId")
+                        .HasForeignKey("Diploma.Messenger.Persistence.Models.UserPublicKey", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diploma.Persistence.Models.User", b =>
+            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.User", b =>
                 {
+                    b.Navigation("Attachments");
+
                     b.Navigation("PrivateKey");
 
                     b.Navigation("PublicKey");

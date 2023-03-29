@@ -16,7 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Diploma.Persistence\Diploma.Persistence.csproj" />
+      <ProjectReference Include="..\Diploma.ECC\Diploma.ECC.csproj" />
+      <ProjectReference Include="..\Diploma.Messenger.Persistence\Diploma.Messenger.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

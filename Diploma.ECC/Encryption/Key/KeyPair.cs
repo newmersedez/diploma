@@ -1,5 +1,4 @@
 using System.Numerics;
-using Diploma.ECC.Math;
 using Diploma.ECC.Math.Entities;
 
 namespace Diploma.ECC.Encryption.Key

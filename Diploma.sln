@@ -4,9 +4,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.ECC", "Diploma.ECC\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Storage", "Diploma.Storage\Diploma.Storage.csproj", "{E44DF6E0-5F27-4A57-B8DA-F47D8C0D0EA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Messenger", "Diploma.Messenger\Diploma.Messenger.csproj", "{642E6B78-D2AB-48EC-A88D-8DA2CED98FE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Messenger.Api", "Diploma.Messenger.Api\Diploma.Messenger.Api.csproj", "{642E6B78-D2AB-48EC-A88D-8DA2CED98FE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Persistence", "Diploma.Persistence\Diploma.Persistence.csproj", "{13A4502B-1179-449A-8642-E1A0043E85BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Messenger.Persistence", "Diploma.Messenger.Persistence\Diploma.Messenger.Persistence.csproj", "{13A4502B-1179-449A-8642-E1A0043E85BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
