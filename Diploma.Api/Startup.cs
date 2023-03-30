@@ -1,6 +1,8 @@
 using System.Text;
 using Diploma.Persistence;
+using Diploma.Server.Services.AccessManager;
 using Diploma.Server.Services.Authorization;
+using Diploma.Server.Services.Chat;
 using Diploma.Server.Services.Crypto;
 using Diploma.Server.Services.KeysProvider;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -56,7 +58,7 @@ namespace Diploma.Server
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Diploma.Messenger.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Diploma.Api", Version = "v1" });
                 // c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 // {
                 //     Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
@@ -74,6 +76,8 @@ namespace Diploma.Server
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<IKeysProvider, KeysProvider>();
+            services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IAccessManager, AccessManager>();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -82,7 +86,7 @@ namespace Diploma.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diploma.Messenger.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diploma.Api v1"));
             }
 
             app.UseRouting();

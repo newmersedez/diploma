@@ -8,11 +8,6 @@ namespace Diploma.Persistence.Models.Enums
         /// <summary>
         /// Администратор чата
         /// </summary>
-        ADMIN = 0,
-        
-        /// <summary>
-        /// Участник
-        /// </summary>
-        MEMBER = 1
+        MEMBER = 0
     }
 }

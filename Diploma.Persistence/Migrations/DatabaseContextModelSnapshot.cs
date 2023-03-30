@@ -3,17 +3,15 @@ using System;
 using Diploma.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Diploma.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230328221537_AddChatUsers")]
-    partial class AddChatUsers
+    partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace Diploma.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.Attachment", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Attachment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,12 +51,17 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("attachments");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.Chat", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Chat", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
@@ -69,7 +72,7 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("chats");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.ChatUser", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.ChatUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,7 +100,46 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("chat_users");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.User", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid?>("AttachmentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("attachment_id");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chat_id");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("date_create");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttachmentId");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("messages");
+                });
+
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,7 +161,7 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPrivateKey", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.UserPrivateKey", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,7 +185,7 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("user_private_keys");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPublicKey", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.UserPublicKey", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,9 +214,9 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("user_public_keys");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.Attachment", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Attachment", b =>
                 {
-                    b.HasOne("Diploma.Messenger.Persistence.Models.User", "User")
+                    b.HasOne("Diploma.Persistence.Models.Entities.User", "User")
                         .WithMany("Attachments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,15 +225,15 @@ namespace Diploma.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.ChatUser", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.ChatUser", b =>
                 {
-                    b.HasOne("Diploma.Messenger.Persistence.Models.Chat", "Chat")
+                    b.HasOne("Diploma.Persistence.Models.Entities.Chat", "Chat")
                         .WithMany("ChatUsers")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Diploma.Messenger.Persistence.Models.User", "User")
+                    b.HasOne("Diploma.Persistence.Models.Entities.User", "User")
                         .WithMany("ChatUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -202,38 +244,72 @@ namespace Diploma.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPrivateKey", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Message", b =>
                 {
-                    b.HasOne("Diploma.Messenger.Persistence.Models.User", "User")
+                    b.HasOne("Diploma.Persistence.Models.Entities.Attachment", "Attachment")
+                        .WithMany("Messages")
+                        .HasForeignKey("AttachmentId");
+
+                    b.HasOne("Diploma.Persistence.Models.Entities.Chat", "Chat")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Diploma.Persistence.Models.Entities.User", "User")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attachment");
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.UserPrivateKey", b =>
+                {
+                    b.HasOne("Diploma.Persistence.Models.Entities.User", "User")
                         .WithOne("PrivateKey")
-                        .HasForeignKey("Diploma.Messenger.Persistence.Models.UserPrivateKey", "UserId")
+                        .HasForeignKey("Diploma.Persistence.Models.Entities.UserPrivateKey", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.UserPublicKey", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.UserPublicKey", b =>
                 {
-                    b.HasOne("Diploma.Messenger.Persistence.Models.User", "User")
+                    b.HasOne("Diploma.Persistence.Models.Entities.User", "User")
                         .WithOne("PublicKey")
-                        .HasForeignKey("Diploma.Messenger.Persistence.Models.UserPublicKey", "UserId")
+                        .HasForeignKey("Diploma.Persistence.Models.Entities.UserPublicKey", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.Chat", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Attachment", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Chat", b =>
                 {
                     b.Navigation("ChatUsers");
+
+                    b.Navigation("Messages");
                 });
 
-            modelBuilder.Entity("Diploma.Messenger.Persistence.Models.User", b =>
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.User", b =>
                 {
                     b.Navigation("Attachments");
 
                     b.Navigation("ChatUsers");
+
+                    b.Navigation("Messages");
 
                     b.Navigation("PrivateKey");
 
