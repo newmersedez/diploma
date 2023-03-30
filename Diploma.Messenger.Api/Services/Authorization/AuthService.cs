@@ -89,7 +89,7 @@ namespace Diploma.Server.Services.Authorization
             var encryptionKey = new Rfc2898DeriveBytes(
                 sharedKey.ToString()!, new byte[] {0, 0, 0, 0, 0, 0, 0, 0}, 1000, HashAlgorithmName.SHA256);
 
-            var encryptedUserPrivateKey = _cryptoService.Encrypt(userPrivateKey.ToString(), encryptionKey.GetBytes(32));
+            var encryptedUserPrivateKey = _cryptoService.Encrypt(userPrivateKey.Key, encryptionKey.GetBytes(32));
 
             return new ExchangeKeysResponse
             {

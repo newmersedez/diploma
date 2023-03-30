@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Messenger.Api", "Di
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Messenger.Persistence", "Diploma.Messenger.Persistence\Diploma.Messenger.Persistence.csproj", "{13A4502B-1179-449A-8642-E1A0043E85BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Tests", "Diploma.Tests\Diploma.Tests.csproj", "{E1D2FB41-D736-4B6A-B1BE-9B0E28048198}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{13A4502B-1179-449A-8642-E1A0043E85BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13A4502B-1179-449A-8642-E1A0043E85BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13A4502B-1179-449A-8642-E1A0043E85BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1D2FB41-D736-4B6A-B1BE-9B0E28048198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1D2FB41-D736-4B6A-B1BE-9B0E28048198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1D2FB41-D736-4B6A-B1BE-9B0E28048198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1D2FB41-D736-4B6A-B1BE-9B0E28048198}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

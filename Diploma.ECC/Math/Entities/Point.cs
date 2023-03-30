@@ -39,5 +39,7 @@ namespace Diploma.ECC.Math.Entities
             Y = y;
             Curve = curve;
         }
+        
+        public override string ToString() => string.Concat(X, Y);
     }
 }
