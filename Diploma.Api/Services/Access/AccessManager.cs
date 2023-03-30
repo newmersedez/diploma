@@ -1,8 +1,6 @@
 using System;
-using System.Net.Http;
-using Microsoft.AspNetCore.Http;
 
-namespace Diploma.Server.Services.AccessManager
+namespace Diploma.Server.Services.Access
 {
     /// <summary>
     /// Сервис управления доступом

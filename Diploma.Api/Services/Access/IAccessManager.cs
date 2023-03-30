@@ -1,6 +1,6 @@
 using System;
 
-namespace Diploma.Server.Services.AccessManager
+namespace Diploma.Server.Services.Access
 {
     /// <summary>
     /// Менеджер доступа

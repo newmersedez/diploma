@@ -2,12 +2,14 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Persistence;
-using Diploma.Server.Common.Responses;
-using Diploma.Server.Services.AccessManager;
-using Diploma.Server.Services.Chat.Response;
+using Diploma.Persistence.Models.Entities;
+using Diploma.Server.Services.Access;
+using Diploma.Server.Services.Authorization.Response;
+using Diploma.Server.Services.Chats.Request;
+using Diploma.Server.Services.Chats.Response;
 using Microsoft.EntityFrameworkCore;
 
-namespace Diploma.Server.Services.Chat
+namespace Diploma.Server.Services.Chats
 {
     /// <summary>
     /// Сервис управления чатами
@@ -85,6 +87,58 @@ namespace Diploma.Server.Services.Chat
                         .ToList()
                 })
                 .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Создать чат
+        /// </summary>
+        /// <param name="request">Запрос на создание чата</param>
+        /// <returns></returns>
+        public async Task<Guid> CreateChatAsync(CreateChatRequest request)
+        {
+            if (request == null) throw new ArgumentNullException(nameof(request));
+            
+            // TODO: Верификация запроса
+
+            var chat = new Chat
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name,
+                Type = request.Type
+            };
+
+            _context.Chats.Add(chat);
+
+            foreach (var userRequest in request.Users)
+            {
+                var chatUser = new ChatUser
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userRequest.Id,
+                    Role = userRequest.Role
+                };
+                _context.ChatUser.Add(chatUser);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return chat.Id;
+        }
+
+        /// <summary>
+        /// Удалить чат
+        /// </summary>
+        /// <param name="chatId">Идентификатор чата</param>
+        /// <returns></returns>
+        public async Task DeleteChatAsync(Guid chatId)
+        {
+            // TODO: Верификация существования чата
+
+            await _context.Chats
+                .Where(x => x.Id == chatId)
+                .DeleteFromQueryAsync();
+            
+            await _context.SaveChangesAsync();
         }
     }
 }

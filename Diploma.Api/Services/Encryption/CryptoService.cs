@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Diploma.Server.Services.Crypto
+namespace Diploma.Server.Services.Encryption
 {
     /// <summary>
     /// Сервис шифрования алгоритмом AEC

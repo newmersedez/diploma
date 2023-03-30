@@ -1,5 +1,5 @@
 using System;
-using Diploma.Server.Common.Responses;
+using Diploma.Server.Services.Authorization.Response;
 
 namespace Diploma.Server.Services.Authorization.Request
 {

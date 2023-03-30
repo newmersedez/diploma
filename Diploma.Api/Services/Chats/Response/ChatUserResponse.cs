@@ -1,8 +1,7 @@
 using System;
-using Diploma.Persistence.Models.Enums;
-using Diploma.Server.Common.Responses;
+using Diploma.Server.Services.Authorization.Response;
 
-namespace Diploma.Server.Services.Chat.Response
+namespace Diploma.Server.Services.Chats.Response
 {
     /// <summary>
     /// Ответ при получении информации о пользователе чата

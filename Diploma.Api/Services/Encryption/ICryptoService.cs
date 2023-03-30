@@ -1,4 +1,4 @@
-namespace Diploma.Server.Services.Crypto
+namespace Diploma.Server.Services.Encryption
 {
     /// <summary>
     /// Интерфейс сервиса шифрования

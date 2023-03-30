@@ -1,6 +1,4 @@
-using Diploma.Server.Common.Responses;
-
-namespace Diploma.Server.Services.Authorization
+namespace Diploma.Server.Services.Authorization.Response
 {
     /// <summary>
     /// Ответ при обмене ключами

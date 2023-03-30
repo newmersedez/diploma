@@ -1,9 +1,9 @@
 using System.Text;
 using Diploma.Persistence;
-using Diploma.Server.Services.AccessManager;
+using Diploma.Server.Services.Access;
 using Diploma.Server.Services.Authorization;
-using Diploma.Server.Services.Chat;
-using Diploma.Server.Services.Crypto;
+using Diploma.Server.Services.Chats;
+using Diploma.Server.Services.Encryption;
 using Diploma.Server.Services.KeysProvider;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

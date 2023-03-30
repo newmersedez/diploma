@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Diploma.Server.Services.Chat.Response;
+using Diploma.Server.Services.Chats.Request;
+using Diploma.Server.Services.Chats.Response;
 
-namespace Diploma.Server.Services.Chat
+namespace Diploma.Server.Services.Chats
 {
     /// <summary>
     /// Интерфейс сервиса чата
@@ -21,5 +22,19 @@ namespace Diploma.Server.Services.Chat
         /// <param name="chatId">Идентификатор чата</param>
         /// <returns></returns>
         Task<ChatResponse> GetChatAsync(Guid chatId);
+
+        /// <summary>
+        /// Создать чат
+        /// </summary>
+        /// <param name="request">Запрос на создание чата</param>
+        /// <returns></returns>
+        Task<Guid> CreateChatAsync(CreateChatRequest request);
+
+        /// <summary>
+        /// Удалить чат
+        /// </summary>
+        /// <param name="chatId">Идентификатор чата</param>
+        /// <returns></returns>
+        Task DeleteChatAsync(Guid chatId);
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Diploma.Server.Services.Chat.Response
+namespace Diploma.Server.Services.Chats.Response
 {
     /// <summary>
     /// Ответ при получении информации о чате

@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Diploma.Server.Services.Chat;
-using Diploma.Server.Services.Chat.Response;
+using Diploma.Server.Services.Chats;
+using Diploma.Server.Services.Chats.Request;
+using Diploma.Server.Services.Chats.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Server.Controllers
@@ -28,9 +29,13 @@ namespace Diploma.Server.Controllers
             return response;
         }
 
+
         /// <summary>
         /// Получить информацию о чате
         /// </summary>
+        /// <param name="chatService">Сервис управления чатами</param>
+        /// <param name="chatId">Идентификатор чата</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{chatId:guid}")]
         public async Task<ChatResponse> GetChatAsync(
@@ -44,17 +49,37 @@ namespace Diploma.Server.Controllers
             return response;
         }
         
+        /// <summary>
+        /// Создать чат
+        /// </summary>
+        /// <param name="chatService">Сервис управления чатами</param>
+        /// <param name="request">Запрос на создание чата</param>
         [HttpPost]
-        public async Task CreateChatAsync()
+        public async Task<Guid> CreateChatAsync(
+            [FromServices] IChatService chatService,
+            CreateChatRequest request)
         {
-            throw new NotImplementedException();    
+            if (chatService == null) throw new ArgumentNullException(nameof(chatService));
+
+            var response = await chatService.CreateChatAsync(request);
+
+            return response;
         }
         
+        /// <summary>
+        /// Удалить чат
+        /// </summary>
+        /// <param name="chatService">Сервис управления чатами</param>
+        /// <param name="chatId">Идентификатор чата</param>
         [HttpDelete]
         [Route("{chatId:guid}")]
-        public async Task DeleteChatAsync()
+        public async Task DeleteChatAsync(
+            [FromServices] IChatService chatService,
+            Guid chatId)
         {
-            throw new NotImplementedException();    
+            if (chatService == null) throw new ArgumentNullException(nameof(chatService));
+
+            await chatService.DeleteChatAsync(chatId);
         }
     }
 }
