@@ -1,9 +1,9 @@
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Diploma.Server.Services.Authorization;
-using Diploma.Server.Services.Authorization.Request;
-using Diploma.Server.Services.Authorization.Response;
+using Diploma.Bll.Services.Authorization;
+using Diploma.Bll.Services.Authorization.Request;
+using Diploma.Bll.Services.Authorization.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

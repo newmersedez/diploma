@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Diploma.Server.Services.Chats;
-using Diploma.Server.Services.Chats.Request;
-using Diploma.Server.Services.Chats.Response;
+using Diploma.Bll.Services.Chats;
+using Diploma.Bll.Services.Chats.Request;
+using Diploma.Bll.Services.Chats.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Server.Controllers
