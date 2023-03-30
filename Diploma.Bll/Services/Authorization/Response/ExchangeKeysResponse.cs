@@ -1,5 +1,3 @@
-using Diploma.Bll.Common.Responses;
-
 namespace Diploma.Bll.Services.Authorization.Response
 {
     /// <summary>

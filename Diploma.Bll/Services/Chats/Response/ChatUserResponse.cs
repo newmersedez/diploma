@@ -1,5 +1,4 @@
 using System;
-using Diploma.Bll.Common.Responses;
 using Diploma.Bll.Services.Authorization.Response;
 
 namespace Diploma.Bll.Services.Chats.Response

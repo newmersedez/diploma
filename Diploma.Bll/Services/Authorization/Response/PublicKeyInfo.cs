@@ -1,4 +1,4 @@
-namespace Diploma.Bll.Common.Responses
+namespace Diploma.Bll.Services.Authorization.Response
 {
     /// <summary>
     /// Информация о публичном ключе эллиптической криптографии

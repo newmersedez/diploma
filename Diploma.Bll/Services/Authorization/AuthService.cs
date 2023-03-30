@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Diploma.Bll.Common.Exceptions;
 using Diploma.Bll.Common.Providers.KeysProvider;
-using Diploma.Bll.Common.Responses;
 using Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Response;
 using Diploma.Bll.Services.Encryption;
