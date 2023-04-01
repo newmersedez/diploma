@@ -1,7 +1,7 @@
 using System.Numerics;
-using Diploma.ECC.Math.Entities;
+using Diploma.Ecc.Math.Entities;
 
-namespace Diploma.ECC.Encryption.Key
+namespace Diploma.Ecc.Encryption.Key
 {
     /// <summary>
     /// Ключи шифрования

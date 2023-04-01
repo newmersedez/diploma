@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Diploma.ECC\Diploma.ECC.csproj" />
+      <ProjectReference Include="..\Diploma.Ecc\Diploma.Ecc.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 using System;
 using System.Numerics;
-using Diploma.ECC.Math.Entities;
+using Diploma.Ecc.Math.Entities;
 
-namespace Diploma.ECC.Math.Extensions
+namespace Diploma.Ecc.Math.Extensions
 {
     /// <summary>
     /// Операции с точкой эллиптической кривой

@@ -1,7 +1,7 @@
-using Diploma.ECC.Math.Enums;
-using Diploma.ECC.Math.Extensions;
+using Diploma.Ecc.Math.Enums;
+using Diploma.Ecc.Math.Extensions;
 
-namespace Diploma.ECC.Math.Entities
+namespace Diploma.Ecc.Math.Entities
 {
     /// <summary>
     /// Эллиптическая кривая

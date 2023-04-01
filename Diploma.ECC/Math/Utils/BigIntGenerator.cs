@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 
-namespace Diploma.ECC.Math.Utils
+namespace Diploma.Ecc.Math.Utils
 {
     public static class BigIntGenerator
     {

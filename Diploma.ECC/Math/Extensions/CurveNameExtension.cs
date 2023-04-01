@@ -1,10 +1,10 @@
 using System;
 using System.Globalization;
 using System.Numerics;
-using Diploma.ECC.Math.Entities;
-using Diploma.ECC.Math.Enums;
+using Diploma.Ecc.Math.Entities;
+using Diploma.Ecc.Math.Enums;
 
-namespace Diploma.ECC.Math.Extensions
+namespace Diploma.Ecc.Math.Extensions
 {
     /// <summary>
     /// Параметры кривой в зависимости от вида

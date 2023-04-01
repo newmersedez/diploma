@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using System.Security.Cryptography;
 
-namespace Diploma.ECC.Math.Extensions
+namespace Diploma.Ecc.Math.Extensions
 {
     /// <summary>
     /// Класс для работы с типами BigInteger

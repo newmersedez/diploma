@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Diploma.ECC.Math.Entities
+namespace Diploma.Ecc.Math.Entities
 {
     /// <summary>
     /// Точка на эллиптической кривой
