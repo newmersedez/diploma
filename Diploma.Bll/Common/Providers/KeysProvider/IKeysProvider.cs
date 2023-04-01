@@ -1,5 +1,5 @@
-using Diploma.ECC.Encryption.Key;
-using Diploma.ECC.Math.Entities;
+using Diploma.Ecc.Encryption.Key;
+using Diploma.Ecc.Math.Entities;
 
 namespace Diploma.Bll.Common.Providers.KeysProvider
 {

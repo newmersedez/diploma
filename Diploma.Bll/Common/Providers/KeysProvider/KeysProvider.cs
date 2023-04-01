@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
-using Diploma.ECC.Encryption.Key;
-using Diploma.ECC.Math.Entities;
-using Diploma.ECC.Math.Extensions;
+using Diploma.Ecc.Encryption.Key;
+using Diploma.Ecc.Math.Entities;
+using Diploma.Ecc.Math.Extensions;
 
 namespace Diploma.Bll.Common.Providers.KeysProvider
 {
