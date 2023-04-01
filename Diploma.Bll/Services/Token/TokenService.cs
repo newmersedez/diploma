@@ -30,7 +30,7 @@ namespace Diploma.Bll.Services.Token
         {
             var rsa = RSA.Create();
             
-            rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(configuration["Token:Key:Public"]), out _);
+            rsa.ImportRSAPublicKey(Convert.FromBase64String(configuration["Token:Key:Public"]), out _);
 
             var securityKey = new RsaSecurityKey(rsa);
 

@@ -9,6 +9,7 @@ using Diploma.Bll.Common.Providers.KeysProvider;
 using Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Response;
 using Diploma.Bll.Services.Encryption;
+using Diploma.Bll.Services.Token;
 using Diploma.Ecc.Math.Entities;
 using Diploma.Ecc.Math.Enums;
 using Diploma.Ecc.Math.Extensions;
@@ -24,10 +25,11 @@ namespace Diploma.Bll.Services.Authorization
     /// </summary>
     public sealed class AuthService : IAuthService
     {
-        private readonly IConfiguration _configuration;
         private readonly DatabaseContext _context;
-        private readonly ICryptoService _cryptoService;
         private readonly IKeysProvider _keysProvider;
+        private readonly IConfiguration _configuration;
+        private readonly ICryptoService _cryptoService;
+        private readonly ITokenService _tokenService;
 
         /// <summary>
         /// Конструктор
@@ -36,16 +38,19 @@ namespace Diploma.Bll.Services.Authorization
         /// <param name="configuration">Конфигурация</param>
         /// <param name="cryptoService">Сервис шифрования</param>
         /// <param name="keysProvider">Провайдер ключей шифрования</param>
+        /// <param name="tokenService">Сервис токена</param>
         public AuthService(
             DatabaseContext context, 
+            IKeysProvider keysProvider,
             IConfiguration configuration, 
             ICryptoService cryptoService,
-            IKeysProvider keysProvider)
+            ITokenService tokenService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _cryptoService = cryptoService ?? throw new ArgumentNullException(nameof(cryptoService));
             _keysProvider = keysProvider ?? throw new ArgumentNullException(nameof(keysProvider));
+            _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         }
 
         /// <summary>
@@ -150,7 +155,7 @@ namespace Diploma.Bll.Services.Authorization
             
             return new UserAuthResponse
             {
-                Id = user.Id
+                Token = _tokenService.Generate(user.Id)
             };
         }
 
@@ -180,7 +185,7 @@ namespace Diploma.Bll.Services.Authorization
 
             return new UserAuthResponse
             {
-                Id = user.Id
+                Token = _tokenService.Generate(user.Id)
             };
         }
     }

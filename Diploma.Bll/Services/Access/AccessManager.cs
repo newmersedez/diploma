@@ -41,7 +41,7 @@ namespace Diploma.Bll.Services.Access
 
                     if (header != null)
                     {
-                        Token = header.Replace("Bearer", "");
+                        Token = header.Replace("Bearer ", "");
                     }
                 }
 

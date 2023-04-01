@@ -7,6 +7,9 @@ namespace Diploma.Bll.Services.Authorization.Response
     /// </summary>
     public sealed class UserAuthResponse
     {
-        public Guid Id { get; set; }
+        /// <summary>
+        /// Токен
+        /// </summary>
+        public string Token { get; set; }
     }
 }
