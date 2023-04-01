@@ -85,7 +85,7 @@ namespace Diploma.Storage.Services.Storage
 
             if (!File.Exists(filePath))
             {
-                throw new RequestException(HttpStatusCode.NotFound, "Файл по указанному пути не существует");
+                throw new RequestException(HttpStatusCode.BadRequest, "Файл по указанному пути не существует");
             }
 
             var content = await File.ReadAllBytesAsync(filePath);

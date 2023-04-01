@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Diploma.Bll.Services.Users;
 using Diploma.Bll.Services.Users.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Server.Controllers
@@ -10,6 +11,7 @@ namespace Diploma.Server.Controllers
     /// Контроллер управления пользователями
     /// </summary>
     [ApiController]
+    [Authorize]
     [Route("users")]
     public sealed class UsersController : ControllerBase
     {

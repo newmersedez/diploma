@@ -1,9 +1,9 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Bll.Services.Messages;
 using Diploma.Bll.Services.Messages.Request;
 using Diploma.Bll.Services.Messages.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Server.Controllers
@@ -12,6 +12,7 @@ namespace Diploma.Server.Controllers
     /// Контроллер управления сообщениями
     /// </summary>
     [ApiController]
+    [Authorize]
     [Route("chats/{chatId:guid}/messages")]
     public sealed class MessagesController : ControllerBase
     {

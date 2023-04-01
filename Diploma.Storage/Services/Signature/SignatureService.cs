@@ -48,7 +48,7 @@ namespace Diploma.Storage.Services.Signature
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), STORAGE_ROOT, request.FileHash);
             if (!Directory.Exists(folderPath))
             {
-                throw new RequestException(HttpStatusCode.NotFound, "Файл не существует");
+                throw new RequestException(HttpStatusCode.BadRequest, "Файл не существует");
             }
 
             var signatureFilePath = Path.Combine(folderPath, _configuration.GetValue<string>("Signature:File"));
@@ -75,13 +75,13 @@ namespace Diploma.Storage.Services.Signature
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), STORAGE_ROOT, request.FileHash);
             if (!Directory.Exists(folderPath))
             {
-                throw new RequestException(HttpStatusCode.NotFound, "Файл не существует");
+                throw new RequestException(HttpStatusCode.BadRequest, "Файл не существует");
             }
             
             var signatureFilePath = Path.Combine(folderPath, _configuration.GetValue<string>("Signature:File"));
             if (!File.Exists(signatureFilePath))
             {
-                throw new RequestException(HttpStatusCode.NotFound, "Электронной подписи не существует");
+                throw new RequestException(HttpStatusCode.BadRequest, "Электронной подписи не существует");
             }
 
             var fileHash = new BigInteger(Encoding.UTF8.GetBytes(request.FileHash));

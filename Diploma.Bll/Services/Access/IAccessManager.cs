@@ -11,5 +11,10 @@ namespace Diploma.Bll.Services.Access
         /// Идентификатор пользователя
         /// </summary>
         public Guid UserId { get; }
+        
+        /// <summary>
+        /// Токен
+        /// </summary>
+        public string Token { get; set; }
     }
 }

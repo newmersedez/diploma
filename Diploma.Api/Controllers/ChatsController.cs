@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Diploma.Bll.Services.Chats;
 using Diploma.Bll.Services.Chats.Request;
 using Diploma.Bll.Services.Chats.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Server.Controllers
@@ -11,6 +12,7 @@ namespace Diploma.Server.Controllers
     /// Контроллер управления чатами
     /// </summary>
     [ApiController]
+    [Authorize]
     [Route("chats")]
     public sealed class ChatsController : ControllerBase
     {

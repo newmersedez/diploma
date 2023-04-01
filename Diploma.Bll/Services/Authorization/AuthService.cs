@@ -168,7 +168,7 @@ namespace Diploma.Bll.Services.Authorization
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == request.Email.Trim().ToLower());
             if (user == null)
             {
-                throw new RequestException(HttpStatusCode.NotFound, "Пользователь не существует");
+                throw new RequestException(HttpStatusCode.BadRequest, "Пользователь не существует");
             }
             
             var encryptionKey = BigInteger.Parse(_configuration.GetSection("Encryption:PrivateKey").Value);
