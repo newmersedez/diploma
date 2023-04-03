@@ -43,6 +43,8 @@ namespace Diploma.Bll.Services.Authorization.Validation
         /// <returns></returns>
         private bool HasValidEmailFormat(string email)
         {
+            if (string.IsNullOrEmpty(email)) return false;
+            
             var regex = new Regex(_configuration.GetValue<string>("Validation:EmailFormat"));
             var result = regex.Match(email);
             return result.Success;
@@ -55,6 +57,8 @@ namespace Diploma.Bll.Services.Authorization.Validation
         /// <returns></returns>
         private bool HasAtLeastOneNumber(string password)
         {
+            if (string.IsNullOrEmpty(password)) return false;
+
             return password.Any(char.IsDigit);
         }
         
@@ -65,6 +69,8 @@ namespace Diploma.Bll.Services.Authorization.Validation
         /// <returns></returns>
         private bool HasAtLeastOneCapital(string password)
         {
+            if (string.IsNullOrEmpty(password)) return false;
+
             return password.Any(char.IsUpper);
         }
     }

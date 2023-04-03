@@ -1,5 +1,6 @@
 using System.Linq;
 using Diploma.Bll.Services.Authorization.Request;
+using Diploma.Bll.Services.Authorization.Response;
 using FluentValidation;
 
 namespace Diploma.Bll.Services.Authorization.Validation
@@ -12,16 +13,22 @@ namespace Diploma.Bll.Services.Authorization.Validation
         public ExchangeKeysRequestValidator()
         {
             RuleFor(x => x.PublicKey)
-                .NotEmpty().WithMessage("Не указан публичный ключ");
-
-            RuleFor(x => x.PublicKey.X)
-                .NotEmpty().WithMessage("Не указано значение X")
-                .Must(HasIntegerFormat).WithMessage(x => $"Введенное знаение X {x.PublicKey.X} не является числом");
-            
-            RuleFor(x => x.PublicKey.Y)
-                .NotEmpty().WithMessage("Не указано значение Y")
-                .Must(HasIntegerFormat).WithMessage(x => $"Введенное знаение Y {x.PublicKey.X} не является числом");
+                .NotEmpty().WithMessage("Не указан публичный ключ")
+                .Must(key => HasIntegerFormat(key?.X)).WithMessage("Введенное знаение X не является числом")
+                .Must(key => HasIntegerFormat(key?.Y)).WithMessage("Введенное знаение Y не является числом");
         }
+
+        // /// <summary>
+        // /// Проверка ключа
+        // /// </summary>
+        // /// <param name="publicKey">Публичный ключ</param>
+        // /// <returns></returns>
+        // private bool HasIntegerFormat(PublicKeyInfo publicKey)
+        // {
+        //     if (publicKey == null) return false;
+        //     
+        //     return publicKey.
+        // }
 
         /// <summary>
         /// Проверка на число
@@ -30,6 +37,8 @@ namespace Diploma.Bll.Services.Authorization.Validation
         /// <returns></returns>
         private bool HasIntegerFormat(string arg)
         {
+            if (string.IsNullOrEmpty(arg)) return false;
+            
             return arg.All(char.IsDigit);
         }
     }
