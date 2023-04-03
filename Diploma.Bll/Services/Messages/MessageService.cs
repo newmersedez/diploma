@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Bll.Services.Messages.Request;
 using Diploma.Bll.Services.Messages.Response;
+using Diploma.Bll.Services.WebSocket;
 using Diploma.Persistence;
 using Diploma.Persistence.Models.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +16,17 @@ namespace Diploma.Bll.Services.Messages
     public sealed class MessageService : IMessageService
     {
         private readonly DatabaseContext _context;
+        private readonly IWebSocketService _webSocketService;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="context">Контекст БД</param>
-        public MessageService(DatabaseContext context)
+        /// <param name="webSocketService">Сервис управления веб-сокетом</param>
+        public MessageService(DatabaseContext context, IWebSocketService webSocketService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _webSocketService = webSocketService ?? throw new ArgumentNullException(nameof(webSocketService));
         }
 
         /// <summary>
@@ -70,6 +74,8 @@ namespace Diploma.Bll.Services.Messages
 
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
+
+            await _webSocketService.NotifyMessageAddAsync(chatId, message);
 
             return message.Id;
         }
