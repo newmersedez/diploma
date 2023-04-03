@@ -96,6 +96,7 @@ namespace Diploma.Server
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IValidator<AuthRequest>, AuthRequestValidator>();
+            services.AddScoped<IValidator<ExchangeKeysRequest>, ExchangeKeysRequestValidator>();
             
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAccessManager, AccessManager>();

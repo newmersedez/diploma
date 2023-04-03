@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Diploma.Bll.Common.Exceptions;
 using Diploma.Bll.Common.Providers.KeysProvider;
+using Diploma.Bll.Services.Access;
 using Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Response;
 using Diploma.Bll.Services.Encryption;
@@ -25,11 +26,12 @@ namespace Diploma.Bll.Services.Authorization
     /// </summary>
     public sealed class AuthService : IAuthService
     {
-        private readonly DatabaseContext _context;
-        private readonly IKeysProvider _keysProvider;
         private readonly IConfiguration _configuration;
-        private readonly ICryptoService _cryptoService;
+        private readonly DatabaseContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IKeysProvider _keysProvider;
+        private readonly ICryptoService _cryptoService;
+        private readonly IAccessManager _accessManager;
 
         /// <summary>
         /// Конструктор
@@ -39,18 +41,21 @@ namespace Diploma.Bll.Services.Authorization
         /// <param name="cryptoService">Сервис шифрования</param>
         /// <param name="keysProvider">Провайдер ключей шифрования</param>
         /// <param name="tokenService">Сервис токена</param>
+        /// <param name="accessManager">Сервис доступа</param>
         public AuthService(
             DatabaseContext context, 
             IKeysProvider keysProvider,
             IConfiguration configuration, 
             ICryptoService cryptoService,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            IAccessManager accessManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _cryptoService = cryptoService ?? throw new ArgumentNullException(nameof(cryptoService));
             _keysProvider = keysProvider ?? throw new ArgumentNullException(nameof(keysProvider));
             _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+            _accessManager = accessManager ?? throw new ArgumentNullException(nameof(accessManager));
         }
 
         /// <summary>
@@ -62,8 +67,6 @@ namespace Diploma.Bll.Services.Authorization
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
             
-            // TODO: верификация запроса
-            
             var curveName = _configuration.GetSection("Encryption:Curve").Value;
             var curveEnum = (CurveName)Enum.Parse(typeof(CurveName), curveName);
             var curve = new Curve(curveEnum);
@@ -74,7 +77,7 @@ namespace Diploma.Bll.Services.Authorization
                 curve);
             
             var userPrivateKey = await _context.Users
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.Id == _accessManager.UserId)
                 .Select(x => x.PrivateKey)
                 .FirstOrDefaultAsync();
 
@@ -110,8 +113,6 @@ namespace Diploma.Bll.Services.Authorization
         public async Task<UserAuthResponse> RegisterUserAsync(AuthRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-            
-            // TODO: Верификация запроса
 
             if (await _context.Users.AnyAsync(x => x.Email.ToLower() == request.Email.Trim().ToLower()))
             {
@@ -167,8 +168,6 @@ namespace Diploma.Bll.Services.Authorization
         public async Task<UserAuthResponse> LoginUserAsync(AuthRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-            
-            // TODO: Верификация запроса
             
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == request.Email.Trim().ToLower());
             if (user == null)

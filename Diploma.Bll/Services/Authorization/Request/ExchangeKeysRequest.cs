@@ -1,4 +1,3 @@
-using System;
 using Diploma.Bll.Services.Authorization.Response;
 
 namespace Diploma.Bll.Services.Authorization.Request
@@ -8,11 +7,6 @@ namespace Diploma.Bll.Services.Authorization.Request
     /// </summary>
     public sealed class ExchangeKeysRequest
     {
-        /// <summary>
-        /// Идентификатор пользователя
-        /// </summary>
-        public Guid Id { get; set; }
-
         /// <summary>
         /// Сгенерированный на стороне клиента публичный ключ
         /// </summary>
