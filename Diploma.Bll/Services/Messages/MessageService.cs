@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Diploma.Bll.Services.Access;
 using Diploma.Bll.Services.Messages.Request;
 using Diploma.Bll.Services.Messages.Response;
 using Diploma.Bll.Services.WebSocket;
@@ -16,6 +17,7 @@ namespace Diploma.Bll.Services.Messages
     public sealed class MessageService : IMessageService
     {
         private readonly DatabaseContext _context;
+        private readonly IAccessManager _accessManager;
         private readonly IWebSocketService _webSocketService;
 
         /// <summary>
@@ -23,10 +25,12 @@ namespace Diploma.Bll.Services.Messages
         /// </summary>
         /// <param name="context">Контекст БД</param>
         /// <param name="webSocketService">Сервис управления веб-сокетом</param>
-        public MessageService(DatabaseContext context, IWebSocketService webSocketService)
+        /// <param name="accessManager">Сервис доступа</param>
+        public MessageService(DatabaseContext context, IWebSocketService webSocketService, IAccessManager accessManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _webSocketService = webSocketService ?? throw new ArgumentNullException(nameof(webSocketService));
+            _accessManager = accessManager ?? throw new ArgumentNullException(nameof(accessManager));
         }
 
         /// <summary>
@@ -39,7 +43,7 @@ namespace Diploma.Bll.Services.Messages
             // TODO: Верификация сущуствования чата
 
             return await _context.Messages
-                .Where(x => x.Id == chatId)
+                .Where(x => x.ChatId == chatId)
                 .Select(x => new MessageResponse
                 {
                     Id = x.Id,
@@ -66,7 +70,7 @@ namespace Diploma.Bll.Services.Messages
             {
                 Id = Guid.NewGuid(),
                 ChatId = chatId,
-                UserId = request.UserId,
+                UserId = _accessManager.UserId,
                 AttachmentId = request.AttachmentId,
                 Text = request.Text,
                 DateCreate = DateTime.UtcNow

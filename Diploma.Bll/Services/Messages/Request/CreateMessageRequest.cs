@@ -8,14 +8,9 @@ namespace Diploma.Bll.Services.Messages.Request
     public sealed class CreateMessageRequest
     {
         /// <summary>
-        /// Идентификатор пользователя
-        /// </summary>
-        public Guid UserId { get; set; }
-
-        /// <summary>
         /// Идентификатор файла
         /// </summary>
-        public Guid AttachmentId { get; set; }
+        public Guid? AttachmentId { get; set; }
 
         /// <summary>
         /// Текст сообщения

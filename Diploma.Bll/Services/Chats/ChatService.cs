@@ -114,6 +114,7 @@ namespace Diploma.Bll.Services.Chats
                 var chatUser = new ChatUser
                 {
                     Id = Guid.NewGuid(),
+                    ChatId = chat.Id,
                     UserId = userRequest.Id,
                     Role = userRequest.Role
                 };

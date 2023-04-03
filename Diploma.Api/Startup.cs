@@ -10,6 +10,7 @@ using Diploma.Bll.Services.Encryption;
 using Diploma.Bll.Services.Messages;
 using Diploma.Bll.Services.Token;
 using Diploma.Bll.Services.Users;
+using Diploma.Bll.Services.WebSocket;
 using Diploma.Persistence;
 using Diploma.Server.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -95,6 +96,7 @@ namespace Diploma.Server
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IChatService, ChatService>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddSingleton<IWebSocketService, WebSocketService>();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)

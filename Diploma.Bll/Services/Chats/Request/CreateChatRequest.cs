@@ -21,6 +21,6 @@ namespace Diploma.Bll.Services.Chats.Request
         /// <summary>
         /// Участники чата
         /// </summary>
-        public IEnumerable<ChatUserRequest> Users { get; set; }
+        public List<ChatUserRequest> Users { get; set; }
     }
 }

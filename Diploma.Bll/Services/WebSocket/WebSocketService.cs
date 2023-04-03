@@ -54,6 +54,15 @@ namespace Diploma.Bll.Services.WebSocket
         /// <returns></returns>
         public async Task SubscribeWebSocketAsync(System.Net.WebSockets.WebSocket webSocket, Guid chatId)
         {
+            if (webSocket == null) throw new ArgumentNullException(nameof(webSocket));
+
+            if (!_subscribers.ContainsKey(chatId))
+            {
+                _subscribers[chatId] = new LockedList<System.Net.WebSockets.WebSocket>();
+            }
+
+            _subscribers[chatId].Add(webSocket);
+
             var buffer = new byte[1024 * 4];
 
             if (webSocket.State == WebSocketState.Closed)
@@ -62,17 +71,17 @@ namespace Diploma.Bll.Services.WebSocket
                     "Поток закрыт для отображения сообщений, Повторите попытку");
             }
 
-            var receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), 
-                CancellationToken.None);
+            var receiveResult = await webSocket.ReceiveAsync(
+                new ArraySegment<byte>(buffer), CancellationToken.None);
 
             while (!receiveResult.CloseStatus.HasValue)
             {
-                receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), 
-                    CancellationToken.None);
+                receiveResult = await webSocket.ReceiveAsync(
+                    new ArraySegment<byte>(buffer), CancellationToken.None);
             }
             
-            await webSocket.CloseAsync(receiveResult.CloseStatus.Value, receiveResult.CloseStatusDescription, 
-                CancellationToken.None);
+            await webSocket.CloseAsync(
+                receiveResult.CloseStatus.Value, receiveResult.CloseStatusDescription, CancellationToken.None);
 
             if (_subscribers.TryGetValue(chatId, out var value))
             {
@@ -93,8 +102,12 @@ namespace Diploma.Bll.Services.WebSocket
 
             var messageInfo = await context.Messages
                 .Where(x => x.Id == message.Id)
-                .Include(x => x.User)
-                .Include(x => x.Attachment)
+                .Select(x => new
+                {
+                    Message = x,
+                    x.User,
+                    x.Attachment
+                })
                 .FirstOrDefaultAsync();
 
             var notification = new Notification
@@ -102,7 +115,8 @@ namespace Diploma.Bll.Services.WebSocket
                 Type = NotificationType.MESSAGE_ADDED,
                 Payload = new
                 {
-                    email = message.User?.Email,
+                    id = messageInfo.Message.Id,
+                    email = messageInfo.User?.Email,
                     attachmentId = messageInfo.Attachment?.Id,
                     attachmentName = messageInfo.Attachment?.Name,
                     date = message.DateCreate
@@ -119,7 +133,8 @@ namespace Diploma.Bll.Services.WebSocket
                 {
                     try
                     {
-                        await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+                        await webSocket.SendAsync(
+                            new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
                     }
                     catch (Exception)
                     {
