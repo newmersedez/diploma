@@ -11,8 +11,8 @@ namespace Diploma.Server.Controllers
     /// <summary>
     /// Контроллер управления чатами
     /// </summary>
-    [ApiController]
     [Authorize]
+    [ApiController]
     [Route("chats")]
     public sealed class ChatsController : ControllerBase
     {

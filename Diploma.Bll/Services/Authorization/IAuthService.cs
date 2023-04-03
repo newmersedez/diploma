@@ -21,13 +21,13 @@ namespace Diploma.Bll.Services.Authorization
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        Task<UserAuthResponse> RegisterUserAsync(UserAuthRequest request);
+        Task<UserAuthResponse> RegisterUserAsync(AuthRequest request);
         
         /// <summary>
         /// Залогинить пользователя
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        Task<UserAuthResponse> LoginUserAsync(UserAuthRequest request);
+        Task<UserAuthResponse> LoginUserAsync(AuthRequest request);
     }
 }

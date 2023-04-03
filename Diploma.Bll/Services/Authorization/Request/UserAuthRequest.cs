@@ -3,7 +3,7 @@ namespace Diploma.Bll.Services.Authorization.Request
     /// <summary>
     /// Запрос на авторизацию пользователя
     /// </summary>
-    public sealed class UserAuthRequest
+    public sealed class AuthRequest
     {
         /// <summary>
         /// Электронный адрес

@@ -10,8 +10,8 @@ namespace Diploma.Server.Controllers
     /// <summary>
     /// Контроллер управления пользователями
     /// </summary>
-    [ApiController]
     [Authorize]
+    [ApiController]
     [Route("users")]
     public sealed class UsersController : ControllerBase
     {

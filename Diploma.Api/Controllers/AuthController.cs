@@ -1,5 +1,4 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Diploma.Bll.Services.Authorization;
 using Diploma.Bll.Services.Authorization.Request;
@@ -22,8 +21,9 @@ namespace Diploma.Server.Controllers
         /// <param name="authService">Сервис управления доступом</param>
         /// <param name="request">Запрос</param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
-        [Route("keys")]
+        [Route("exchange-keys")]
         public async Task<ExchangeKeysResponse> ExchangeKeysAsync(
             [FromServices] IAuthService authService,
             ExchangeKeysRequest request
@@ -44,7 +44,7 @@ namespace Diploma.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("register")]
-        public async Task<UserAuthResponse> RegisterUserAsync([FromServices] IAuthService authService, UserAuthRequest request)
+        public async Task<UserAuthResponse> RegisterUserAsync([FromServices] IAuthService authService, AuthRequest request)
         {
             if (authService == null) throw new ArgumentNullException((nameof(authService)));
 
@@ -61,7 +61,7 @@ namespace Diploma.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("login")]
-        public async Task<UserAuthResponse> LoginUserAsync([FromServices] IAuthService authService, UserAuthRequest request)
+        public async Task<UserAuthResponse> LoginUserAsync([FromServices] IAuthService authService, AuthRequest request)
         {
             if (authService == null) throw new ArgumentNullException((nameof(authService)));
 

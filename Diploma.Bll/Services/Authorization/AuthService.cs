@@ -107,7 +107,7 @@ namespace Diploma.Bll.Services.Authorization
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        public async Task<UserAuthResponse> RegisterUserAsync(UserAuthRequest request)
+        public async Task<UserAuthResponse> RegisterUserAsync(AuthRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
             
@@ -164,7 +164,7 @@ namespace Diploma.Bll.Services.Authorization
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        public async Task<UserAuthResponse> LoginUserAsync(UserAuthRequest request)
+        public async Task<UserAuthResponse> LoginUserAsync(AuthRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
             

@@ -5,6 +5,8 @@ using Diploma.Bll.Common.Exceptions;
 using Diploma.Bll.Common.Providers.KeysProvider;
 using Diploma.Bll.Services.Access;
 using Diploma.Bll.Services.Authorization;
+using Diploma.Bll.Services.Authorization.Request;
+using Diploma.Bll.Services.Authorization.Validation;
 using Diploma.Bll.Services.Chats;
 using Diploma.Bll.Services.Encryption;
 using Diploma.Bll.Services.Messages;
@@ -13,6 +15,8 @@ using Diploma.Bll.Services.Users;
 using Diploma.Bll.Services.WebSocket;
 using Diploma.Persistence;
 using Diploma.Server.Swagger;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -87,8 +91,12 @@ namespace Diploma.Server
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = TokenService.TokenValidationParameters(_configuration);
                 });
+            
+            services.AddFluentValidationAutoValidation();
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IValidator<AuthRequest>, AuthRequestValidator>();
+            
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAccessManager, AccessManager>();
             services.AddScoped<ICryptoService, CryptoService>();
