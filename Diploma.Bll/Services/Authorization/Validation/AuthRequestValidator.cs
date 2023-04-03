@@ -27,7 +27,7 @@ namespace Diploma.Bll.Services.Authorization.Validation
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Поле 'Email' обязательно для заполнения")
-                .Must(HasValidEmailFormat).WithMessage(x => $"{x.Email} не является электронной почтой");
+                .Must(HasValidEmailFormat).WithMessage(x => $"'{x.Email}' не является электронной почтой");
 
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Поле 'Пароль' обязательно для заполнения")

@@ -18,18 +18,6 @@ namespace Diploma.Bll.Services.Authorization.Validation
                 .Must(key => HasIntegerFormat(key?.Y)).WithMessage("Введенное знаение Y не является числом");
         }
 
-        // /// <summary>
-        // /// Проверка ключа
-        // /// </summary>
-        // /// <param name="publicKey">Публичный ключ</param>
-        // /// <returns></returns>
-        // private bool HasIntegerFormat(PublicKeyInfo publicKey)
-        // {
-        //     if (publicKey == null) return false;
-        //     
-        //     return publicKey.
-        // }
-
         /// <summary>
         /// Проверка на число
         /// </summary>
