@@ -12,6 +12,10 @@ namespace Diploma.Persistence.Models.Entities
         public Guid Id { get; set; }
 
         [Required]
+        [Column("name")]
+        public string Name { get; set; }
+
+        [Required]
         [Column("email")]
         public string Email { get; set; }
         
