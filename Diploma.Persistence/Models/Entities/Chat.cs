@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Diploma.Persistence.Models.Enums;
 
 namespace Diploma.Persistence.Models.Entities
 {
@@ -15,9 +14,6 @@ namespace Diploma.Persistence.Models.Entities
         [Required]
         [Column("name")]
         public string Name { get; set; }
-
-        [Column("type")]
-        public ChatType Type { get; set; }
 
         #region Relationships
 

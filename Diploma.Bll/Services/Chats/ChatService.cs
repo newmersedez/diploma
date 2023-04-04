@@ -104,19 +104,17 @@ namespace Diploma.Bll.Services.Chats
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
-                Type = request.Type
             };
 
             _context.Chats.Add(chat);
 
-            foreach (var userRequest in request.Users)
+            foreach (var userId in request.Users)
             {
                 var chatUser = new ChatUser
                 {
                     Id = Guid.NewGuid(),
                     ChatId = chat.Id,
-                    UserId = userRequest.Id,
-                    Role = userRequest.Role
+                    UserId = userId,
                 };
                 _context.ChatUser.Add(chatUser);
             }

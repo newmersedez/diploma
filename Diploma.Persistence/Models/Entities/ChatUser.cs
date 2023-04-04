@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Diploma.Persistence.Models.Enums;
 
 namespace Diploma.Persistence.Models.Entities
 {
@@ -16,9 +15,6 @@ namespace Diploma.Persistence.Models.Entities
 
         [Column("chat_id")]
         public Guid ChatId { get; set; }
-
-        [Column("role")]
-        public ChatRole Role { get; set; }
 
         #region Relationships
 
