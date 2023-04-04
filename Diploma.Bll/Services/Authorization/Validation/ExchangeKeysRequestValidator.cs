@@ -1,6 +1,5 @@
 using System.Linq;
 using Diploma.Bll.Services.Authorization.Request;
-using Diploma.Bll.Services.Authorization.Response;
 using FluentValidation;
 
 namespace Diploma.Bll.Services.Authorization.Validation

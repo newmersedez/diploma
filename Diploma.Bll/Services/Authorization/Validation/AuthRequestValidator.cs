@@ -26,11 +26,9 @@ namespace Diploma.Bll.Services.Authorization.Validation
             var passwordMinimalLength = _configuration.GetValue<int>("Validation:PasswordMinimalLength");
 
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Поле 'Email' обязательно для заполнения")
                 .Must(HasValidEmailFormat).WithMessage(x => $"'{x.Email}' не является электронной почтой");
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Поле 'Пароль' обязательно для заполнения")
                 .MinimumLength(passwordMinimalLength).WithMessage("Пароль должен иметь длину не менее 8 символов")
                 .Must(HasAtLeastOneNumber).WithMessage("Пароль должен содержать хотя бы одну цифру")
                 .Must(HasAtLeastOneCapital).WithMessage("Пароль должен содержать хотя бы одну заглавную букву");
