@@ -10,11 +10,11 @@ using Diploma.Bll.Common.Providers.Encryption.Keys;
 using Diploma.Bll.Common.Response;
 using Diploma.Bll.Services.Access;
 using Diploma.Bll.Services.Authorization.Request;
+using Diploma.Bll.Services.Authorization.Request.Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Response;
 using Diploma.Bll.Services.Encryption;
 using Diploma.Bll.Services.Token;
 using Diploma.Ecc.Math.Entities;
-using Diploma.Ecc.Math.Enums;
 using Diploma.Ecc.Math.Extensions;
 using Diploma.Persistence;
 using Diploma.Persistence.Models.Entities;
@@ -114,7 +114,7 @@ namespace Diploma.Bll.Services.Authorization
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        public async Task<UserAuthResponse> RegisterUserAsync(AuthRequest request)
+        public async Task<UserAuthResponse> RegisterUserAsync(RegisterUserRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
@@ -168,7 +168,7 @@ namespace Diploma.Bll.Services.Authorization
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        public async Task<UserAuthResponse> LoginUserAsync(AuthRequest request)
+        public async Task<UserAuthResponse> LoginUserAsync(LoginUserRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
             

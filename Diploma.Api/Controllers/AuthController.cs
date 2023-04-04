@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Diploma.Bll.Services.Authorization;
 using Diploma.Bll.Services.Authorization.Request;
+using Diploma.Bll.Services.Authorization.Request.Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace Diploma.Server.Controllers
         [Route("exchange-keys")]
         public async Task<ExchangeKeysResponse> ExchangeKeysAsync(
             [FromServices] IAuthService authService,
-            ExchangeKeysRequest request
+            [FromBody] ExchangeKeysRequest request
             )
         {
             if (authService == null) throw new ArgumentNullException(nameof(authService));
@@ -44,7 +45,9 @@ namespace Diploma.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("register")]
-        public async Task<UserAuthResponse> RegisterUserAsync([FromServices] IAuthService authService, AuthRequest request)
+        public async Task<UserAuthResponse> RegisterUserAsync(
+            [FromServices] IAuthService authService, 
+            [FromBody] RegisterUserRequest request)
         {
             if (authService == null) throw new ArgumentNullException((nameof(authService)));
 
@@ -61,7 +64,9 @@ namespace Diploma.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("login")]
-        public async Task<UserAuthResponse> LoginUserAsync([FromServices] IAuthService authService, AuthRequest request)
+        public async Task<UserAuthResponse> LoginUserAsync(
+            [FromServices] IAuthService authService, 
+            [FromBody] LoginUserRequest request)
         {
             if (authService == null) throw new ArgumentNullException((nameof(authService)));
 

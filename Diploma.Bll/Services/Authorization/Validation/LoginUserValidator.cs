@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Diploma.Bll.Services.Authorization.Request;
-using Diploma.Persistence;
+using Diploma.Bll.Services.Authorization.Request.Diploma.Bll.Services.Authorization.Request;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 
@@ -11,25 +10,19 @@ namespace Diploma.Bll.Services.Authorization.Validation
     /// <summary>
     /// Валидатор запроса авторизации
     /// </summary>
-    public class AuthRequestValidator : AbstractValidator<AuthRequest>
+    public class LoginUserValidator : AbstractValidator<LoginUserRequest>
     {
         private readonly IConfiguration _configuration;
-        private readonly DatabaseContext _context;
         
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="configuration">Конфигурация</param>
-        /// <param name="context">Контекст БД</param>
-        public AuthRequestValidator(IConfiguration configuration, DatabaseContext context)
+        public LoginUserValidator(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
 
             var passwordMinimalLength = _configuration.GetValue<int>("Validation:PasswordMinimalLength");
-
-            RuleFor(x => x.Email)
-                .Must(NameUnique).WithMessage("Имя должно быть уникальным");
 
             RuleFor(x => x.Email)
                 .Must(HasValidEmailFormat).WithMessage(x => $"'{x.Email}' не является электронной почтой");
@@ -38,16 +31,6 @@ namespace Diploma.Bll.Services.Authorization.Validation
                 .MinimumLength(passwordMinimalLength).WithMessage("Пароль должен иметь длину не менее 8 символов")
                 .Must(HasAtLeastOneNumber).WithMessage("Пароль должен содержать хотя бы одну цифру")
                 .Must(HasAtLeastOneCapital).WithMessage("Пароль должен содержать хотя бы одну заглавную букву");
-        }
-
-        /// <summary>
-        /// Проверка формата имени
-        /// </summary>
-        /// <param name="name">Имя</param>
-        /// <returns></returns>
-        private bool NameUnique(string name)
-        {
-            return !_context.Users.Any(x => x.Name.ToLower() == name.Trim().ToLower());
         }
         
         /// <summary>

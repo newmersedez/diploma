@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Diploma.Bll.Services.Authorization.Request;
+using Diploma.Bll.Services.Authorization.Request.Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Response;
 
 namespace Diploma.Bll.Services.Authorization
@@ -21,13 +22,13 @@ namespace Diploma.Bll.Services.Authorization
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        Task<UserAuthResponse> RegisterUserAsync(AuthRequest request);
+        Task<UserAuthResponse> RegisterUserAsync(RegisterUserRequest request);
         
         /// <summary>
         /// Залогинить пользователя
         /// </summary>
         /// <param name="request">Объект запроса</param>
         /// <returns></returns>
-        Task<UserAuthResponse> LoginUserAsync(AuthRequest request);
+        Task<UserAuthResponse> LoginUserAsync(LoginUserRequest request);
     }
 }

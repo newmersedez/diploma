@@ -1,9 +1,9 @@
 namespace Diploma.Bll.Services.Authorization.Request
 {
     /// <summary>
-    /// Запрос на авторизацию пользователя
+    /// Запрос на регистрацию пользователя
     /// </summary>
-    public sealed class AuthRequest
+    public sealed class RegisterUserRequest
     {
         /// <summary>
         /// Никнейм

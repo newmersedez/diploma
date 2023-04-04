@@ -15,6 +15,11 @@ namespace Diploma.Bll.Services.Users.Response
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Имя
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Электронная почта пользователя
         /// </summary>
         public string Email { get; set; }

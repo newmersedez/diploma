@@ -35,6 +35,7 @@ namespace Diploma.Bll.Services.Users
                 .Select(x => new UserResponse
                 {
                     Id = x.Id,
+                    Name = x.Name,
                     Email = x.Email
                 })
                 .OrderBy(x => x.Email)
@@ -55,6 +56,7 @@ namespace Diploma.Bll.Services.Users
                 .Select(x => new UserResponse
                 {
                     Id = x.Id,
+                    Name = x.Name,
                     Email = x.Email,
                     PublicKey = new PublicKeyInfo
                     {
