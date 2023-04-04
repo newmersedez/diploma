@@ -29,4 +29,8 @@
       <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="5.20.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Common\Providers\Encryption" />
+    </ItemGroup>
+
 </Project>

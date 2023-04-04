@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
 using Diploma.Bll.Common.Exceptions;
-using Diploma.Bll.Common.Providers.KeysProvider;
+using Diploma.Bll.Common.Providers.Encryption.Curves;
+using Diploma.Bll.Common.Providers.Encryption.Keys;
 using Diploma.Bll.Services.Access;
 using Diploma.Bll.Services.Authorization;
 using Diploma.Bll.Services.Authorization.Request;
@@ -94,17 +95,25 @@ namespace Diploma.Server
             
             services.AddFluentValidationAutoValidation();
 
+            services.AddScoped<IKeysProvider, KeysProvider>();
+            services.AddScoped<ICurveProvider, CurveProvider>();
+            
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IValidator<AuthRequest>, AuthRequestValidator>();
             services.AddScoped<IValidator<ExchangeKeysRequest>, ExchangeKeysRequestValidator>();
             
             services.AddScoped<ITokenService, TokenService>();
+            
             services.AddScoped<IAccessManager, AccessManager>();
+            
             services.AddScoped<ICryptoService, CryptoService>();
-            services.AddScoped<IKeysProvider, KeysProvider>();
+            
             services.AddScoped<IUserService, UserService>();
+            
             services.AddScoped<IChatService, ChatService>();
+            
             services.AddScoped<IMessageService, MessageService>();
+            
             services.AddSingleton<IWebSocketService, WebSocketService>();
         }
         

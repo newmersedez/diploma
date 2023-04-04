@@ -5,7 +5,7 @@ using Diploma.Ecc.Encryption.Key;
 using Diploma.Ecc.Math.Entities;
 using Diploma.Ecc.Math.Extensions;
 
-namespace Diploma.Bll.Common.Providers.KeysProvider
+namespace Diploma.Bll.Common.Providers.Encryption.Keys
 {
     /// <summary>
     /// Провайдер ключей шифрования

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Diploma.Bll.Services.Authorization.Request;
+using Diploma.Persistence;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 
@@ -13,17 +14,22 @@ namespace Diploma.Bll.Services.Authorization.Validation
     public class AuthRequestValidator : AbstractValidator<AuthRequest>
     {
         private readonly IConfiguration _configuration;
+        private readonly DatabaseContext _context;
         
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="configuration">Конфигурация</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public AuthRequestValidator(IConfiguration configuration)
+        /// <param name="context">Контекст БД</param>
+        public AuthRequestValidator(IConfiguration configuration, DatabaseContext context)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
 
             var passwordMinimalLength = _configuration.GetValue<int>("Validation:PasswordMinimalLength");
+
+            RuleFor(x => x.Email)
+                .Must(NameUnique).WithMessage("Имя должно быть уникальным");
 
             RuleFor(x => x.Email)
                 .Must(HasValidEmailFormat).WithMessage(x => $"'{x.Email}' не является электронной почтой");
@@ -34,6 +40,16 @@ namespace Diploma.Bll.Services.Authorization.Validation
                 .Must(HasAtLeastOneCapital).WithMessage("Пароль должен содержать хотя бы одну заглавную букву");
         }
 
+        /// <summary>
+        /// Проверка формата имени
+        /// </summary>
+        /// <param name="name">Имя</param>
+        /// <returns></returns>
+        private bool NameUnique(string name)
+        {
+            return !_context.Users.Any(x => x.Name.ToLower() == name.Trim().ToLower());
+        }
+        
         /// <summary>
         /// Проверка формата Email
         /// </summary>

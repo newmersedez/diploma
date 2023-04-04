@@ -5,7 +5,9 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Diploma.Bll.Common.Exceptions;
-using Diploma.Bll.Common.Providers.KeysProvider;
+using Diploma.Bll.Common.Providers.Encryption.Curves;
+using Diploma.Bll.Common.Providers.Encryption.Keys;
+using Diploma.Bll.Common.Response;
 using Diploma.Bll.Services.Access;
 using Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Response;
@@ -30,6 +32,7 @@ namespace Diploma.Bll.Services.Authorization
         private readonly DatabaseContext _context;
         private readonly ITokenService _tokenService;
         private readonly IKeysProvider _keysProvider;
+        private readonly ICurveProvider _curveProvider;
         private readonly ICryptoService _cryptoService;
         private readonly IAccessManager _accessManager;
 
@@ -37,14 +40,16 @@ namespace Diploma.Bll.Services.Authorization
         /// Конструктор
         /// </summary>
         /// <param name="context">Контекст БД</param>
+        /// <param name="curveProvider">Провайдер кривой</param>
+        /// <param name="keysProvider">Провайдер ключей шифрования</param>
         /// <param name="configuration">Конфигурация</param>
         /// <param name="cryptoService">Сервис шифрования</param>
-        /// <param name="keysProvider">Провайдер ключей шифрования</param>
         /// <param name="tokenService">Сервис токена</param>
         /// <param name="accessManager">Сервис доступа</param>
         public AuthService(
             DatabaseContext context, 
             IKeysProvider keysProvider,
+            ICurveProvider curveProvider,
             IConfiguration configuration, 
             ICryptoService cryptoService,
             ITokenService tokenService,
@@ -54,6 +59,7 @@ namespace Diploma.Bll.Services.Authorization
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _cryptoService = cryptoService ?? throw new ArgumentNullException(nameof(cryptoService));
             _keysProvider = keysProvider ?? throw new ArgumentNullException(nameof(keysProvider));
+            _curveProvider = curveProvider ?? throw new ArgumentNullException(nameof(curveProvider));
             _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
             _accessManager = accessManager ?? throw new ArgumentNullException(nameof(accessManager));
         }
@@ -67,9 +73,7 @@ namespace Diploma.Bll.Services.Authorization
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
             
-            var curveName = _configuration.GetSection("Encryption:Curve").Value;
-            var curveEnum = (CurveName)Enum.Parse(typeof(CurveName), curveName);
-            var curve = new Curve(curveEnum);
+            var curve = _curveProvider.GetCurve();
 
             var userPublicKey = new Point(
                 BigInteger.Parse(request.PublicKey.X), 
@@ -124,15 +128,14 @@ namespace Diploma.Bll.Services.Authorization
             var user = new User
             {
                 Id = Guid.NewGuid(),
+                Name = request.Name.Trim(),
                 Email = request.Email.Trim(),
                 PasswordHash = _cryptoService.Encrypt(request.Password, encryptionKey.ToByteArray())
             };
             
             _context.Users.Add(user);
 
-            var curveName = _configuration.GetSection("Encryption:Curve").Value;
-            var curveEnum = (CurveName)Enum.Parse(typeof(CurveName), curveName);
-            var curve = new Curve(curveEnum);
+            var curve = _curveProvider.GetCurve();
             var keys = _keysProvider.CreateKeyPair(curve);
 
             var userPublicKey = new UserPublicKey

@@ -1,3 +1,4 @@
+using Diploma.Bll.Common.Response;
 using Diploma.Bll.Services.Authorization.Response;
 
 namespace Diploma.Bll.Services.Authorization.Request

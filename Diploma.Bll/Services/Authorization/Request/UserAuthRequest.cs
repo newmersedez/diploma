@@ -6,6 +6,11 @@ namespace Diploma.Bll.Services.Authorization.Request
     public sealed class AuthRequest
     {
         /// <summary>
+        /// Никнейм
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Электронный адрес
         /// </summary>
         public string Email { get; set; }
