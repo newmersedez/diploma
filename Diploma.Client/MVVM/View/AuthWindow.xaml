@@ -69,20 +69,20 @@
                    FontWeight="Bold"
                    FontSize="15"
                    Margin="8 0 0 0"/>
-            <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" />
             
             <Label Content="Пароль"
                    Foreground="DarkGray"
                    FontWeight="Bold"
                    FontSize="15"
                    Margin="8 0 0 0"/>
-            <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
             
             <Button Content="Войти" 
                     Command="{Binding LoginCommand}"/>
-            <Button Content="Зарегистрироваться" />
-            <TextBlock Text="Errors" 
-                       Foreground="OrangeRed"/>
+            
+            <TextBlock Text="{Binding Error}"
+                       Foreground="Red"/>
             
         </StackPanel>
     </Grid>

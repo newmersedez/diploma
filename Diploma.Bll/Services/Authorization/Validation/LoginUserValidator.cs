@@ -22,15 +22,8 @@ namespace Diploma.Bll.Services.Authorization.Validation
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            var passwordMinimalLength = _configuration.GetValue<int>("Validation:PasswordMinimalLength");
-
             RuleFor(x => x.Email)
                 .Must(HasValidEmailFormat).WithMessage(x => $"'{x.Email}' не является электронной почтой");
-
-            RuleFor(x => x.Password)
-                .MinimumLength(passwordMinimalLength).WithMessage("Пароль должен иметь длину не менее 8 символов")
-                .Must(HasAtLeastOneNumber).WithMessage("Пароль должен содержать хотя бы одну цифру")
-                .Must(HasAtLeastOneCapital).WithMessage("Пароль должен содержать хотя бы одну заглавную букву");
         }
         
         /// <summary>
@@ -45,30 +38,6 @@ namespace Diploma.Bll.Services.Authorization.Validation
             var regex = new Regex(_configuration.GetValue<string>("Validation:EmailFormat"));
             var result = regex.Match(email);
             return result.Success;
-        }
-        
-        /// <summary>
-        /// Проверка цифр в пароле
-        /// </summary>
-        /// <param name="password">Пароль</param>
-        /// <returns></returns>
-        private bool HasAtLeastOneNumber(string password)
-        {
-            if (string.IsNullOrEmpty(password)) return false;
-
-            return password.Any(char.IsDigit);
-        }
-        
-        /// <summary>
-        /// Проверка заглавных букв в пароле
-        /// </summary>
-        /// <param name="password">Пароль</param>
-        /// <returns></returns>
-        private bool HasAtLeastOneCapital(string password)
-        {
-            if (string.IsNullOrEmpty(password)) return false;
-
-            return password.Any(char.IsUpper);
         }
     }
 }

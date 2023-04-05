@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using Diploma.Client.Core.MVVM.Command;
 using Diploma.Client.Core.MVVM.ViewModel;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Diploma.Client.MVVM.ViewModel
 {
@@ -14,6 +16,7 @@ namespace Diploma.Client.MVVM.ViewModel
     public sealed class AuthViewModel : ViewModelBase
     {
         private const string LOGIN_URL = "https://localhost:5002/auth/login";
+        private const string CONTENT_TYPE = "application/json";
 
         /// <summary>
         /// Электронная почта
@@ -26,14 +29,21 @@ namespace Diploma.Client.MVVM.ViewModel
         public string Password { get; set; }
 
         /// <summary>
+        /// Ошибка авторизации
+        /// </summary>
+        public string Error { get; set; }
+
+        /// <summary>
         /// Команда логина
         /// </summary>
-        public RelayCommand LoginCommand { get; set; }
+        public RelayCommand LoginCommand { get; }
 
         public AuthViewModel()
         {
             Email = string.Empty;
             Password = string.Empty;
+            Error = string.Empty;
+            
             LoginCommand = new RelayCommand(
                 _ => LoginUserAsync(),
                 _ => !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password));
@@ -45,15 +55,32 @@ namespace Diploma.Client.MVVM.ViewModel
         private async void LoginUserAsync()
         {
             var client = new HttpClient();
+            
             var requestBody = new Dictionary<string, string>
             {
                 { "Email", Email },
                 { "Password", Password }
             };
-            var requestBodyJson = JsonConvert.SerializeObject( requestBody );
-            var content = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+            
+            var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, CONTENT_TYPE);
             var response = await client.PostAsync(LOGIN_URL, content);
             var responseString = await response.Content.ReadAsStringAsync();
+            var jsonResponse = JObject.Parse(responseString);
+            
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                    Error = jsonResponse.Value<string>("token");
+                    break;
+                case HttpStatusCode.Forbidden:
+                    Error = "Неверный пароль";
+                    break;
+                case HttpStatusCode.BadRequest:
+                    Error = "Неверный email или пароль";
+                    break;
+            }
+
+            RaisePropertyChanged(nameof(Error));
         }
     }
 }
