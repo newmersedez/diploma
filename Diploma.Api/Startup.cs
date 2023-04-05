@@ -10,6 +10,8 @@ using Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Request.Diploma.Bll.Services.Authorization.Request;
 using Diploma.Bll.Services.Authorization.Validation;
 using Diploma.Bll.Services.Chats;
+using Diploma.Bll.Services.Chats.Request;
+using Diploma.Bll.Services.Chats.Validation;
 using Diploma.Bll.Services.Encryption;
 using Diploma.Bll.Services.Messages;
 using Diploma.Bll.Services.Token;
@@ -99,12 +101,13 @@ namespace Diploma.Server
             services.AddScoped<IKeysProvider, KeysProvider>();
             services.AddScoped<ICurveProvider, CurveProvider>();
             
+            services.AddScoped<ITokenService, TokenService>();
+            
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IValidator<ExchangeKeysRequest>, ExchangeKeysRequestValidator>();
             services.AddScoped<IValidator<RegisterUserRequest>, RegisterUserValidator>();
             services.AddScoped<IValidator<LoginUserRequest>, LoginUserValidator>();
             
-            services.AddScoped<ITokenService, TokenService>();
             
             services.AddScoped<IAccessManager, AccessManager>();
             
@@ -113,6 +116,7 @@ namespace Diploma.Server
             services.AddScoped<IUserService, UserService>();
             
             services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IValidator<CreateChatRequest>, CreateChatValidator>();
             
             services.AddScoped<IMessageService, MessageService>();
             
