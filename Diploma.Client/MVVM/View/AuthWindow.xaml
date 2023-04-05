@@ -1,0 +1,89 @@
+﻿<Window x:Class="Diploma.Client.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel1="clr-namespace:Diploma.Client.MVVM.ViewModel"
+        mc:Ignorable="d"
+        Height="400" Width="400"
+        Background="#2F3136"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip"
+        BorderThickness="1"
+        BorderBrush="Gray">
+    
+    <Window.DataContext>
+        <viewModel1:AuthViewModel />
+    </Window.DataContext>
+    
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Border Grid.Row="0"
+                Grid.Column="0"
+                Background="#252525"
+                MouseDown="WindowBorderOnMouseDown">
+            <Grid HorizontalAlignment="Stretch">
+                <Label Content="Авторизация"
+                       Foreground="Gray"
+                       FontWeight="Bold"
+                       FontSize="15"
+                       Margin="8 0 0 0"/>
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Button Width="35"
+                            Height="35"
+                            Content="___"
+                            Foreground="Gray"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="MinimizeButtonOnClick"/>
+                    <Button Width="35"
+                            Height="35"
+                            Content="▢"
+                            Foreground="Gray"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="MaximizeButtonOnClick"/>
+                    <Button Width="35"
+                            Height="35"
+                            Content="⨉"
+                            Foreground="Gray"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="CloseButtonOnClick"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <StackPanel Grid.Row="1">
+            <Label Content="Email"
+                   Foreground="DarkGray"
+                   FontWeight="Bold"
+                   FontSize="15"
+                   Margin="8 0 0 0"/>
+            <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            
+            <Label Content="Пароль"
+                   Foreground="DarkGray"
+                   FontWeight="Bold"
+                   FontSize="15"
+                   Margin="8 0 0 0"/>
+            <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            
+            <Button Content="Войти" 
+                    Command="{Binding LoginCommand}"/>
+            <Button Content="Зарегистрироваться" />
+            <TextBlock Text="Errors" 
+                       Foreground="OrangeRed"/>
+            
+        </StackPanel>
+    </Grid>
+</Window>
