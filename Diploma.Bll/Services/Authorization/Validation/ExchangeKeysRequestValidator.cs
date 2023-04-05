@@ -13,8 +13,8 @@ namespace Diploma.Bll.Services.Authorization.Validation
         {
             RuleFor(x => x.PublicKey)
                 .NotEmpty().WithMessage("Не указан публичный ключ")
-                .Must(key => HasIntegerFormat(key?.X)).WithMessage("Введенное знаение X не является числом")
-                .Must(key => HasIntegerFormat(key?.Y)).WithMessage("Введенное знаение Y не является числом");
+                .Must(key => HasIntegerFormat(key?.X)).WithMessage("Введенное значение X не является числом")
+                .Must(key => HasIntegerFormat(key?.Y)).WithMessage("Введенное значение Y не является числом");
         }
 
         /// <summary>
