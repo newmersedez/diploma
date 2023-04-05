@@ -14,6 +14,8 @@ using Diploma.Bll.Services.Chats.Request;
 using Diploma.Bll.Services.Chats.Validation;
 using Diploma.Bll.Services.Encryption;
 using Diploma.Bll.Services.Messages;
+using Diploma.Bll.Services.Messages.Request;
+using Diploma.Bll.Services.Messages.Validation;
 using Diploma.Bll.Services.Token;
 using Diploma.Bll.Services.Users;
 using Diploma.Bll.Services.WebSocket;
@@ -101,25 +103,19 @@ namespace Diploma.Server
             services.AddScoped<IKeysProvider, KeysProvider>();
             services.AddScoped<ICurveProvider, CurveProvider>();
             
-            services.AddScoped<ITokenService, TokenService>();
-            
-            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IValidator<ExchangeKeysRequest>, ExchangeKeysRequestValidator>();
             services.AddScoped<IValidator<RegisterUserRequest>, RegisterUserValidator>();
             services.AddScoped<IValidator<LoginUserRequest>, LoginUserValidator>();
-            
-            
-            services.AddScoped<IAccessManager, AccessManager>();
-            
-            services.AddScoped<ICryptoService, CryptoService>();
-            
-            services.AddScoped<IUserService, UserService>();
-            
-            services.AddScoped<IChatService, ChatService>();
             services.AddScoped<IValidator<CreateChatRequest>, CreateChatValidator>();
+            services.AddScoped<IValidator<CreateMessageRequest>, CreateMessageValidator>();
             
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAccessManager, AccessManager>();
+            services.AddScoped<ICryptoService, CryptoService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IChatService, ChatService>();
             services.AddScoped<IMessageService, MessageService>();
-            
             services.AddSingleton<IWebSocketService, WebSocketService>();
         }
         
