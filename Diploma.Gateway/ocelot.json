@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/messenger/v1/auth/",
+      "DownstreamPathTemplate": "/messenger/v1/auth/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -9,8 +9,20 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/auth",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamHttpMethod": [ "POST" ]
+    },    
+    {
+      "DownstreamPathTemplate": "/messenger/v1/chats/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/chats/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET", "DELETE" ]
     }
   ]
 }
