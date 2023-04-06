@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Diploma.Server.Controllers
 {
     [ApiController]
-    [Route("ws/chats")]
+    [ApiVersion("1")]
+    [Route("messenger/v{version:apiVersion}/ws/chats")]
     public sealed class WebSocketController : ControllerBase
     {
         private readonly IAccessManager _accessManager;

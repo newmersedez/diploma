@@ -12,7 +12,8 @@ namespace Diploma.Server.Controllers
     /// </summary>
     [Authorize]
     [ApiController]
-    [Route("users")]
+    [ApiVersion("1")]
+    [Route("messenger/v{version:apiVersion}/users")]
     public sealed class UsersController : ControllerBase
     {
         /// <summary>

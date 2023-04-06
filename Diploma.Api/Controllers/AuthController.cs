@@ -13,7 +13,8 @@ namespace Diploma.Server.Controllers
     /// Контроллер авторизации пользователей
     /// </summary>
     [ApiController]
-    [Route("auth")]
+    [ApiVersion("1")]
+    [Route("messenger/v{version:apiVersion}/auth")]
     public class AuthController : ControllerBase
     {
         /// <summary>

@@ -13,7 +13,8 @@ namespace Diploma.Server.Controllers
     /// </summary>
     [Authorize]
     [ApiController]
-    [Route("chats/{chatId:guid}/messages")]
+    [ApiVersion("1")]
+    [Route("messenger/v{version:apiVersion}/chats/{chatId:guid}/messages")]
     public sealed class MessagesController : ControllerBase
     {
         /// <summary>

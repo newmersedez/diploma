@@ -5,7 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ocelot" Version="8.0.0-preview.2.23153.2" />
+      <PackageReference Include="Ocelot" Version="17.0.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

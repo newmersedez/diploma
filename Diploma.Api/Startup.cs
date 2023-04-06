@@ -29,6 +29,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +50,19 @@ namespace Diploma.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApiVersioning(setup =>
+            {
+                setup.DefaultApiVersion = new ApiVersion(1, 0);
+                setup.AssumeDefaultVersionWhenUnspecified = true;
+                setup.ReportApiVersions = true;
+            });
+            
+            services.AddVersionedApiExplorer(setup =>
+            {
+                setup.GroupNameFormat = "'v'VVV";
+                setup.SubstituteApiVersionInUrl = true;
+            });
+            
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder => 
@@ -59,6 +73,7 @@ namespace Diploma.Server
                         .AllowAnyMethod(); 
                 });
             });
+            
             services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddSwaggerGen(c =>
