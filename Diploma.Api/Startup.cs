@@ -66,7 +66,7 @@ namespace Diploma.Server
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Diploma.Api", 
-                    Version = "v1"
+                    Version = "v1",
                 }); 
                 c.OperationFilter<AuthorizationOperationFilter>();
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
