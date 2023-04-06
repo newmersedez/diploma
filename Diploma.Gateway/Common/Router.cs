@@ -18,11 +18,6 @@ namespace Diploma.Gateway.Common
         /// Пути
         /// </summary>
         public List<Route> Routes { get; set; }
-        
-        /// <summary>
-        /// Сервис авторизации
-        /// </summary>
-        public Destination AuthenticationService { get; set; }
 
         /// <summary>
         /// Конструктор
@@ -32,12 +27,7 @@ namespace Diploma.Gateway.Common
         {
             var router = JsonLoader.LoadFromFile<dynamic>(routeConfigFilePath);
 
-            Routes = JsonLoader.Deserialize<List<Route>>(
-                Convert.ToString(router.routes)
-            );
-
-            AuthenticationService = JsonLoader.Deserialize<Destination>(
-                Convert.ToString(router.authenticationService)
+            Routes = JsonLoader.Deserialize<List<Route>>(Convert.ToString(router.routes)
             );
         }
         
@@ -64,9 +54,7 @@ namespace Diploma.Gateway.Common
             if (destination.RequiresAuthentication)
             {
                 string token = request.Headers["token"];
-                request.Query.Append(new KeyValuePair<string, StringValues>("token", new StringValues(token)));
-                var authResponse = await AuthenticationService.SendRequestAsync(request);
-                if (!authResponse.IsSuccessStatusCode) return ConstructErrorMessage("Authentication failed.");
+                var _ = request.Query.Append(new KeyValuePair<string, StringValues>("token", new StringValues(token)));
             }
 
             return await destination.SendRequestAsync(request);

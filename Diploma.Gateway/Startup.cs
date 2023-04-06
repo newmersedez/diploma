@@ -13,6 +13,7 @@ namespace Diploma.Gateway
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -22,6 +23,15 @@ namespace Diploma.Gateway
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization(); // Add it here
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             
             var router = new Router("routes.json");
             app.Run(async (context) =>

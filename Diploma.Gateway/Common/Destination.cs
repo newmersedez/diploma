@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -53,22 +54,20 @@ namespace Diploma.Gateway.Common
         /// <returns></returns>
         public async Task<HttpResponseMessage> SendRequestAsync(HttpRequest request)
         {
+            var requestContent = Array.Empty<char>();
+            using (var receiveStream = request.Body)
             {
-                string requestContent;
-                using (var receiveStream = request.Body)
+                using (var readStream = new StreamReader(receiveStream, Encoding.UTF8))
                 {
-                    using (var readStream = new StreamReader(receiveStream, Encoding.UTF8))
-                    {
-                        requestContent = readStream.ReadToEnd();
-                    }
+                    await readStream.ReadAsync(requestContent);
                 }
-
-                var client = new HttpClient();
-                var newRequest = new HttpRequestMessage(new HttpMethod(request.Method), CreateDestinationUri(request));
-                var response = await client.SendAsync(newRequest);
-
-                return response;
             }
+
+            var client = new HttpClient();
+            var newRequest = new HttpRequestMessage(new HttpMethod(request.Method), CreateDestinationUri(request));
+            var response = await client.SendAsync(newRequest);
+
+            return response;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Diploma.Storage.Controllers
     /// Контроллер управления файлами
     /// </summary>
     [ApiController]
-    [Route("storage/files")]
+    [Route("files")]
     public sealed class StorageController : ControllerBase
     {
         /// <summary>
