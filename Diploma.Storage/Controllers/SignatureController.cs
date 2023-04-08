@@ -22,7 +22,6 @@ namespace Diploma.Storage.Controllers
         /// <param name="request">Запрос</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("sign")]
         public async Task<SignFileResponse> SignFileAsync(
             [FromServices] ISignatureService signatureService,
             SignFileRequest request)

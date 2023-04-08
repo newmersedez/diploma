@@ -27,7 +27,7 @@ namespace Diploma.Storage.Controllers
         [Route("upload")]
         public async Task<UploadFileResponse> UploadFileAsync(
             [FromServices] IStorageService storageService,
-            [Required] IFormFile file)
+            [FromForm] [Required] IFormFile file)
         {
             if (storageService == null) throw new ArgumentNullException(nameof(storageService));
 

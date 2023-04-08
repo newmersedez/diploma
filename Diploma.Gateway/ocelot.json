@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/messenger/v1/auth/{everything}",
+      "DownstreamPathTemplate": "/messenger/v1/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -9,20 +9,32 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/auth/{everything}",
-      "UpstreamHttpMethod": [ "POST" ]
-    },    
+      "UpstreamPathTemplate": "/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
     {
-      "DownstreamPathTemplate": "/messenger/v1/chats/{everything}",
+      "DownstreamPathTemplate": "/storage/v1/files/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 5005
         }
       ],
-      "UpstreamPathTemplate": "/chats/{everything}",
-      "UpstreamHttpMethod": [ "POST", "GET", "DELETE" ]
+      "UpstreamPathTemplate": "/files/{everything}",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/storage/v1/signature/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5005
+        }
+      ],
+      "UpstreamPathTemplate": "/signature/{everything}",
+      "UpstreamHttpMethod": [ "POST" ]
     }
   ]
 }

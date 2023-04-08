@@ -9,4 +9,8 @@
       <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Settings\storage.json" />
+    </ItemGroup>
+
 </Project>
