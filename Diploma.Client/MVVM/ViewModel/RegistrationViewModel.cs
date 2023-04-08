@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -11,11 +10,16 @@ using Newtonsoft.Json.Linq;
 namespace Diploma.Client.MVVM.ViewModel
 {
     /// <summary>
-    /// View-model авторизации
+    /// View-model регистрации
     /// </summary>
-    public sealed class AuthViewModel : ViewModelBase
+    public class RegistrationViewModel : ViewModelBase
     {
-        private const string LOGIN_URL = "https://localhost:5001/auth/login";
+        private const string REGISTER_URL = "https://localhost:5001/auth/register";
+
+        /// <summary>
+        /// Имя пользователя
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// Электронная почта
@@ -33,36 +37,38 @@ namespace Diploma.Client.MVVM.ViewModel
         public string Error { get; set; }
 
         /// <summary>
-        /// Команда авторизации
+        /// Команда регистрации
         /// </summary>
-        public RelayCommand LoginCommand { get; }
+        public RelayCommand RegisterCommand { get; }
 
-        public AuthViewModel()
+        public RegistrationViewModel()
         {
+            Name = string.Empty;
             Email = string.Empty;
             Password = string.Empty;
             Error = string.Empty;
             
-            LoginCommand = new RelayCommand(
-                _ => LoginUserAsync(),
+            RegisterCommand = new RelayCommand(
+                _ => RegisterUserAsync(),
                 _ => !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password));
         }
-
+        
         /// <summary>
-        /// Авторизация пользователя
+        /// Регистрация пользователя
         /// </summary>
-        private async void LoginUserAsync()
+        private async void RegisterUserAsync()
         {
             var client = new HttpClient();
             
             var requestBody = new Dictionary<string, string>
             {
+                { "Name", Name },
                 { "Email", Email },
                 { "Password", Password }
             };
             
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(LOGIN_URL, content);
+            var response = await client.PostAsync(REGISTER_URL, content);
             var responseString = await response.Content.ReadAsStringAsync();
             var jsonResponse = JObject.Parse(responseString);
             
@@ -71,11 +77,11 @@ namespace Diploma.Client.MVVM.ViewModel
                 case HttpStatusCode.OK:
                     Error = jsonResponse.Value<string>("token");
                     break;
-                case HttpStatusCode.NotFound:
-                    Error = "Неверный email или пароль";
+                case HttpStatusCode.Conflict:
+                    Error = "Пользователь с таким email уже существует";
                     break;
-                case HttpStatusCode.Forbidden:
-                    Error = "Неверный пароль";
+                case HttpStatusCode.BadRequest:
+                    Error = "Ошибка";
                     break;
                 default:
                     Error = "Неизвестная ошибка, попробуйте позже";
