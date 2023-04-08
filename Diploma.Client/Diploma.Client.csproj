@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Diploma.Client.Core\Diploma.Client.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     </ItemGroup>
 
