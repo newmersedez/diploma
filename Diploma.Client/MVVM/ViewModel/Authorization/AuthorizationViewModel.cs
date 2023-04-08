@@ -60,7 +60,7 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
             
             RegisterCommand = new RelayCommand(
                 _ => RegisterUserAsync(),
-                _ => !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password));
+                _ => !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password));
         }
         
         /// <summary>

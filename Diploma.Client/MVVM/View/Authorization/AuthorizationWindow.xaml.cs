@@ -13,11 +13,12 @@ namespace Diploma.Client.MVVM.View.Authorization
         public AuthorizationWindow()
         {
             InitializeComponent();
+            
+            AuthFrame.Content = new LoginPage();
 
             _eventType = AuthEventType.LOGIN;
-            AuthFrame.Content = new LoginPage();
-            EventComment.Text = _eventType.GetComment();
-            EventAction.Content = _eventType.GetAction();
+            EventComment.Text = AuthEventType.REGISTRATION.GetComment();
+            EventAction.Content = AuthEventType.REGISTRATION.GetAction();
         }
         
         private void WindowBorderOnMouseDown(object sender, MouseButtonEventArgs e)
@@ -46,6 +47,9 @@ namespace Diploma.Client.MVVM.View.Authorization
 
         private void EventActionOnClick(object sender, RoutedEventArgs e)
         {
+            EventComment.Text = _eventType.GetComment();
+            EventAction.Content = _eventType.GetAction();
+            
             switch (_eventType)
             {
                 case AuthEventType.LOGIN:
