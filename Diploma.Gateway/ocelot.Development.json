@@ -13,7 +13,7 @@
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/storage/v1/files/{everything}",
+      "DownstreamPathTemplate": "/storage/v1/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -21,19 +21,7 @@
           "Port": 5005
         }
       ],
-      "UpstreamPathTemplate": "/files/{everything}",
-      "UpstreamHttpMethod": [ "POST" ]
-    },
-    {
-      "DownstreamPathTemplate": "/storage/v1/signature/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5005
-        }
-      ],
-      "UpstreamPathTemplate": "/signature/{everything}",
+      "UpstreamPathTemplate": "/storage/{everything}",
       "UpstreamHttpMethod": [ "POST" ]
     }
   ]

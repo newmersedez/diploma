@@ -140,7 +140,6 @@ namespace Diploma.Server
             {
                 app.UseStaticFiles();
                 app.UseDeveloperExceptionPage();
-                app.UseSerilogRequestLogging();
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
@@ -148,6 +147,8 @@ namespace Diploma.Server
                     c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
                 });
             }
+            
+            app.UseSerilogRequestLogging();
 
             app.UseCors();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
