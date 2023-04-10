@@ -11,7 +11,7 @@
         BorderBrush="Gray">
     
     <Window.DataContext>
-        <main:MainWindowViewModel/>
+        <main:ChatPageViewModel/>
     </Window.DataContext>
     
     <Grid>

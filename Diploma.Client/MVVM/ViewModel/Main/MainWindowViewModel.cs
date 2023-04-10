@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Diploma.Client.Core.MVVM.ViewModel;
 using Diploma.Client.MVVM.Model;
 
 namespace Diploma.Client.MVVM.ViewModel.Main
 {
     /// <summary>
-    /// Вьюмодель основного окна
+    /// Вьюмодель основного окна чата
     /// </summary>
-    public sealed class MainWindowViewModel : ViewModelBase
+    public sealed class ChatPageViewModel : ViewModelBase
     {
         /// <summary>
         /// Авторизованный пользователь
@@ -29,7 +28,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         /// <summary>
         /// Конструктор
         /// </summary>
-        public MainWindowViewModel()
+        public ChatPageViewModel()
         {
             User = new User
             {

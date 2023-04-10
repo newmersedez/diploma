@@ -2,20 +2,21 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:main="clr-namespace:Diploma.Client.MVVM.ViewModel.Main"
-      Height="600" Width="900"
+      Height="Auto" Width="Auto"
       Background="#2F3136">
     
     <Page.DataContext>
-        <main:MainWindowViewModel />
+        <main:ChatPageViewModel />
     </Page.DataContext>
     
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
         
-        <DockPanel Grid.Column="0">
+        <DockPanel Grid.Column="0"
+                   Background="#2F3136">
             <StackPanel DockPanel.Dock="Top"
                         Orientation="Vertical">
                 <Label Content="Chats"
@@ -81,7 +82,7 @@
                 </StackPanel>
             </DockPanel>
             <ListView BorderThickness="0"
-                      Background="Transparent"
+                      Background="#36393F"
                       ItemsSource="{Binding Messages, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ChatStyle}">
             </ListView>
