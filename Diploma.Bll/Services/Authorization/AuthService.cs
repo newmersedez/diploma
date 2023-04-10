@@ -128,7 +128,7 @@ namespace Diploma.Bll.Services.Authorization
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Name = request.Name.Trim(),
+                Username = request.Name.Trim(),
                 Email = request.Email.Trim(),
                 PasswordHash = _cryptoService.Encrypt(request.Password, encryptionKey.ToByteArray())
             };

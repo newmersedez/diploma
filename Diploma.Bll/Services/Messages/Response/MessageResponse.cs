@@ -18,6 +18,11 @@ namespace Diploma.Bll.Services.Messages.Response
         public Guid UserId { get; set; }
 
         /// <summary>
+        /// Никнейм пользователя
+        /// </summary>
+        public string Username { get; set; }
+
+        /// <summary>
         /// Идентификатор вложения
         /// </summary>
         public Guid? AttachmentId { get; set; }

@@ -47,7 +47,7 @@ namespace Diploma.Bll.Services.Authorization.Validation
         /// <returns></returns>
         private bool NameUnique(string name)
         {
-            return !_context.Users.Any(x => x.Name.ToLower() == name.Trim().ToLower());
+            return !_context.Users.Any(x => x.Username.ToLower() == name.Trim().ToLower());
         }
         
         /// <summary>
