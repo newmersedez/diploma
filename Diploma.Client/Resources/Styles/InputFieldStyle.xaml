@@ -10,8 +10,6 @@
         <Setter Property="BorderBrush" Value="Gray" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="CaretBrush" Value="White" />
-        <Setter Property="Padding" Value="15 0 105 0" />
-        <Setter Property="Margin" Value="10 0 10 10" />
         <Style.Resources>
             <Style TargetType="{x:Type Border}">
                 <Setter Property="CornerRadius" Value="10" />

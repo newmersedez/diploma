@@ -20,14 +20,16 @@ namespace Diploma.Server.Controllers
         /// Получить пользователей
         /// </summary>
         /// <param name="userService">Сервис управления пользователями</param>
+        /// <param name="username">Фильтрация по никнейму</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<UserResponse[]> GetUsersAsync(
-            [FromServices] IUserService userService)
+            [FromServices] IUserService userService,
+            [FromQuery] string username)
         {
             if (userService == null) throw new ArgumentNullException(nameof(userService));
 
-            var response = await userService.GetUsersAsync();
+            var response = await userService.GetUsersAsync(username);
 
             return response;
         }

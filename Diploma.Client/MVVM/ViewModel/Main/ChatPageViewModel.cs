@@ -1,7 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 using Diploma.Client.Core.MVVM.ViewModel;
 using Diploma.Client.MVVM.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Diploma.Client.MVVM.ViewModel.Main
 {
@@ -10,6 +16,13 @@ namespace Diploma.Client.MVVM.ViewModel.Main
     /// </summary>
     public sealed class ChatPageViewModel : ViewModelBase
     {
+        const string GET_USERS_URL = "https://localhost:5001/users";
+        
+        /// <summary>
+        /// Поиск пользователей
+        /// </summary>
+        public List<User> SearchUsers { get; set; }
+
         /// <summary>
         /// Авторизованный пользователь
         /// </summary>
@@ -78,7 +91,13 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                 new Message
                 {
                     Username = "newmersedez",
-                    Text = "Lalka",
+                    Text = "ППРиветППРиветППРиветППРиветППРиветППРиветППРиветППРиветППРивет",
+                    DateCreate = DateTime.UtcNow
+                },
+                new Message
+                {
+                    Username = "newmersedez",
+                    Text = "LalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalka",
                     DateCreate = DateTime.UtcNow
                 },
                 new Message
@@ -90,13 +109,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                 new Message
                 {
                     Username = "newmersedez",
-                    Text = "Lalka",
-                    DateCreate = DateTime.UtcNow
-                },
-                new Message
-                {
-                    Username = "newmersedez",
-                    Text = "Lalka",
+                    Text = "LalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalkaLalka",
                     DateCreate = DateTime.UtcNow
                 },
             };

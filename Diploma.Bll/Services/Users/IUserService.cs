@@ -10,10 +10,11 @@ namespace Diploma.Bll.Services.Users
     public interface IUserService
     {
         /// <summary>
-        /// Получить пользователей
+        /// Получить всех пользователей
         /// </summary>
+        /// <param name="username">Фильтрация по никнейму</param>
         /// <returns></returns>
-        Task<UserResponse[]> GetUsersAsync();
+        Task<UserResponse[]> GetUsersAsync(string username);
 
         /// <summary>
         /// Получить пользователя

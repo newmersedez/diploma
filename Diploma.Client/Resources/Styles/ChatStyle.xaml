@@ -7,7 +7,7 @@
                 <ControlTemplate TargetType="ListViewItem">
                     <Border x:Name="Bd"
                             Background="#2F3136"
-                            Height="50"
+                            Width="300"
                             HorizontalAlignment="Left"
                             CornerRadius="10"
                             Margin="10 10 0 0 ">
@@ -18,10 +18,12 @@
                                            Foreground="LightGray"
                                            FontSize="12"
                                            Margin="10 0 0 0" />
-                                <TextBlock Text="{Binding Text}"
-                                           Foreground="LightGray"
-                                           FontSize="12"
-                                           Margin="10 0 0 0" />
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding Text}"
+                                               Foreground="LightGray"
+                                               FontSize="12"
+                                               Margin="10 0 0 0" />
+                                </WrapPanel>
                                 <TextBlock Text="{Binding DateCreate, StringFormat='hh:mm'}"
                                            Foreground="LightGray"
                                            FontSize="12"

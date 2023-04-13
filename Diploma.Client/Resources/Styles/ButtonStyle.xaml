@@ -6,7 +6,7 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Style.Resources>
             <Style TargetType="{x:Type Border}">
-                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="CornerRadius" Value="20" />
             </Style>
         </Style.Resources>
         <Style.Triggers>
