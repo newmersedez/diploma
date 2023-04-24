@@ -15,38 +15,67 @@
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
         
-        <DockPanel x:Name="Controls" Grid.Column="0"
-                   Background="#2F3136">
-            <StackPanel DockPanel.Dock="Top"
-                        Orientation="Vertical">
-                <Label Content="Chats"
-                       FontSize="14"
-                       Foreground="LightGray"
-                       FontWeight="Bold" 
-                       Margin="10 10 0 0"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="60"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" 
-                             Style="{StaticResource InputFieldStyle}"
-                             Height="30"
-                             Margin="10 0 5 0"
-                             HorizontalAlignment="Stretch" />
-                    <Button Grid.Column="1" 
-                            Style="{StaticResource ButtonStyle}"
-                            Margin="0 0 10 0"
-                            Height="25" Width="25"
-                            Content="➕"/>
-                    
-                </Grid>
+        <DockPanel Grid.Column="0" Background="#2F3136" HorizontalAlignment="Stretch">
+            <Label DockPanel.Dock="Top" Content="Chats"
+                   FontSize="14" Foreground="LightGray"
+                   FontWeight="Bold" Margin="10 10 0 0"/>
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Row="0" Grid.Column="0"
+                         Style="{StaticResource InputFieldStyle}"
+                         Height="30"
+                         Margin="10 0 10 0"
+                         HorizontalAlignment="Stretch" />
+                <Button Grid.Row="0" Grid.Column="1"
+                        Style="{StaticResource ButtonStyle}"
+                        Margin="0 0 10 0"
+                        Height="25" Width="25"
+                        Content="➕" />
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" />
+            </Grid>
+            <StackPanel x:Name="ChatsList" DockPanel.Dock="Top" Orientation="Vertical">
                 <ListView BorderThickness="0"
                           Background="Transparent"
                           ItemsSource="{Binding Chats, Mode=OneWay}"
                           ItemContainerStyle="{StaticResource ChatListStyle}">
                 </ListView>
             </StackPanel>
+            <!-- <StackPanel DockPanel.Dock="Top" -->
+            <!--             Orientation="Vertical"> -->
+            <!--     <Label Content="Chats" -->
+            <!--            FontSize="14" -->
+            <!--            Foreground="LightGray" -->
+            <!--            FontWeight="Bold"  -->
+            <!--            Margin="10 10 0 0"/> -->
+            <!--     <Grid> -->
+            <!--         <Grid.ColumnDefinitions> -->
+            <!--             <ColumnDefinition Width="*"></ColumnDefinition> -->
+            <!--             <ColumnDefinition Width="60"></ColumnDefinition> -->
+            <!--         </Grid.ColumnDefinitions> -->
+            <!--         <TextBox Grid.Column="0"  -->
+            <!--                  Style="{StaticResource InputFieldStyle}" -->
+            <!--                  Height="30" -->
+            <!--                  Margin="10 0 5 0" -->
+            <!--                  HorizontalAlignment="Stretch" /> -->
+            <!--         <Button Grid.Column="1"  -->
+            <!--                 Style="{StaticResource ButtonStyle}" -->
+            <!--                 Margin="0 0 10 0" -->
+            <!--                 Height="25" Width="25" -->
+            <!--                 Content="➕"/> -->
+            <!--     </Grid> -->
+            <!--     <ListView BorderThickness="0" -->
+            <!--               Background="Transparent" -->
+            <!--               ItemsSource="{Binding Chats, Mode=OneWay}" -->
+            <!--               ItemContainerStyle="{StaticResource ChatListStyle}"> -->
+            <!--     </ListView> -->
+            <!-- </StackPanel> -->
             <DockPanel DockPanel.Dock="Bottom"
                        VerticalAlignment="Bottom"
                        Background="#252525">

@@ -22,6 +22,7 @@
                                     <TextBlock Text="{Binding Text}"
                                                Foreground="LightGray"
                                                FontSize="12"
+                                               TextWrapping="Wrap"
                                                Margin="10 0 0 0" />
                                 </WrapPanel>
                                 <TextBlock Text="{Binding DateCreate, StringFormat='hh:mm'}"
