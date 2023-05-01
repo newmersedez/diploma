@@ -21,5 +21,10 @@ namespace Diploma.Client.MVVM.Model
         /// Электронная почта
         /// </summary>
         public string Email { get; set; }
+        
+        /// <summary>
+        /// Публичный ключ
+        /// </summary>
+        public PublicKey PublicKey { get; set; }
     }
 }

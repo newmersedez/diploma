@@ -144,7 +144,7 @@ namespace Diploma.Server
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diploma.Api v1");
-                    c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+                    // c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
                 });
             }
             

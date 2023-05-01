@@ -33,14 +33,7 @@ namespace Diploma.Bll.Services.Chats.Validation
         /// <returns></returns>
         private bool UserExists(List<Guid> userIds)
         {
-            var notExistUsers = userIds.Where(id => _context.Users.Any(y => y.Id == id));
-
-            if (notExistUsers.Any())
-            {
-                return false;
-            }
-
-            return true;
+            return _context.Users.Any(x => userIds.All(userId => x.Id != userId));
         }
     }
 }

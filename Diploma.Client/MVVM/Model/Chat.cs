@@ -16,5 +16,10 @@ namespace Diploma.Client.MVVM.Model
         /// Название чата
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Пользователи чата
+        /// </summary>
+        public User[] Users { get; set; }
     }
 }
