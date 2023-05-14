@@ -6,16 +6,16 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Style.Resources>
             <Style TargetType="{x:Type Border}">
-                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="CornerRadius" Value="10" />
             </Style>
         </Style.Resources>
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="#0C8DD0" />
+                <Setter Property="Background" Value="LightSlateGray" />
                 <Setter Property="Foreground" Value="Gray" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="True">
-                <Setter Property="Background" Value="#229ED9" />
+                <Setter Property="Background" Value="DarkSlateGray" />
                 <Setter Property="Foreground" Value="White" />
             </Trigger>
         </Style.Triggers>
