@@ -16,6 +16,6 @@ namespace Diploma.Bll.Services.Chats.Request
         /// <summary>
         /// Участники чата
         /// </summary>
-        public List<Guid> Users { get; set; }
+        public Guid UserId { get; set; }
     }
 }

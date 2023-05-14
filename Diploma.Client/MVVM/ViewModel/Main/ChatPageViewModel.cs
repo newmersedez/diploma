@@ -26,13 +26,9 @@ namespace Diploma.Client.MVVM.ViewModel.Main
 
         const string GET_USERS_URL = "https://localhost:5001/users";
         const string GET_CHATS_URL = "https://localhost:5001/chats";
+        const string GET_MESSAGES_URL = "https://localhost:5001/chats/{0}/messages";
         
-        const string CREATE_CHATS_URL = "https://localhost:5001/chats";
-
-        /// <summary>
-        /// Поиск пользователей
-        /// </summary>
-        public List<User> SearchUsers { get; set; }
+        const string CREATE_CHAT_URL = "https://localhost:5001/chats";
 
         /// <summary>
         /// Авторизованный пользователь
@@ -43,6 +39,23 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         /// Чаты
         /// </summary>
         public List<Chat> Chats { get; set; }
+
+        private Chat _selectedChat;
+        
+        /// <summary>
+        /// Выбранный чат
+        /// </summary>
+        public Chat SelectedChat
+        {
+            get => _selectedChat;
+            
+            set
+            {
+                _selectedChat = value;
+                Messages = Task.Run(() => GetMessagesAsync(_selectedChat.Id)).Result;
+                RaisePropertiesChanged(nameof(SelectedChat));
+            }
+        }
 
         /// <summary>
         /// Сообщения чата
@@ -63,6 +76,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         /// Название чата
         /// </summary>
         public string Chatname { get; set; }
+        
 
         /// <summary>
         /// Конструктор
@@ -81,7 +95,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             AuthorizedUser = new User
             {
                 Id = Guid.Parse("f29e4524-73a7-4491-9bf1-19f72538e52d"),
-                Name = "Дмитрий Тришин",
+                Name = "daltrishin",
                 Email = "daltrishin@sberbank.ru"
             };
 
@@ -130,19 +144,41 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             return foundUsers.First();
         }
 
+        private async Task<List<Message>> GetMessagesAsync(Guid chatId)
+        {
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+
+            var response = await client.GetAsync(string.Format(GET_MESSAGES_URL, chatId));
+            var responseString = await response.Content.ReadAsStringAsync();
+            var jsonResponse = JArray.Parse(responseString);
+
+            var messages = new List<Message>();
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                    messages = jsonResponse.ToObject<List<Message>>();
+                    RaisePropertiesChanged(nameof(Messages));
+                    break;
+            }
+
+            return messages;
+        }
+
         private async void CreateChatAsync()
         {
+            if (Username == AuthorizedUser.Name)
+            {
+                MessageBox.Show("Нельзя создать чат с самим собой");
+                return;
+            }
+            
             var user = await GetUserAsync();
 
             if (user is null)
             {
                 MessageBox.Show("Пользователь не найден");
-                return;
-            }
-
-            if (Chats.Any(x => x.Users.Any(y => y.Id == user.Id)))
-            {
-                MessageBox.Show($"Чат с пользователем {user.Name} уже существует");
                 return;
             }
             
@@ -153,11 +189,11 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             var requestBody = new CreateChatRequest
             {
                 Name = Chatname,
-                Users = new[] { user.Id, AuthorizedUser.Id }
+                UserId = user.Id
             };
             
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(CREATE_CHATS_URL, content);
+            var response = await client.PostAsync(CREATE_CHAT_URL, content);
             
             switch (response.StatusCode)
             {
@@ -169,7 +205,6 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                     MessageBox.Show("Неизвестная ошибка, попробуйте позже");
                     break;
             }
-
         }
     }
 }

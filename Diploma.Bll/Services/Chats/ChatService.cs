@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Bll.Common.Response;
@@ -109,7 +110,9 @@ namespace Diploma.Bll.Services.Chats
 
             _context.Chats.Add(chat);
 
-            foreach (var userId in request.Users)
+            var users = new List<Guid> { request.UserId, _accessManager.UserId };
+            
+            foreach (var userId in users)
             {
                 var chatUser = new ChatUser
                 {
