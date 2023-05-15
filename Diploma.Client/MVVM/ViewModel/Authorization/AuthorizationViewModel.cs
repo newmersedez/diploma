@@ -62,8 +62,8 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
         public AuthorizationViewModel()
         {
             Name = string.Empty;
-            Email = string.Empty;
-            Password = string.Empty;
+            Email = "daltrishin@sberbank.ru";
+            Password = "XZasdf123";
             Error = string.Empty;
             
             LoginCommand = new RelayCommand(
@@ -99,7 +99,7 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
                     Token = jsonResponse.Value<string>("token");
                     OpenMainWindow();
                     break;
-                case HttpStatusCode.NotFound:
+                case HttpStatusCode.BadRequest:
                     Error = "Неверный email или пароль";
                     break;
                 case HttpStatusCode.Forbidden:
@@ -142,7 +142,7 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
                     Error = "Пользователь с таким email уже существует";
                     break;
                 case HttpStatusCode.BadRequest:
-                    Error = "Ошибка";
+                    Error = "Ошибка валидации";
                     break;
                 default:
                     Error = "Неизвестная ошибка, попробуйте позже";

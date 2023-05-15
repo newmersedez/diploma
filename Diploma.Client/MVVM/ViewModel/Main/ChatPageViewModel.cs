@@ -29,9 +29,8 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         const string GET_MESSAGES_URL = "https://localhost:5001/chats/{0}/messages";
         
         const string CREATE_CHAT_URL = "https://localhost:5001/chats";
+        const string DELETE_CHAT_URL = "https://localhost:5001/chats/{0}";
 
-        
-        
         /// <summary>
         /// Токен
         /// </summary>
@@ -59,8 +58,11 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             set
             {
                 _selectedChat = value;
-                Messages = Task.Run(() => GetMessagesAsync(_selectedChat.Id)).Result;
-                RaisePropertiesChanged(nameof(SelectedChat));
+                if (_selectedChat is not null)
+                {
+                    Messages = Task.Run(() => GetMessagesAsync(_selectedChat.Id)).Result;
+                    RaisePropertiesChanged(nameof(SelectedChat));
+                }
             }
         }
 
@@ -70,9 +72,14 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         public List<Message> Messages { get; set; }
 
         /// <summary>
-        /// Команда авторизации
+        /// Команда создания чата
         /// </summary>
         public RelayCommand CreateChatCommand { get; }
+
+        /// <summary>
+        /// Команда удаления чата
+        /// </summary>
+        public RelayCommand DeleteChatCommand { get; }
 
         /// <summary>
         /// Имя собеседника
@@ -83,7 +90,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         /// Название чата
         /// </summary>
         public string Chatname { get; set; }
-        
+
 
         /// <summary>
         /// Конструктор
@@ -114,9 +121,12 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             };
             
             CreateChatCommand = new RelayCommand(
-                _ => CreateChatAsync(),
+                _ => Task.Run(CreateChatAsync),
                 _ => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Chatname));
 
+            DeleteChatCommand = new RelayCommand(
+                _ => Task.Run(DeleteChatAsync));
+            
             Task.Run(LoadContentAsync).Wait();
         }
 
@@ -188,7 +198,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             return messages;
         }
 
-        private async void CreateChatAsync()
+        private async Task CreateChatAsync()
         {
             if (Username == AuthorizedUser.Name)
             {
@@ -222,6 +232,28 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                 case HttpStatusCode.OK:
                     Chats = await GetChatsAsync();
                     RaisePropertiesChanged(nameof(Chats));
+                    break;
+                default:
+                    MessageBox.Show("Неизвестная ошибка, попробуйте позже");
+                    break;
+            }
+        }
+
+        private async Task DeleteChatAsync()
+        {
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            
+            var response = await client.DeleteAsync(string.Format(DELETE_CHAT_URL, _selectedChat.Id));
+            
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                    Chats = await GetChatsAsync();
+                    RaisePropertiesChanged(nameof(Chats));
+                    SelectedChat = Chats[0];
+                    RaisePropertiesChanged(nameof(SelectedChat));
                     break;
                 default:
                     MessageBox.Show("Неизвестная ошибка, попробуйте позже");

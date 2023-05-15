@@ -15,56 +15,59 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
-        
-        <DockPanel Grid.Column="0" Background="#2F3136" HorizontalAlignment="Stretch">
-            <Label DockPanel.Dock="Top" Content="Chats"
-                   FontSize="14" Foreground="LightGray"
-                   FontWeight="Bold" Margin="10 10 0 0"/>
-            <Grid DockPanel.Dock="Top" ShowGridLines="False">
+        <Grid Grid.Column="0" Background="#2F3136" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="220" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" ShowGridLines="False">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
                     <RowDefinition Height="40" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Content="Имя пользователя" 
+                <Label Grid.Row="0" Content="Chats"
+                       FontSize="14" Foreground="LightGray"
+                       FontWeight="Bold" Margin="10 10 0 0"/>
+                <Label Grid.Row="1" Content="Имя пользователя" 
                        Foreground="LightGray"
                        FontSize="13" 
                        Margin="10 0 10 0"/>
-                <TextBox Grid.Row="1" Grid.Column="0"
+                <TextBox Grid.Row="2" Grid.Column="0"
                          Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource InputFieldStyle}"
                          Height="30"
                          Margin="10 0 10 0"
                          HorizontalAlignment="Stretch" />
-                <Label Grid.Row="2" Content="Название чата"
+                <Label Grid.Row="3" Content="Название чата"
                        Foreground="LightGray"
                        FontSize="13" 
                        Margin="10 0 10 0"/>
-                <TextBox Grid.Row="3" Grid.Column="0"
+                <TextBox Grid.Row="4" Grid.Column="0"
                          Text="{Binding Chatname, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource InputFieldStyle}"
                          Height="30"
                          Margin="10 0 10 0"
                          HorizontalAlignment="Stretch" />
-                <Button Grid.Row="4"
+                <Button Grid.Row="5"
                         Style="{StaticResource ButtonStyle}"
-                        Margin="10 0 10 0"
-                        Height="25"
+                        Margin="10 10 10 0"
+                        Height="30"
                         Content="Создать чат"
                         Command="{Binding CreateChatCommand}"/>
             </Grid>
-            <StackPanel x:Name="ChatsList" DockPanel.Dock="Top" Orientation="Vertical">
-                <ListView BorderThickness="0"
-                          Background="Transparent"
-                          ItemsSource="{Binding Chats, Mode=OneWay}"
-                          ItemContainerStyle="{StaticResource ChatListStyle}"
-                          SelectedItem="{Binding SelectedChat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                </ListView>
-            </StackPanel>
-            
-            <DockPanel DockPanel.Dock="Bottom"
+            <ListView Grid.Row="1" BorderThickness="0"
+                      Background="Transparent"
+                      Margin="0 0 0 15"
+                      ItemsSource="{Binding Chats, Mode=OneWay}"
+                      ItemContainerStyle="{StaticResource ChatListStyle}"
+                      SelectedItem="{Binding SelectedChat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ListView>
+            <DockPanel Grid.Row="2"
                        VerticalAlignment="Bottom"
                        Background="#252525">
                 <Border Width="30"
@@ -84,42 +87,79 @@
                     <TextBlock Text="{Binding AuthorizedUser.Email, Mode=OneWay}"
                                FontSize="14"
                                Foreground="LightGray"
-                               FontWeight="Bold" 
+                               FontWeight="Thin" 
                                Margin="10 0 0 0"/>
                 </StackPanel>
             </DockPanel>
-        </DockPanel>
+        </Grid>
+        
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
             
-        <DockPanel Grid.Column="1">
-            <DockPanel DockPanel.Dock="Top"
+            <DockPanel Grid.Row="0"
                        VerticalAlignment="Bottom"
-                       Background="#292B2F">
+                       Background="#292B2F"
+                       Height="60">
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                        Style="{StaticResource ButtonStyle}"
+                        Content="⨉"
+                        Height="40" Width="40"
+                        Margin="0 0 10 0"
+                        Background="Transparent"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Command="{Binding DeleteChatCommand}"/>
                 <Border Width="30"
                         Height="30"
                         Background="DarkSlateGray"
                         CornerRadius="25" 
                         Margin="10 0 0 0"/>
-                <StackPanel DockPanel.Dock="Right" 
-                            Orientation="Vertical" 
-                            Height="60" 
-                            VerticalAlignment="Bottom">
-                    <TextBlock Text="{Binding SelectedChat.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               FontSize="14"
-                               Foreground="LightGray"
-                               FontWeight="Bold" 
-                               Margin="10 10 0 0"/>
-                    <!-- <TextBlock Text="{Binding SelectedChat.Users, Mode=OneWay}" -->
-                               <!-- FontSize="14" -->
-                               <!-- Foreground="LightGray" -->
-                               <!-- FontWeight="Bold"  -->
-                               <!-- Margin="10 0 0 0"/> -->
-                </StackPanel>
+                <TextBlock DockPanel.Dock="Right"
+                           Text="{Binding SelectedChat.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           FontSize="14"
+                           Foreground="LightGray"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold" 
+                           Margin="10 0 0 0"/>
             </DockPanel>
-            <ListView BorderThickness="0"
+            <ListView Grid.Row="1"
+                      BorderThickness="0"
                       Background="#36393F"
                       ItemsSource="{Binding Messages, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ChatStyle}">
             </ListView>
-        </DockPanel>
+            <DockPanel Grid.Row="2" LastChildFill="True" >
+                <Grid Height="60" DockPanel.Dock="Bottom" 
+                      ShowGridLines="False"
+                      VerticalAlignment="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" 
+                             Height="40"
+                             Margin="10 0 0 0"
+                             Style="{StaticResource InputFieldStyle}"/>
+                    <Button Grid.Column="1" 
+                            Style="{StaticResource ButtonStyle}" Height="40" Width="40"
+                            Content="📁"
+                            FontSize="20"
+                            Background="Transparent"
+                            BorderThickness="0" />
+                    <Button Grid.Column="2"
+                            Style="{StaticResource ButtonStyle}" Height="40" Width="40"
+                            Content=">"
+                            FontSize="25"
+                            Background="Transparent"
+                            Margin="0 0 10 0"
+                            BorderThickness="0" />
+                </Grid>
+            </DockPanel>
+        </Grid>
     </Grid>
 </Page>

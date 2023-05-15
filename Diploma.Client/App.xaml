@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="Resources/Styles/InputFieldStyle.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/ChatStyle.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/ChatListStyle.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ScrollStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
