@@ -5,6 +5,9 @@ using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Diploma.Bll.Common.Exceptions;
+using Diploma.Persistence;
+using Diploma.Persistence.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,14 +19,17 @@ namespace Diploma.Bll.Services.Token
     public sealed class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly DatabaseContext _context;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="configuration">Конфигурация</param>
-        public TokenService(IConfiguration configuration)
+        /// <param name="context"></param>
+        public TokenService(IConfiguration configuration, DatabaseContext context)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public static TokenValidationParameters TokenValidationParameters(IConfiguration configuration)
@@ -61,12 +67,20 @@ namespace Diploma.Bll.Services.Token
                 SecurityAlgorithms.RsaSha256
             );
 
+            var user = _context.Users.Include(x => x.PublicKey).FirstOrDefault(x => x.Id == userId);
+            if (user is null) return null;
+
             var securityToken = new JwtSecurityToken
             (
                 issuer: _configuration["Token:Issuer"],
                 claims: new[]
                 {
-                    new Claim("id", userId.ToString())
+                    new Claim("id", user.Id.ToString()),
+                    new Claim("email", user.Email),
+                    new Claim("username", user.Username),
+                    new Claim("publicX", user.PublicKey.X),
+                    new Claim("publicY", user.PublicKey.Y),
+
                 },
                 signingCredentials: credentials
             );

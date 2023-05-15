@@ -1,9 +1,19 @@
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using Diploma.Client.Core.MVVM.Command;
 using Diploma.Client.Core.MVVM.ViewModel;
+using Diploma.Client.MVVM.Model;
+using Diploma.Client.MVVM.View.Main;
+using Diploma.Client.MVVM.View.Main.Pages;
+using Diploma.Client.MVVM.ViewModel.Main;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -16,6 +26,8 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
     {
         private const string LOGIN_URL = "https://localhost:5001/auth/login";
         private const string REGISTRATION_URL = "https://localhost:5001/auth/register";
+
+        public string Token { get; set; }
 
         /// <summary>
         /// Имя пользователя
@@ -84,7 +96,8 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    Error = jsonResponse.Value<string>("token");
+                    Token = jsonResponse.Value<string>("token");
+                    OpenMainWindow();
                     break;
                 case HttpStatusCode.NotFound:
                     Error = "Неверный email или пароль";
@@ -122,7 +135,8 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    Error = jsonResponse.Value<string>("token");
+                    Token = jsonResponse.Value<string>("token");
+                    OpenMainWindow();
                     break;
                 case HttpStatusCode.Conflict:
                     Error = "Пользователь с таким email уже существует";
@@ -136,6 +150,22 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
             }
 
             RaisePropertyChanged(nameof(Error));
+        }
+        
+        /// <summary>
+        /// Открыть основное окно
+        /// </summary>
+        /// <param name="token">Токен</param>
+        private void OpenMainWindow()
+        {
+            File.Delete("token.json");
+            File.WriteAllText("token.json", Token);
+
+            var window = new MainWindow();
+            
+            Application.Current.MainWindow?.Close();
+            Application.Current.MainWindow = window;
+            Application.Current.MainWindow.Show();
         }
     }
 }

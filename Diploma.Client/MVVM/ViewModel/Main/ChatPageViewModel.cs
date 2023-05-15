@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,6 +12,7 @@ using System.Windows;
 using Diploma.Client.Core.MVVM.Command;
 using Diploma.Client.Core.MVVM.ViewModel;
 using Diploma.Client.MVVM.Model;
+using Diploma.Client.MVVM.ViewModel.Authorization;
 using Diploma.Client.Network.Request;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -21,14 +24,18 @@ namespace Diploma.Client.MVVM.ViewModel.Main
     /// </summary>
     public sealed class ChatPageViewModel : ViewModelBase
     {
-        private const string TOKEN =
-            "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYyOWU0NTI0LTczYTctNDQ5MS05YmYxLTE5ZjcyNTM4ZTUyZCIsImlzcyI6ImNyeXB0byJ9.zx5w-no9EDIHLvoJUxYeSgVrMPGAHgvbaJRH7PxG2pehXoQHwmAZxL3_auYQmwVyQyXa3ijv9_UJwtqGXULU1f9a6kjkSJditFvlfkVGWeczqXP8W6QTAaGt8MtHK7g7ipjQs6r4kf7gcdX-Hgg-zYw26XgNweGVEwOv0HHj4RrvXCi4CEZFw8N2UVwKrHMG4oWVq3UB83A5w4f9J-dmpeS-J7qToC3OFna9TkAQ80xNsXzBnZudUoti3QX1dwPJ5fDJRVUJUGKJNaC8-S_wQDBGXktkp0AotQvlEc0pp_BfoN8QxgEfe0WFGh1NGSh80-9APriM3ocWqrMwSFr0Xw";
-
         const string GET_USERS_URL = "https://localhost:5001/users";
         const string GET_CHATS_URL = "https://localhost:5001/chats";
         const string GET_MESSAGES_URL = "https://localhost:5001/chats/{0}/messages";
         
         const string CREATE_CHAT_URL = "https://localhost:5001/chats";
+
+        
+        
+        /// <summary>
+        /// Токен
+        /// </summary>
+        public string Token { get; set; }
 
         /// <summary>
         /// Авторизованный пользователь
@@ -83,32 +90,47 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         /// </summary>
         public ChatPageViewModel()
         {
+            if (!File.Exists("token.json"))
+            {
+                throw new ArgumentNullException($"token.json");
+            }
+
+            Token = File.ReadAllText("token.json");
+            File.Delete("token.json");
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(Token);
+
+            AuthorizedUser = new User
+            {
+                Id = Guid.Parse(jwtToken.Claims.FirstOrDefault(x => x.Type == "id")!.Value),
+                Email = jwtToken.Claims.FirstOrDefault(x => x.Type == "email")!.Value,
+                Name = jwtToken.Claims.FirstOrDefault(x => x.Type == "username")!.Value,
+                PublicKey = new PublicKey
+                {
+                    X = jwtToken.Claims.FirstOrDefault(x => x.Type == "publicX")!.Value,
+                    Y = jwtToken.Claims.FirstOrDefault(x => x.Type == "publicY")!.Value
+                }
+            };
+            
             CreateChatCommand = new RelayCommand(
                 _ => CreateChatAsync(),
                 _ => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Chatname));
 
-            Task.Run(InitAllInstances).Wait();
+            Task.Run(LoadContentAsync).Wait();
         }
 
-        private async Task InitAllInstances()
+        private async Task LoadContentAsync()
         {
-            AuthorizedUser = new User
-            {
-                Id = Guid.Parse("f29e4524-73a7-4491-9bf1-19f72538e52d"),
-                Name = "daltrishin",
-                Email = "daltrishin@sberbank.ru"
-            };
-
             Chats = await GetChatsAsync();
-
-            Messages = new List<Message> { };
+            RaisePropertyChanged(nameof(Chats));
         }
 
         private async Task<List<Chat>> GetChatsAsync()
         {
             var client = new HttpClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
             var response = await client.GetAsync(GET_CHATS_URL);
             var responseString = await response.Content.ReadAsStringAsync();
@@ -129,7 +151,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         {
             var client = new HttpClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
             var builder = new UriBuilder(GET_USERS_URL);
             builder.Query = $"username={Username}";
@@ -148,7 +170,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         {
             var client = new HttpClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
             var response = await client.GetAsync(string.Format(GET_MESSAGES_URL, chatId));
             var responseString = await response.Content.ReadAsStringAsync();
@@ -184,7 +206,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             
             var client = new HttpClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             
             var requestBody = new CreateChatRequest
             {

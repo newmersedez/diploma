@@ -25,7 +25,7 @@ namespace Diploma.Client.MVVM.View.Main
 
         private void MaximizeButtonOnClick(object sender, RoutedEventArgs e)
         {
-            if (Application.Current.MainWindow.WindowState != WindowState.Maximized)
+            if (Application.Current.MainWindow!.WindowState != WindowState.Maximized)
                 Application.Current.MainWindow.WindowState = WindowState.Maximized;
             else
                 Application.Current.MainWindow.WindowState = WindowState.Normal;
