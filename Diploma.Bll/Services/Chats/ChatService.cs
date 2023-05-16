@@ -7,6 +7,7 @@ using Diploma.Bll.Services.Access;
 using Diploma.Bll.Services.Authorization.Response;
 using Diploma.Bll.Services.Chats.Request;
 using Diploma.Bll.Services.Chats.Response;
+using Diploma.Bll.Services.WebSocket;
 using Diploma.Persistence;
 using Diploma.Persistence.Models.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -20,16 +21,19 @@ namespace Diploma.Bll.Services.Chats
     {
         private readonly DatabaseContext _context;
         private readonly IAccessManager _accessManager;
+        private readonly IWebSocketService _webSocketService;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="context">Конекст БД</param>
         /// <param name="accessManager">Сервис управления доступом</param>
-        public ChatService(DatabaseContext context, IAccessManager accessManager)
+        /// <param name="webSocketService"></param>
+        public ChatService(DatabaseContext context, IAccessManager accessManager, IWebSocketService webSocketService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _accessManager = accessManager ?? throw new ArgumentNullException(nameof(accessManager));
+            _webSocketService = webSocketService ?? throw new ArgumentNullException(nameof(webSocketService));
         }
 
         /// <summary>
@@ -39,7 +43,7 @@ namespace Diploma.Bll.Services.Chats
         public async Task<ChatResponse[]> GetChatsAsync()
         {
             return await _context.Chats
-                .Where(x => x.ChatUsers.Select(y => y.UserId).Contains(_accessManager.UserId))
+                .Where(x => x.ChatUsers.Any(y => y.UserId == _accessManager.UserId))
                 .Select(x => new ChatResponse
                 {
                     Id = x.Id,
@@ -124,7 +128,9 @@ namespace Diploma.Bll.Services.Chats
             }
 
             await _context.SaveChangesAsync();
-
+            
+            await _webSocketService.NotifyChatCreatedAsync(chat.Id, request.UserId);
+            
             return chat.Id;
         }
 

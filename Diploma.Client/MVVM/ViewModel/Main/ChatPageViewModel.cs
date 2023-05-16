@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Diploma.Client.Core.MVVM.Command;
@@ -30,6 +32,8 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         
         const string CREATE_CHAT_URL = "https://localhost:5001/chats";
         const string DELETE_CHAT_URL = "https://localhost:5001/chats/{0}";
+
+        private const string USER_NOTIFICATIONS = "wss://localhost:5001/ws/user";
 
         /// <summary>
         /// Токен
@@ -128,12 +132,41 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                 _ => Task.Run(DeleteChatAsync));
             
             Task.Run(LoadContentAsync).Wait();
+            Task.Run(HandleWebSockets);
         }
 
         private async Task LoadContentAsync()
         {
             Chats = await GetChatsAsync();
             RaisePropertyChanged(nameof(Chats));
+        }
+
+        private async Task HandleWebSockets()
+        {
+            var uriBuilder = new UriBuilder(USER_NOTIFICATIONS);
+            uriBuilder.Query = $"token={Token}";
+
+            var ws = new ClientWebSocket();
+            await ws.ConnectAsync(new Uri(uriBuilder.Uri.ToString()), CancellationToken.None);
+
+            var buffer = new byte[2048];
+
+            while (true)
+            {
+                var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+                if (result.MessageType == WebSocketMessageType.Text)
+                {
+                    var jsonString = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                    var jsonObject = JObject.Parse(jsonString);
+
+                    jsonObject.TryGetValue("type", out var typeToken);
+                    var chat = jsonObject.ToObject<Chat>();
+
+                    Chats.Add(chat);
+                    RaisePropertiesChanged(nameof(Chats));
+                }
+            }
         }
 
         private async Task<List<Chat>> GetChatsAsync()
@@ -252,7 +285,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                 case HttpStatusCode.OK:
                     Chats = await GetChatsAsync();
                     RaisePropertiesChanged(nameof(Chats));
-                    SelectedChat = Chats[0];
+                    SelectedChat = Chats.FirstOrDefault();
                     RaisePropertiesChanged(nameof(SelectedChat));
                     break;
                 default:
