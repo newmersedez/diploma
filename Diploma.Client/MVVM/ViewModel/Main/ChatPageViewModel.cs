@@ -131,44 +131,29 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             DeleteChatCommand = new RelayCommand(
                 _ => Task.Run(DeleteChatAsync));
             
-            Task.Run(LoadContentAsync).Wait();
-            Task.Run(HandleWebSockets);
+            Task.Run(LoadContentAsync);
+
+            Task.Run(UpdatesFromServer);
         }
 
         private async Task LoadContentAsync()
         {
             Chats = await GetChatsAsync();
             RaisePropertyChanged(nameof(Chats));
+
         }
 
-        private async Task HandleWebSockets()
+        private async Task UpdatesFromServer()
         {
-            var uriBuilder = new UriBuilder(USER_NOTIFICATIONS);
-            uriBuilder.Query = $"token={Token}";
-
-            var ws = new ClientWebSocket();
-            await ws.ConnectAsync(new Uri(uriBuilder.Uri.ToString()), CancellationToken.None);
-
-            var buffer = new byte[2048];
-
             while (true)
             {
-                var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                Chats = await GetChatsAsync();
+                RaisePropertyChanged(nameof(Chats));
 
-                if (result.MessageType == WebSocketMessageType.Text)
-                {
-                    var jsonString = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    var jsonObject = JObject.Parse(jsonString);
-
-                    jsonObject.TryGetValue("type", out var typeToken);
-                    var chat = jsonObject.ToObject<Chat>();
-
-                    Chats.Add(chat);
-                    RaisePropertiesChanged(nameof(Chats));
-                }
+                await Task.Delay(2000);
             }
         }
-
+        
         private async Task<List<Chat>> GetChatsAsync()
         {
             var client = new HttpClient();
