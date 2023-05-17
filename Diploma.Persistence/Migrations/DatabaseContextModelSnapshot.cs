@@ -92,6 +92,33 @@ namespace Diploma.Persistence.Migrations
                     b.ToTable("chat_users");
                 });
 
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.File", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("content_type");
+
+                    b.Property<string>("Folder")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("folder");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("files");
+                });
+
             modelBuilder.Entity("Diploma.Persistence.Models.Entities.Message", b =>
                 {
                     b.Property<Guid>("Id")

@@ -1,4 +1,3 @@
-using Diploma.Persistence.Models;
 using Diploma.Persistence.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,5 +17,6 @@ namespace Diploma.Persistence
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ChatUser> ChatUser { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<File> Files { get; set; }
     }
 }

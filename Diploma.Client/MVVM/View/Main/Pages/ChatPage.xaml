@@ -3,12 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:main="clr-namespace:Diploma.Client.MVVM.ViewModel.Main"
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-      Height="Auto" Width="Auto"
+      Height="600" Width="800"
       Background="#36393F">
     
     <Page.DataContext>
         <main:ChatPageViewModel />
     </Page.DataContext>
+    
+    <Page.InputBindings>
+        <KeyBinding Command="{Binding SendMessageCommand}" Key="Enter"/>
+    </Page.InputBindings>
     
     <Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
@@ -95,7 +99,7 @@
         
         <Grid Grid.Column="1"
               Background="#36393F"
-              Visibility="{Binding Visibility, UpdateSourceTrigger=PropertyChanged}">
+              Visibility="{Binding SelectedChatVisibility, UpdateSourceTrigger=PropertyChanged}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
                 <RowDefinition Height="*" />
@@ -135,9 +139,10 @@
                            FontWeight="Bold" 
                            Margin="10 0 0 0"/>
             </DockPanel>
-            <ListView Grid.Row="1"
+            <ListView x:Name="ChatListView" Grid.Row="1"
                       BorderThickness="0"
                       Background="#36393F"
+                      ScrollViewer.CanContentScroll="True"
                       ItemsSource="{Binding Messages, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ChatStyle}">
             </ListView>
@@ -161,7 +166,8 @@
                             ToolTip="Отправить документ" 
                             FontSize="20"
                             Background="Transparent"
-                            BorderThickness="0" >
+                            BorderThickness="0"
+                            Command="{Binding SendDocumentCommand}">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="30" />

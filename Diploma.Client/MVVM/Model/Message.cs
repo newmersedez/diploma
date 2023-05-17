@@ -28,6 +28,11 @@ namespace Diploma.Client.MVVM.Model
         public Guid? AttachmentId { get; set; }
 
         /// <summary>
+        /// Название вложения
+        /// </summary>
+        public string AttachmentName { get; set; }
+
+        /// <summary>
         /// Текст
         /// </summary>
         public string Text { get; set; }

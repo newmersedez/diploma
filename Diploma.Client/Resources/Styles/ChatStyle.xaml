@@ -7,28 +7,34 @@
                 <ControlTemplate TargetType="ListViewItem">
                     <Border x:Name="Bd"
                             Background="#2F3136"
-                            Width="300"
                             HorizontalAlignment="Left"
                             CornerRadius="10"
                             Margin="10 15 0 0">
                         <StackPanel VerticalAlignment="Center"
-                                            Orientation="Vertical"
-                                            Margin="10 0 0 0">
+                                            Orientation="Vertical">
                             <TextBlock Text="{Binding Username}"
                                        Foreground="MediumSeaGreen"
                                        FontSize="15"
-                                       Margin="10 0 0 0" />
+                                       Margin="10 10 10 10" />
                             <WrapPanel>
                                 <TextBlock Text="{Binding Text}"
                                            Foreground="LightGray"
-                                           FontSize="13"
+                                           FontSize="14"
                                            TextWrapping="Wrap"
-                                           Margin="10 0 0 0" />
+                                           MaxWidth="250"
+                                           Margin="10 0 10 0" />
                             </WrapPanel>
+                            <Button Content="{Binding AttachmentName}"
+                                    Foreground="CornflowerBlue"
+                                    Background="Transparent"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="10 0 10 0"
+                                    BorderThickness="0"/>
                             <TextBlock Text="{Binding DateCreate, StringFormat='hh:mm'}"
                                        Foreground="LightGray"
                                        FontSize="11"
-                                       Margin="10 0 0 0" />
+                                       HorizontalAlignment="Right"
+                                       Margin="10 0 10 10" />
                         </StackPanel>
                     </Border>
                 </ControlTemplate>

@@ -50,6 +50,7 @@ namespace Diploma.Bll.Services.Messages
                     UserId = x.UserId,
                     Username = x.User.Username,
                     AttachmentId = x.AttachmentId,
+                    AttachmentName = x.Attachment.Name,
                     Text = x.Text,
                     DateCreate = x.DateCreate
                 })

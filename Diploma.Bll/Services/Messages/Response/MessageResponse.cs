@@ -28,6 +28,11 @@ namespace Diploma.Bll.Services.Messages.Response
         public Guid? AttachmentId { get; set; }
 
         /// <summary>
+        /// Нащвание вложения
+        /// </summary>
+        public string AttachmentName { get; set; }
+
+        /// <summary>
         /// Идентификатор текста
         /// </summary>
         public string Text { get; set; }

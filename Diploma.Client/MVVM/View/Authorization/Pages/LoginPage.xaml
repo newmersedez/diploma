@@ -12,6 +12,10 @@
         <authorization:AuthorizationViewModel />
     </Page.DataContext>
     
+    <Page.InputBindings>
+        <KeyBinding Command="{Binding LoginCommand}" Key="Enter"/>
+    </Page.InputBindings>
+    
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Top" >

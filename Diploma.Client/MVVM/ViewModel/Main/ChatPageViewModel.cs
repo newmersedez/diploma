@@ -6,16 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.WebSockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Diploma.Client.Core.MVVM.Command;
 using Diploma.Client.Core.MVVM.ViewModel;
 using Diploma.Client.MVVM.Model;
-using Diploma.Client.MVVM.ViewModel.Authorization;
 using Diploma.Client.Network.Request;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -26,13 +24,16 @@ namespace Diploma.Client.MVVM.ViewModel.Main
     /// </summary>
     public sealed class ChatPageViewModel : ViewModelBase
     {
-        const string GET_USERS_URL = "https://localhost:5001/users";
-        const string GET_CHATS_URL = "https://localhost:5001/chats";
-        const string GET_MESSAGES_URL = "https://localhost:5001/chats/{0}/messages";
+        private static readonly string GetUsersUri = "https://localhost:5001/users";
         
-        const string CREATE_CHAT_URL = "https://localhost:5001/chats";
-        const string DELETE_CHAT_URL = "https://localhost:5001/chats/{0}";
-        const string CREATE_MESSAGE_URL = "https://localhost:5001/chats/{0}/messages";
+        private static readonly string CreateChatUri = "https://localhost:5001/chats";
+        private static readonly string GetChatsUri = "https://localhost:5001/chats";
+        private static readonly string DeleteChatUri = "https://localhost:5001/chats/{0}";
+        
+        private static readonly string GetMessagesUri = "https://localhost:5001/chats/{0}/messages";
+        private static readonly string CreateMessageUri = "https://localhost:5001/chats/{0}/messages";
+        
+        private static readonly string UploadFileUri = "https://localhost:5001/storage/files/upload";
 
         private Chat _selectedChat;
 
@@ -65,15 +66,15 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                     if (Chats.Count == 0)
                     {
                         _selectedChat = null;
-                        Visibility = Visibility.Hidden;
-                        RaisePropertiesChanged(nameof(Visibility));
+                        SelectedChatVisibility = Visibility.Hidden;
+                        RaisePropertiesChanged(nameof(SelectedChatVisibility));
                     }
                 }
                 else
                 {
                     _selectedChat = value;
-                    Visibility = Visibility.Visible;
-                    RaisePropertiesChanged(nameof(Visibility));
+                    SelectedChatVisibility = Visibility.Visible;
+                    RaisePropertiesChanged(nameof(SelectedChatVisibility));
                     Messages = Task.Run(() => GetMessagesAsync(_selectedChat.Id)).Result;
                     RaisePropertiesChanged(nameof(SelectedChat));   
                 }
@@ -84,21 +85,6 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         /// Сообщения чата
         /// </summary>
         public List<Message> Messages { get; set; }
-
-        /// <summary>
-        /// Команда создания чата
-        /// </summary>
-        public RelayCommand CreateChatCommand { get; }
-
-        /// <summary>
-        /// Команда удаления чата
-        /// </summary>
-        public RelayCommand DeleteChatCommand { get; }
-
-        /// <summary>
-        /// Команда для отправки сообщения
-        /// </summary>
-        public RelayCommand SendMessageCommand { get; }
 
         /// <summary>
         /// Имя собеседника
@@ -118,14 +104,34 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         /// <summary>
         /// Видимость чата
         /// </summary>
-        public Visibility Visibility { get; set; }
+        public Visibility SelectedChatVisibility { get; set; }
+        
+        /// <summary>
+        /// Команда создания чата
+        /// </summary>
+        public RelayCommand CreateChatCommand { get; }
+
+        /// <summary>
+        /// Команда удаления чата
+        /// </summary>
+        public RelayCommand DeleteChatCommand { get; }
+
+        /// <summary>
+        /// Команда для отправки сообщения
+        /// </summary>
+        public RelayCommand SendMessageCommand { get; }
+
+        /// <summary>
+        /// Команда для отправки файла
+        /// </summary>
+        public RelayCommand SendDocumentCommand { get; }
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public ChatPageViewModel()
         {
-            Visibility = Visibility.Hidden;
+            SelectedChatVisibility = Visibility.Hidden;
             
             if (!File.Exists("token.json"))
             {
@@ -158,8 +164,12 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                 _ => Task.Run(DeleteChatAsync));
 
             SendMessageCommand = new RelayCommand(
-                _ => Task.Run(SendMessageAsync),
+                _ => Task.Run(SendTextMessageAsync),
                 _ => !string.IsNullOrEmpty(Message) && SelectedChat is not null);
+
+            SendDocumentCommand = new RelayCommand(
+                _ => Task.Run(SendDocumentAsync),
+                _ => SelectedChat is not null);
             
             Task.Run(LoadContentAsync);
 
@@ -170,7 +180,6 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         {
             Chats = await GetChatsAsync();
             RaisePropertyChanged(nameof(Chats));
-
         }
 
         private async Task UpdatesFromServer()
@@ -196,7 +205,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
-            var response = await client.GetAsync(GET_CHATS_URL);
+            var response = await client.GetAsync(GetChatsUri);
             var responseString = await response.Content.ReadAsStringAsync();
             var jsonResponse = JArray.Parse(responseString);
 
@@ -217,7 +226,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
-            var builder = new UriBuilder(GET_USERS_URL);
+            var builder = new UriBuilder(GetUsersUri);
             builder.Query = $"username={Username}";
 
             var response = await client.GetAsync(builder.Uri);
@@ -236,7 +245,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
-            var response = await client.GetAsync(string.Format(GET_MESSAGES_URL, chatId));
+            var response = await client.GetAsync(string.Format(GetMessagesUri, chatId));
             var responseString = await response.Content.ReadAsStringAsync();
             var jsonResponse = JArray.Parse(responseString);
 
@@ -279,7 +288,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             };
             
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(CREATE_CHAT_URL, content);
+            var response = await client.PostAsync(CreateChatUri, content);
             
             switch (response.StatusCode)
             {
@@ -299,7 +308,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             
-            var response = await client.DeleteAsync(string.Format(DELETE_CHAT_URL, _selectedChat.Id));
+            var response = await client.DeleteAsync(string.Format(DeleteChatUri, _selectedChat.Id));
             
             switch (response.StatusCode)
             {
@@ -315,7 +324,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             }
         }
 
-        private async Task SendMessageAsync()
+        private async Task SendTextMessageAsync()
         {
             var client = new HttpClient();
 
@@ -328,7 +337,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             };
             
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(string.Format(CREATE_MESSAGE_URL, SelectedChat.Id), content);
+            var response = await client.PostAsync(string.Format(CreateMessageUri, SelectedChat.Id), content);
             
             switch (response.StatusCode)
             {
@@ -340,6 +349,49 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                     MessageBox.Show("Неизвестная ошибка, попробуйте позже");
                     break;
             }
+
+            Message = string.Empty;
+            RaisePropertyChanged(nameof(Message));
+        }
+
+        private async Task SendDocumentAsync()
+        {
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == false) return;
+
+            var filePath = openFileDialog.FileName;
+            
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+
+            var bytes = await File.ReadAllBytesAsync(filePath);
+            var byteArrayContent = new ByteArrayContent(bytes);
+            var multipartContent = new MultipartFormDataContent();
+            multipartContent.Add(byteArrayContent, "file", Path.GetFileName(filePath));
+            var postResponse = await client.PostAsync(UploadFileUri, multipartContent);
+            
+            var requestBody = new CreateMessageRequest()
+            {
+                AttachmentId = null,
+                Text = Message
+            };
+            
+            var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(string.Format(CreateMessageUri, SelectedChat.Id), content);
+            
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                    Chats = await GetChatsAsync();
+                    RaisePropertiesChanged(nameof(Chats));
+                    break;
+                default:
+                    MessageBox.Show("Неизвестная ошибка, попробуйте позже");
+                    break;
+            }
+
+            Message = string.Empty;
+            RaisePropertyChanged(nameof(Message));
         }
     }
 }
