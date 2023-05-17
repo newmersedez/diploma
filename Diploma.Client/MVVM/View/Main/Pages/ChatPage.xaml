@@ -3,8 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:main="clr-namespace:Diploma.Client.MVVM.ViewModel.Main"
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-      Height="600" Width="800"
-      Background="#2F3136">
+      Height="Auto" Width="Auto"
+      Background="#36393F">
     
     <Page.DataContext>
         <main:ChatPageViewModel />
@@ -93,7 +93,9 @@
             </DockPanel>
         </Grid>
         
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1"
+              Background="#36393F"
+              Visibility="{Binding Visibility, UpdateSourceTrigger=PropertyChanged}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
                 <RowDefinition Height="*" />
@@ -110,9 +112,16 @@
                         Height="40" Width="40"
                         Margin="0 0 10 0"
                         Background="Transparent"
+                        ToolTip="Удалить чат" 
                         FontSize="18"
                         BorderThickness="0"
-                        Command="{Binding DeleteChatCommand}"/>
+                        Command="{Binding DeleteChatCommand}">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="30" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
                 <Border Width="30"
                         Height="30"
                         Background="DarkSlateGray"
@@ -132,7 +141,7 @@
                       ItemsSource="{Binding Messages, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ChatStyle}">
             </ListView>
-            <DockPanel Grid.Row="2" LastChildFill="True" >
+            <DockPanel Grid.Row="2" Background="#2F3136" LastChildFill="True" >
                 <Grid Height="60" DockPanel.Dock="Bottom" 
                       ShowGridLines="False"
                       VerticalAlignment="Bottom">
@@ -144,20 +153,36 @@
                     <TextBox Grid.Column="0" 
                              Height="40"
                              Margin="10 0 0 0"
-                             Style="{StaticResource InputFieldStyle}"/>
+                             Style="{StaticResource InputFieldStyle}"
+                             Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Grid.Column="1" 
                             Style="{StaticResource ButtonStyle}" Height="40" Width="40"
                             Content="📁"
+                            ToolTip="Отправить документ" 
                             FontSize="20"
                             Background="Transparent"
-                            BorderThickness="0" />
+                            BorderThickness="0" >
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="30" />
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                     <Button Grid.Column="2"
                             Style="{StaticResource ButtonStyle}" Height="40" Width="40"
                             Content=">"
+                            ToolTip="Отправить сообщение" 
                             FontSize="25"
                             Background="Transparent"
                             Margin="0 0 10 0"
-                            BorderThickness="0" />
+                            BorderThickness="0" 
+                            Command="{Binding SendMessageCommand}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="30" />
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                 </Grid>
             </DockPanel>
         </Grid>

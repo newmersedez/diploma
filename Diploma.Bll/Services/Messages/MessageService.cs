@@ -53,7 +53,7 @@ namespace Diploma.Bll.Services.Messages
                     Text = x.Text,
                     DateCreate = x.DateCreate
                 })
-                .OrderByDescending(x => x.DateCreate)
+                .OrderBy(x => x.DateCreate)
                 .ToArrayAsync();
         }
 
