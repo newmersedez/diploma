@@ -66,7 +66,7 @@ namespace Diploma.Storage.Services.Storage
             {
                 Folder = folderName,
                 Name = file.FileName,
-                ContentType = file.ContentType
+                ContentType = file.ContentType ?? "multipart/form-data"
             };
         }
 

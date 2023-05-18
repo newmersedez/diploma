@@ -148,7 +148,7 @@ namespace Diploma.Bll.Services.WebSocket
                 {
                     Message = x,
                     x.User,
-                    x.Attachment
+                    x.File
                 })
                 .FirstOrDefaultAsync();
 
@@ -159,8 +159,8 @@ namespace Diploma.Bll.Services.WebSocket
                 {
                     id = messageInfo.Message.Id,
                     email = messageInfo.User?.Email,
-                    attachmentId = messageInfo.Attachment?.Id,
-                    attachmentName = messageInfo.Attachment?.Name,
+                    attachmentId = messageInfo.File?.Id,
+                    attachmentName = messageInfo.File?.Name,
                     date = message.DateCreate
                 }
             };

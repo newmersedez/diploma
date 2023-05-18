@@ -16,8 +16,8 @@ namespace Diploma.Persistence.Models.Entities
         [Column("user_id")]
         public Guid UserId { get; set; }
 
-        [Column("attachment_id")]
-        public Guid? AttachmentId { get; set; }
+        [Column("file_id")]
+        public Guid? FileId { get; set; }
 
         [Required]
         [Column("text")]
@@ -32,7 +32,7 @@ namespace Diploma.Persistence.Models.Entities
 
         public User User { get; set; }
 
-        public Attachment Attachment { get; set; }
+        public File File { get; set; }
 
         #endregion
     }

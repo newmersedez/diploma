@@ -25,12 +25,12 @@ namespace Diploma.Client.MVVM.Model
         /// <summary>
         /// Идентификатор вложения
         /// </summary>
-        public Guid? AttachmentId { get; set; }
+        public Guid? FileId { get; set; }
 
         /// <summary>
         /// Название вложения
         /// </summary>
-        public string AttachmentName { get; set; }
+        public string FileName { get; set; }
 
         /// <summary>
         /// Текст

@@ -49,8 +49,8 @@ namespace Diploma.Bll.Services.Messages
                     Id = x.Id,
                     UserId = x.UserId,
                     Username = x.User.Username,
-                    AttachmentId = x.AttachmentId,
-                    AttachmentName = x.Attachment.Name,
+                    FileId = x.FileId,
+                    FileName = x.File.Name,
                     Text = x.Text,
                     DateCreate = x.DateCreate
                 })
@@ -73,7 +73,7 @@ namespace Diploma.Bll.Services.Messages
                 Id = Guid.NewGuid(),
                 ChatId = chatId,
                 UserId = _accessManager.UserId,
-                AttachmentId = request.AttachmentId,
+                FileId = request.FileId,
                 Text = request.Text,
                 DateCreate = DateTime.UtcNow
             };

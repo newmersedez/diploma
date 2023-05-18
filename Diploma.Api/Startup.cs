@@ -13,6 +13,7 @@ using Diploma.Bll.Services.Chats;
 using Diploma.Bll.Services.Chats.Request;
 using Diploma.Bll.Services.Chats.Validation;
 using Diploma.Bll.Services.Encryption;
+using Diploma.Bll.Services.Files;
 using Diploma.Bll.Services.Messages;
 using Diploma.Bll.Services.Messages.Request;
 using Diploma.Bll.Services.Messages.Validation;
@@ -130,6 +131,7 @@ namespace Diploma.Server
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IFilesService, FilesService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddSingleton<IWebSocketService, WebSocketService>();
         }

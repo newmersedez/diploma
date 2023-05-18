@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,5 +19,11 @@ namespace Diploma.Persistence.Models.Entities
 
         [Required, Column("content_type")]
         public string ContentType { get; set; }
+        
+        # region Relationships
+        
+        public ICollection<Message> Messages { get; set; }
+        
+        #endregion
     }
 }

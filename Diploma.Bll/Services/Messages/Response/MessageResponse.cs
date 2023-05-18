@@ -25,12 +25,12 @@ namespace Diploma.Bll.Services.Messages.Response
         /// <summary>
         /// Идентификатор вложения
         /// </summary>
-        public Guid? AttachmentId { get; set; }
+        public Guid? FileId { get; set; }
 
         /// <summary>
         /// Нащвание вложения
         /// </summary>
-        public string AttachmentName { get; set; }
+        public string FileName { get; set; }
 
         /// <summary>
         /// Идентификатор текста

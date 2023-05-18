@@ -24,7 +24,7 @@
                                            MaxWidth="250"
                                            Margin="10 0 10 0" />
                             </WrapPanel>
-                            <Button Content="{Binding AttachmentName}"
+                            <Button Content="{Binding FileName}"
                                     Foreground="CornflowerBlue"
                                     Background="Transparent"
                                     HorizontalContentAlignment="Left"

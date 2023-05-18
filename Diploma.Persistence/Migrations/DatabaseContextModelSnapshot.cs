@@ -126,10 +126,6 @@ namespace Diploma.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("AttachmentId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("attachment_id");
-
                     b.Property<Guid>("ChatId")
                         .HasColumnType("uuid")
                         .HasColumnName("chat_id");
@@ -137,6 +133,10 @@ namespace Diploma.Persistence.Migrations
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("date_create");
+
+                    b.Property<Guid?>("FileId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("file_id");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -149,9 +149,9 @@ namespace Diploma.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttachmentId");
-
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("FileId");
 
                     b.HasIndex("UserId");
 
@@ -270,15 +270,15 @@ namespace Diploma.Persistence.Migrations
 
             modelBuilder.Entity("Diploma.Persistence.Models.Entities.Message", b =>
                 {
-                    b.HasOne("Diploma.Persistence.Models.Entities.Attachment", "Attachment")
-                        .WithMany("Messages")
-                        .HasForeignKey("AttachmentId");
-
                     b.HasOne("Diploma.Persistence.Models.Entities.Chat", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Diploma.Persistence.Models.Entities.File", "File")
+                        .WithMany("Messages")
+                        .HasForeignKey("FileId");
 
                     b.HasOne("Diploma.Persistence.Models.Entities.User", "User")
                         .WithMany("Messages")
@@ -286,9 +286,9 @@ namespace Diploma.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Attachment");
-
                     b.Navigation("Chat");
+
+                    b.Navigation("File");
 
                     b.Navigation("User");
                 });
@@ -315,15 +315,15 @@ namespace Diploma.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diploma.Persistence.Models.Entities.Attachment", b =>
-                {
-                    b.Navigation("Messages");
-                });
-
             modelBuilder.Entity("Diploma.Persistence.Models.Entities.Chat", b =>
                 {
                     b.Navigation("ChatUsers");
 
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Diploma.Persistence.Models.Entities.File", b =>
+                {
                     b.Navigation("Messages");
                 });
 

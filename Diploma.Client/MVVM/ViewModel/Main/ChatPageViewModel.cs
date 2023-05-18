@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -33,6 +34,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         private static readonly string GetMessagesUri = "https://localhost:5001/chats/{0}/messages";
         private static readonly string CreateMessageUri = "https://localhost:5001/chats/{0}/messages";
         
+        private static readonly string CreateFileUri = "https://localhost:5001/files";
         private static readonly string UploadFileUri = "https://localhost:5001/storage/files/upload";
 
         private Chat _selectedChat;
@@ -332,7 +334,7 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             
             var requestBody = new CreateMessageRequest()
             {
-                AttachmentId = null,
+                FileId = null,
                 Text = Message
             };
             
@@ -361,22 +363,37 @@ namespace Diploma.Client.MVVM.ViewModel.Main
 
             var filePath = openFileDialog.FileName;
             
+            // загрузка файла в хранилище
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
             var bytes = await File.ReadAllBytesAsync(filePath);
             var byteArrayContent = new ByteArrayContent(bytes);
             var multipartContent = new MultipartFormDataContent();
+            // multipartContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
             multipartContent.Add(byteArrayContent, "file", Path.GetFileName(filePath));
-            var postResponse = await client.PostAsync(UploadFileUri, multipartContent);
             
-            var requestBody = new CreateMessageRequest()
+            var uploadFileResponse = await client.PostAsync(UploadFileUri, multipartContent);
+            var uploadFileResponseString = await uploadFileResponse.Content.ReadAsStringAsync();
+            var uploadFileJsonResponse = JObject.Parse(uploadFileResponseString);
+            
+            // Создание записи в бд
+            var createFileRequestBody = uploadFileJsonResponse.ToObject<CreateFileRequest>();
+            var createFileRequestContent = new StringContent(JsonConvert.SerializeObject(createFileRequestBody), Encoding.UTF8, "application/json");
+            var createFileResponse = await client.PostAsync(CreateFileUri, createFileRequestContent);
+            var createFileResponseString = await createFileResponse.Content.ReadAsStringAsync();
+            createFileResponseString = createFileResponseString.Trim('"');
+
+            var fileId = Guid.Parse(createFileResponseString);
+            
+            // Создание комментария
+            var createCommentRequestBody = new CreateMessageRequest()
             {
-                AttachmentId = null,
-                Text = Message
+                FileId = fileId,
+                Text = "Файл"
             };
             
-            var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(createCommentRequestBody), Encoding.UTF8, "application/json");
             var response = await client.PostAsync(string.Format(CreateMessageUri, SelectedChat.Id), content);
             
             switch (response.StatusCode)

@@ -17,11 +17,11 @@ namespace Diploma.Bll.Services.Messages.Validation
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             
-            RuleFor(x => x.Text)
-                .NotEmpty().WithMessage("Текст сообщения обязательный");
-
-            RuleFor(x => x.AttachmentId)
-                .Must(AttachmentExists).WithMessage("Файл не существует");
+            // RuleFor(x => x.Text)
+            //     .NotEmpty().WithMessage("Текст сообщения обязательный");
+            //
+            // RuleFor(x => x.AttachmentId)
+            //     .Must(AttachmentExists).WithMessage("Файл не существует");
         }
 
         /// <summary>

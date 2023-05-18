@@ -11,7 +11,9 @@ namespace Diploma.Server.Controllers
     /// Контроллер файлов
     /// </summary>
     [Authorize]
-    [Route("files")]
+    [ApiController]
+    [ApiVersion("1")]
+    [Route("messenger/v{version:apiVersion}/files")]
     public class FilesController : ControllerBase
     {
         /// <summary>
@@ -22,7 +24,8 @@ namespace Diploma.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<Guid> CreateFileAsync(
-            [FromServices] IFilesService fileService, CreateFileRequest request)
+            [FromServices] IFilesService fileService,
+            [FromBody] CreateFileRequest request)
         {
             if (fileService == null) throw new ArgumentNullException(nameof(fileService));
 

@@ -10,7 +10,7 @@ namespace Diploma.Bll.Services.Messages.Request
         /// <summary>
         /// Идентификатор файла
         /// </summary>
-        public Guid? AttachmentId { get; set; }
+        public Guid? FileId { get; set; }
 
         /// <summary>
         /// Текст сообщения

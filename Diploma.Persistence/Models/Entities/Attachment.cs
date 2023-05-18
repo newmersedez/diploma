@@ -29,8 +29,6 @@ namespace Diploma.Persistence.Models.Entities
 
         public User User { get; set; }
 
-        public ICollection<Message> Messages { get; set; }
-
         #endregion
     }
 }
