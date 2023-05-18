@@ -129,6 +129,11 @@ namespace Diploma.Client.MVVM.ViewModel.Main
         public RelayCommand SendDocumentCommand { get; }
 
         /// <summary>
+        /// Команда для скачивания файла
+        /// </summary>
+        public RelayCommand DownloadDocumentCommand { get; }
+
+        /// <summary>
         /// Конструктор
         /// </summary>
         public ChatPageViewModel()
@@ -172,6 +177,8 @@ namespace Diploma.Client.MVVM.ViewModel.Main
             SendDocumentCommand = new RelayCommand(
                 _ => Task.Run(SendDocumentAsync),
                 _ => SelectedChat is not null);
+
+            DownloadDocumentCommand = new RelayCommand(_ => Task.Run(DownloadDocumentAsync));
             
             Task.Run(LoadContentAsync);
 
@@ -409,6 +416,11 @@ namespace Diploma.Client.MVVM.ViewModel.Main
 
             Message = string.Empty;
             RaisePropertyChanged(nameof(Message));
+        }
+
+        private async Task DownloadDocumentAsync()
+        {
+            MessageBox.Show("lalka");
         }
     }
 }

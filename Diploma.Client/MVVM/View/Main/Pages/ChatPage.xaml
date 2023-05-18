@@ -145,6 +145,18 @@
                       ScrollViewer.CanContentScroll="True"
                       ItemsSource="{Binding Messages, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ChatStyle}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                                <Grid x:Name="GridTasks">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Content="Remove" Command="{Binding DownloadDocumentCommand}"/>
+                                </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
             <DockPanel Grid.Row="2" Background="#2F3136" LastChildFill="True" >
                 <Grid Height="60" DockPanel.Dock="Bottom" 
