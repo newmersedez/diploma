@@ -324,8 +324,8 @@ namespace Diploma.Client.MVVM.ViewModel.Main
                 case HttpStatusCode.OK:
                     Chats = await GetChatsAsync();
                     RaisePropertiesChanged(nameof(Chats));
-                    // SelectedChat = Chats.FirstOrDefault();
-                    // RaisePropertiesChanged(nameof(SelectedChat));
+                    SelectedChat = Chats.FirstOrDefault();
+                    RaisePropertiesChanged(nameof(SelectedChat));
                     break;
                 default:
                     MessageBox.Show("Неизвестная ошибка, попробуйте позже");

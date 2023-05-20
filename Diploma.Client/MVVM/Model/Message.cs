@@ -42,6 +42,15 @@ namespace Diploma.Client.MVVM.Model
         /// </summary>
         public DateTime DateCreate { get; set; }
 
+        /// <summary>
+        /// Электронная подпись файла
+        /// </summary>
+        public string Signature { get; set; }
+
+        public bool IsSigned => string.IsNullOrEmpty(Signature);
+
+        public string IsSignedAsText => FileId.HasValue ? "Подписан ✔" : string.Empty;
+        
         public override string ToString()
         {
             return Text;

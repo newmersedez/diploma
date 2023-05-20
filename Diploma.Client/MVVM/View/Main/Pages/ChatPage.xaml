@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:main="clr-namespace:Diploma.Client.MVVM.ViewModel.Main"
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-      Height="600" Width="800"
+      Height="Auto" Width="Auto"
       Background="#36393F">
     
     <Page.DataContext>
@@ -74,12 +74,13 @@
             <DockPanel Grid.Row="2"
                        VerticalAlignment="Bottom"
                        Background="#252525">
-                <Border Width="30"
+                <Border DockPanel.Dock="Left" 
+                        Width="30"
                         Height="30"
                         Background="DarkSlateGray"
                         CornerRadius="25" 
                         Margin="10 0 0 0"/>
-                <StackPanel DockPanel.Dock="Right" 
+                <StackPanel DockPanel.Dock="Left" 
                             Orientation="Vertical" 
                             Height="60" 
                             VerticalAlignment="Bottom">
@@ -94,6 +95,18 @@
                                FontWeight="Thin" 
                                Margin="10 0 0 0"/>
                 </StackPanel>
+                <Button DockPanel.Dock="Left" Content="⛭" Height="40" Width="40" HorizontalAlignment="Right"
+                        Style="{StaticResource ButtonStyle}"
+                        Background="Transparent"
+                        ToolTip="Настройки"
+                        FontSize="20"
+                        BorderThickness="0">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="30" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </DockPanel>
         </Grid>
         
@@ -141,7 +154,7 @@
             </DockPanel>
             <ListView x:Name="ChatListView" Grid.Row="1"
                       BorderThickness="0"
-                      Background="#36393F"
+                      Background="#414148"
                       ScrollViewer.CanContentScroll="True"
                       ItemsSource="{Binding Messages, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ChatStyle}">
