@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Diploma.Bll.Common.Exceptions;
 using Diploma.Bll.Common.Providers.Encryption.Curves;
 using Diploma.Bll.Common.Providers.Encryption.Keys;
@@ -37,6 +39,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Npgsql.Replication;
 using Serilog;
 
 namespace Diploma.Server
@@ -185,7 +188,17 @@ namespace Diploma.Server
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseWebSockets();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                var v = ApiVersion.Default;
+                
+                endpoints.MapControllers();
+                endpoints.MapGet($"/messenger/v1/healthcheck", context =>
+                {
+                    context.Response.StatusCode = 200;
+                    return Task.CompletedTask;
+                });
+            });
         }
     }
 }
