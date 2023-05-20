@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:authorization="clr-namespace:Diploma.Client.MVVM.ViewModel.Authorization"
         mc:Ignorable="d"
-        Height="550" Width="400"
+        Height="600" Width="400"
         Background="#2F3136"
         WindowStyle="None"
         AllowsTransparency="True"

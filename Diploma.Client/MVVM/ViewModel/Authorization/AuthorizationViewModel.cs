@@ -62,8 +62,8 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
         public AuthorizationViewModel()
         {
             Name = string.Empty;
-            Email = "daltrishin@sberbank.ru";
-            Password = "XZasdf123";
+            Email = string.Empty;
+            Password = string.Empty;
             Error = string.Empty;
             
             LoginCommand = new RelayCommand(
@@ -91,7 +91,7 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
             var response = await client.PostAsync(LOGIN_URL, content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var jsonResponse = JObject.Parse(responseString);
+            var jsonResponse = string.IsNullOrEmpty(responseString) ? new JObject() : JObject.Parse(responseString);
             
             switch (response.StatusCode)
             {
@@ -100,13 +100,16 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
                     OpenMainWindow();
                     break;
                 case HttpStatusCode.BadRequest:
-                    Error = "Неверный email или пароль";
+                    Error = "  • Неверный email или пароль";
+                    break;
+                case HttpStatusCode.Conflict:
+                    Error = "  • Пользователь не существует";
                     break;
                 case HttpStatusCode.Forbidden:
-                    Error = "Неверный пароль";
+                    Error = "  • Неверный пароль";
                     break;
                 default:
-                    Error = "Неизвестная ошибка, попробуйте позже";
+                    Error = "  • Неизвестная ошибка, попробуйте позже";
                     break;
             }
 
@@ -130,7 +133,7 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
             var response = await client.PostAsync(REGISTRATION_URL, content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var jsonResponse = JObject.Parse(responseString);
+            var jsonResponse = string.IsNullOrEmpty(responseString) ? new JObject() : JObject.Parse(responseString);
             
             switch (response.StatusCode)
             {
@@ -139,13 +142,15 @@ namespace Diploma.Client.MVVM.ViewModel.Authorization
                     OpenMainWindow();
                     break;
                 case HttpStatusCode.Conflict:
-                    Error = "Пользователь с таким email уже существует";
+                    Error = "  • Пользователь с таким email уже существует";
                     break;
                 case HttpStatusCode.BadRequest:
-                    Error = "Ошибка валидации";
+                    var error = jsonResponse.GetValue("errors").Children();
+                    var passwordErrors = error.Children().Values<string>().Select(x => $"  • {x}");
+                    Error = string.Join("\n", passwordErrors);
                     break;
                 default:
-                    Error = "Неизвестная ошибка, попробуйте позже";
+                    Error = "  • Неизвестная ошибка, попробуйте позже";
                     break;
             }
 

@@ -30,6 +30,7 @@
                                     HorizontalContentAlignment="Left"
                                     Padding="10 0 10 0"
                                     BorderThickness="0"/>
+                            <TextBlock Text="Подписан ✔"/>
                             <TextBlock Text="{Binding DateCreate, StringFormat='hh:mm'}"
                                        Foreground="LightGray"
                                        FontSize="11"
