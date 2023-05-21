@@ -141,25 +141,25 @@ namespace Diploma.Server
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseStaticFiles();
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diploma.Api v1");
-                    // c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
-                });
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseStaticFiles();
+            //     app.UseDeveloperExceptionPage();
+            //     app.UseSwagger();
+            //     app.UseSwaggerUI(c =>
+            //     {
+            //         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diploma.Api v1");
+            //         // c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+            //     });
+            // }
             
-            app.UseSerilogRequestLogging();
+            // app.UseSerilogRequestLogging();
 
-            app.UseCors();
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.All
-            });
+            // app.UseCors();
+            // app.UseForwardedHeaders(new ForwardedHeadersOptions
+            // {
+            //     ForwardedHeaders = ForwardedHeaders.All
+            // });
 
             app.UseExceptionHandler(c => c.Run(async context =>
             {
