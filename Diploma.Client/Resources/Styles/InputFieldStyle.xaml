@@ -4,13 +4,13 @@
         <Setter Property="Height" Value="45" />
         <Setter Property="Padding" Value="10 0 10 0" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="DimGray" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderBrush" Value="DimGray" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="CaretBrush" Value="White" />
+        <Setter Property="CaretBrush" Value="DimGray" />
         <Style.Resources>
             <Style TargetType="{x:Type Border}">
                 <Setter Property="CornerRadius" Value="10" />

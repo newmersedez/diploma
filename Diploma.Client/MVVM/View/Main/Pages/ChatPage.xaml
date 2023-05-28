@@ -4,7 +4,7 @@
       xmlns:main="clr-namespace:Diploma.Client.MVVM.ViewModel.Main"
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
       Height="Auto" Width="Auto"
-      Background="#36393F">
+      Background="#F0F0F0">
     
     <Page.DataContext>
         <main:ChatPageViewModel />
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Background="#2F3136" HorizontalAlignment="Stretch">
+        <Grid Grid.Column="0" Background="#DDDDDD" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="220" />
                 <RowDefinition Height="*" />
@@ -34,12 +34,12 @@
                     <RowDefinition Height="30" />
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Content="Chats"
-                       FontSize="14" Foreground="LightGray"
+                <Label Grid.Row="0" Content="Чаты"
+                       FontSize="14" Foreground="#202020"
                        FontWeight="Bold" Margin="10 10 0 0"/>
                 <Label Grid.Row="1" Content="Имя пользователя" 
-                       Foreground="LightGray"
-                       FontSize="13" 
+                       Foreground="#202020"
+                       FontSize="14" 
                        Margin="10 0 10 0"/>
                 <TextBox Grid.Row="2" Grid.Column="0"
                          Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
@@ -48,8 +48,8 @@
                          Margin="10 0 10 0"
                          HorizontalAlignment="Stretch" />
                 <Label Grid.Row="3" Content="Название чата"
-                       Foreground="LightGray"
-                       FontSize="13" 
+                       Foreground="#202020"
+                       FontSize="14"
                        Margin="10 0 10 0"/>
                 <TextBox Grid.Row="4" Grid.Column="0"
                          Text="{Binding Chatname, UpdateSourceTrigger=PropertyChanged}"
@@ -73,11 +73,12 @@
             </ListView>
             <DockPanel Grid.Row="2"
                        VerticalAlignment="Bottom"
-                       Background="#252525">
+                       Background="#CCCCCC">
                 <Border DockPanel.Dock="Left" 
-                        Width="30"
-                        Height="30"
-                        Background="DarkSlateGray"
+                        Width="15"
+                        Height="15"
+                        ToolTip="Online"
+                        Background="LawnGreen"
                         CornerRadius="25" 
                         Margin="10 0 0 0"/>
                 <StackPanel DockPanel.Dock="Left" 
@@ -86,19 +87,19 @@
                             VerticalAlignment="Bottom">
                     <TextBlock Text="{Binding AuthorizedUser.Name, Mode=OneWay}"
                                FontSize="14"
-                               Foreground="LightGray"
+                               Foreground="#505050"
                                FontWeight="Bold" 
                                Margin="10 10 0 0"/>
                     <TextBlock Text="{Binding AuthorizedUser.Email, Mode=OneWay}"
-                               FontSize="14"
-                               Foreground="LightGray"
-                               FontWeight="Thin" 
+                               FontSize="13"
+                               Foreground="#505050"
                                Margin="10 0 0 0"/>
                 </StackPanel>
                 <Button DockPanel.Dock="Left" Content="⛭" Height="40" Width="40" HorizontalAlignment="Right"
                         Style="{StaticResource ButtonStyle}"
                         Background="Transparent"
                         ToolTip="Настройки"
+                        Foreground="#505050"
                         FontSize="20"
                         BorderThickness="0">
                     <Button.Resources>
@@ -121,7 +122,7 @@
             
             <DockPanel Grid.Row="0"
                        VerticalAlignment="Bottom"
-                       Background="#292B2F"
+                       Background="#CCCCCC"
                        Height="60">
                 <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
                         Style="{StaticResource ButtonStyle}"
@@ -141,20 +142,20 @@
                 </Button>
                 <Border Width="30"
                         Height="30"
-                        Background="DarkSlateGray"
+                        Background="CornflowerBlue"
                         CornerRadius="25" 
                         Margin="10 0 0 0"/>
                 <TextBlock DockPanel.Dock="Right"
                            Text="{Binding SelectedChat.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            FontSize="14"
-                           Foreground="LightGray"
+                           Foreground="#505050"
                            VerticalAlignment="Center"
                            FontWeight="Bold" 
                            Margin="10 0 0 0"/>
             </DockPanel>
             <ListView x:Name="ChatListView" Grid.Row="1"
                       BorderThickness="0"
-                      Background="#414148"
+                      Background="#F0F0F0"
                       ScrollViewer.CanContentScroll="True"
                       ItemsSource="{Binding Messages, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ChatStyle}">
@@ -171,9 +172,10 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <DockPanel Grid.Row="2" Background="#2F3136" LastChildFill="True" >
+            <DockPanel Grid.Row="2" Background="#F0F0F0" LastChildFill="True" >
                 <Grid Height="60" DockPanel.Dock="Bottom" 
                       ShowGridLines="False"
+                      Background="Transparent"
                       VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -184,6 +186,8 @@
                              Height="40"
                              Margin="10 0 0 0"
                              Style="{StaticResource InputFieldStyle}"
+                             Foreground="White"
+                             BorderBrush="#404040"
                              Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Grid.Column="1" 
                             Style="{StaticResource ButtonStyle}" Height="40" Width="40"
@@ -191,6 +195,7 @@
                             ToolTip="Отправить документ" 
                             FontSize="20"
                             Background="Transparent"
+                            Foreground="#404040"
                             BorderThickness="0"
                             Command="{Binding SendDocumentCommand}">
                         <Button.Resources>
@@ -205,6 +210,7 @@
                             ToolTip="Отправить сообщение" 
                             FontSize="25"
                             Background="Transparent"
+                            Foreground="#404040"
                             Margin="0 0 10 0"
                             BorderThickness="0" 
                             Command="{Binding SendMessageCommand}">

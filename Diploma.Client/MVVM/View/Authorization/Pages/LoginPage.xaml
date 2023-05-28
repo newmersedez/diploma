@@ -6,7 +6,7 @@
       xmlns:authorization="clr-namespace:Diploma.Client.MVVM.ViewModel.Authorization"
       mc:Ignorable="d"
       Height="Auto" Width="Auto"
-      Background="#2F3136">
+      Background="#F0F0F0">
     
     <Page.DataContext>
         <authorization:AuthorizationViewModel />
@@ -20,12 +20,12 @@
         <DockPanel>
             <StackPanel DockPanel.Dock="Top">
                 <Label Content="Вход в аккаунт"
-                       Foreground="DarkGray"
+                       Foreground="DimGray"
                        FontWeight="Bold"
                        FontSize="18"
                        Margin="20 0 0 0"/>
                 <Label Content="Email"
-                       Foreground="DarkGray"
+                       Foreground="DimGray"
                        FontWeight="Bold"
                        FontSize="15"
                        Margin="20 20 0 0"/>
@@ -33,7 +33,7 @@
                          Style="{StaticResource InputFieldStyle}" 
                          Margin="20 0 20 0"/>
                 <Label Content="Пароль"
-                       Foreground="DarkGray"
+                       Foreground="DimGray"
                        FontWeight="Bold"
                        FontSize="15"
                        Margin="20 20 0 0"/>

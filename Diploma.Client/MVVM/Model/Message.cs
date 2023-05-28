@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 
 namespace Diploma.Client.MVVM.Model
 {
@@ -50,6 +51,8 @@ namespace Diploma.Client.MVVM.Model
         public bool IsSigned => string.IsNullOrEmpty(Signature);
 
         public string IsSignedAsText => FileId.HasValue ? "Подписан ✔" : string.Empty;
+
+        public Visibility FileVisibility => FileId.HasValue ? Visibility.Visible : Visibility.Collapsed;
         
         public override string ToString()
         {
